@@ -4,10 +4,11 @@ async def migrate():
     import sys
 
     db_url = os.environ["DATABASE_URL"]
+    print(os.environ)
 
     if len(sys.argv) < 2:
         print("Command: up|down [amount]")
-        exit(1)
+        sys.exit(1)
     direction = sys.argv[1]
     amount = sys.argv[2] if len(sys.argv) > 2 else None
     if direction == "up":
