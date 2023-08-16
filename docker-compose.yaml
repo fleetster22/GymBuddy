@@ -3,6 +3,7 @@ services:
   fastapi:
     environment:
       CORS_HOST: http://localhost:3000
+      SIGNING_KEY: ${SIGNING_KEY}
     build:
       context: api
       dockerfile: Dockerfile.dev
@@ -10,6 +11,9 @@ services:
       - 8000:8000
     volumes:
       - ./api:/app
+    volumes:
+      postgres-data:
+        external: true
 
   ghi:
     image: node:lts-bullseye
