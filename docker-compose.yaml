@@ -1,20 +1,34 @@
-# volumes:
+volumes:
+  sculptr:
+    external: true
+  pg-admin:
+    external: true
 services:
   fastapi:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
     environment:
       CORS_HOST: http://localhost:3000
       SIGNING_KEY: ${SIGNING_KEY}
     build:
       context: api
       dockerfile: Dockerfile.dev
+      DATABASE_URL: postgresql://sculptr:sculptr@db/sculptr
+      WAIT_HOSTS: db:5432
+      PORT: 8000
     ports:
-      - 8000:8000
+      - "8000:8000"
     volumes:
       - ./api:/app
-    volumes:
-      postgres-data:
-        external: true
-
+  db:
+    image: postgres:14.5-bullseye
+    environment:
+      POSTGRES_PASSWORD: sculptr
+      POSTGRES_USER: sculptr
+      POSTGRES_DB: sculptr
+    ports:
+      - "15432:5432"
   ghi:
     image: node:lts-bullseye
     command: /bin/bash run.sh
@@ -29,3 +43,13 @@ services:
       HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
       REACT_APP_API_HOST: ${REACT_APP_API_HOST}
+  pg-admin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: sculptr@sculptr.com
+      PGADMIN_DEFAULT_PASSWORD: sculptr
+      PGADMIN_DISABLE_POSTFIX: 1
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+    ports:
+      - "8082:80"
