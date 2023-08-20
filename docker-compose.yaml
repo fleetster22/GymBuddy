@@ -13,6 +13,7 @@ services:
       DATABASE_URL: postgresql://sculptr:sculptr@db/sculptr
       WAIT_HOSTS: db:5432
       PORT: 8000
+      SIGNING_KEY: ${SIGNING_KEY}
     ports:
       - "8000:8000"
     volumes:
