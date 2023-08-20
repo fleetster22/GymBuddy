@@ -2,7 +2,8 @@ function Construct(props) {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Under construction</h1>
+        <h1>Sculptr App</h1>
+        <h2>Under construction</h2>
         <h2>Coming on (or before)</h2>
         <h2>
           Module: {props.info.module} Week: {props.info.week} Day:{" "}
