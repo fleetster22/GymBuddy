@@ -5,18 +5,15 @@ volumes:
     external: true
 services:
   fastapi:
-    build:
-      context: ./api
-      dockerfile: Dockerfile.dev
     environment:
       CORS_HOST: http://localhost:3000
       SIGNING_KEY: ${SIGNING_KEY}
-    build:
-      context: api
-      dockerfile: Dockerfile.dev
       DATABASE_URL: postgresql://sculptr:sculptr@db/sculptr
       WAIT_HOSTS: db:5432
       PORT: 8000
+    build:
+      context: api
+      dockerfile: Dockerfile.dev
     ports:
       - "8000:8000"
     volumes:

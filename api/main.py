@@ -7,8 +7,8 @@ from routers import accounts
 
 app = FastAPI()
 app.include_router(authenticator.router)
-app.include_router(accounts.router)
-
+app.include_router(accounts.router, prefix="/accounts", tags=["Accounts"])
+#^ allows a label addition to the fastapi browser
 
 app.add_middleware(
     CORSMiddleware,

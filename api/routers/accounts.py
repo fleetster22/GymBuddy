@@ -54,6 +54,7 @@ async def get_token(
             "account": account,
         }
 
+
 @router.post("/api/accounts", response_model=AccountToken | HttpError)
 async def create_account(
     info: AccountIn,
