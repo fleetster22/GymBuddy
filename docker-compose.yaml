@@ -6,7 +6,7 @@ volumes:
 services:
   fastapi:
     build:
-      context: ./api
+      context: api
       dockerfile: Dockerfile.dev
     environment:
       CORS_HOST: http://localhost:3000
@@ -17,6 +17,7 @@ services:
       DATABASE_URL: postgresql://sculptr:sculptr@db/sculptr
       WAIT_HOSTS: db:5432
       PORT: 8000
+      SIGNING_KEY: ${SIGNING_KEY}
     ports:
       - "8000:8000"
     volumes:
@@ -46,8 +47,8 @@ services:
   pg-admin:
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: sculptr@sculptr.com
-      PGADMIN_DEFAULT_PASSWORD: sculptr
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
       PGADMIN_DISABLE_POSTFIX: 1
     volumes:
       - ./pgadmin:/var/lib/pgadmin
