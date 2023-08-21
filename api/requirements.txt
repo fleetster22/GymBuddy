@@ -1,11 +1,10 @@
+httpx==0.19.0
+dnspython==2.3.0
 python-dotenv==1.0.0
 fastapi[all]==0.81.0
 uvicorn[standard]==0.17.6, <0.18.0
 pydantic<2.0.0
 pytest
 psycopg[binary, pool]==3.1.2
-pymongo[srv]==4.2.0
-python-jose[cryptography]==3.3.0, <4.0.0
-passlib[bcrypt]==1.7.4, <2.0.0
 python-multipart==0.0.5
 jwtdown-fastapi==0.3.0
