@@ -21,6 +21,10 @@ class AccountOut(BaseModel):
     last_name: str
 
 
+class AccountOutWithPassword(AccountOut):
+    password: str
+
+
 class AccountRepository:
     def create_account(self, account: AccountIn) -> AccountOut:
         with pool.connection() as conn:
