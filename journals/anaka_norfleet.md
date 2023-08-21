@@ -15,3 +15,7 @@
 **8/17/23** I didn't get to work on authentication today, but I did complete my queries and routers for exercises. Hopefully it works. I will test it tomorrow and troubleshoot if need be. Note to future self. Doublecheck the routers file endpoints. They may need to structured like/exercises?muscle=quadriceps. I will also watch a Youtube tutorial on Redux to see if I like it more than useState. Mischa says she loves it. I will go more in depth over the weekend into whichever state management I like best.
 
 ---
+
+**8/20/23** I second guessed the exercise api functionality so I burned it to the ground and built it again. I also created the accounts queries and routers files using the FastAPI videos from Learn. I am going to catch up on homework now.
+
+---
