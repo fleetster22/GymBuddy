@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 
 
-class Error(BaseModel):
-    message: str
+# class Error(BaseModel):
+#     message: str
 
 
 # class ExerciseIn(BaseModel):
@@ -15,7 +15,6 @@ class Error(BaseModel):
 
 
 class Exercises(BaseModel):
-    id: str
     name: str
     type: str
     muscle: str
