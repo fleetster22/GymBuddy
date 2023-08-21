@@ -19,8 +19,8 @@ class Exercises(BaseModel):
     name: str
     type: str
     muscle: str
-    difficulty: str
     equipment: str
+    difficulty: str
     instructions: str
 
 

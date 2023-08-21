@@ -8,8 +8,10 @@ load_dotenv()
 
 router = APIRouter()
 
-API_BASE_URL = os.getenv("API_BASE_URL")
-API_KEY = os.getenv("X-API-KEY")
+# API_BASE_URL = os.getenv("API_BASE_URL")
+API_BASE_URL = "https://api.api-ninjas.com/v1/exercises"
+API_KEY = "g5KMn4OGpap61pP8YMZiww==WQh3U1iN7LE3M6ua"
+
 
 TIMEOUT = 10
 
@@ -32,14 +34,14 @@ async def list_exercises():
 
 # get exercise by name
 @router.get(
-    "/exercises/name/{name}",
-    response_model=Exercises,
+    "/name/{name}",
+    response_model=list[Exercises],
     tags=["exercises"],
 )
 async def get_exercise_by_name(name: str):
     async with httpx.AsyncClient() as client:
         response = await client.get(
-            f"{API_BASE_URL}/name/{name}",
+            f"{API_BASE_URL}?name={name}",
             headers={"X-Api-Key": API_KEY},
             timeout=TIMEOUT,
         )
@@ -52,14 +54,14 @@ async def get_exercise_by_name(name: str):
 
 # get exercises by difficulty
 @router.get(
-    "/exercises/difficulty/{difficulty}",
+    "/difficulty/{difficulty}",
     response_model=list[Exercises],
     tags=["exercises"],
 )
 async def get_exercises_by_difficulty(difficulty: str):
     async with httpx.AsyncClient() as client:
         response = await client.get(
-            f"{API_BASE_URL}/difficulty/{difficulty}",
+            f"{API_BASE_URL}?difficulty={difficulty}",
             headers={"X-Api-Key": API_KEY},
             timeout=TIMEOUT,
         )
@@ -77,7 +79,7 @@ async def get_exercises_by_difficulty(difficulty: str):
 async def get_exercises_by_muscle_group(muscle: str):
     async with httpx.AsyncClient() as client:
         response = await client.get(
-            f"{API_BASE_URL}/muscle/{muscle}",
+            f"{API_BASE_URL}?muscle={muscle}",
             headers={"X-Api-Key": API_KEY},
             timeout=TIMEOUT,
         )
@@ -93,7 +95,7 @@ async def get_exercises_by_muscle_group(muscle: str):
 async def get_exercise_by_type(type: str):
     async with httpx.AsyncClient() as client:
         response = await client.get(
-            f"{API_BASE_URL}/type/{type}",
+            f"{API_BASE_URL}?type={type}",
             headers={"X-Api-Key": API_KEY},
             timeout=TIMEOUT,
         )
