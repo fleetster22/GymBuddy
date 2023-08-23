@@ -30,11 +30,6 @@ export default function CreateWorkout() {
     });
   }
 
-  function handleChange(e) {
-    setTextarea(e.target.value);
-    }
-
-
   function handleSubmit(e) {
     e.preventDefault();
     fetch("http://localhost:3000/api/workouts", {
@@ -49,7 +44,7 @@ export default function CreateWorkout() {
   }
 
   return (
-    <div>
+    <div className="container">
       <h1>Create Workout</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -57,6 +52,7 @@ export default function CreateWorkout() {
           <input
             type="text"
             name="name"
+            required
             value={workout.name}
             onChange={handleWorkoutChange}
             placeholder="Workout name"
@@ -67,6 +63,8 @@ export default function CreateWorkout() {
           <input
             type="text"
             name="description"
+            required
+            placeholder="Workout description"
             value={workout.description}
             onChange={handleWorkoutChange}
           />
@@ -82,11 +80,10 @@ export default function CreateWorkout() {
         </label>
         <label>
           Exercises:
-            <type="text"
           <select onChange={handleExerciseChange}>
             <option value="">Exercise Types</option>
             {exercises.map((ex) => (
-              <option key={ex.id} value={ex.id}>
+              <option key={ex.name} value={ex.name}>
                 {ex.name}
               </option>
             ))}
