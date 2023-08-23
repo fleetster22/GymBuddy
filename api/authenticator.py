@@ -11,7 +11,7 @@ class MyAuthenticator(Authenticator):
         accounts: AccountQueries,
     ):
         # Use your repo to get the account based on the
-        # email (which could be an email)
+        # username (which could be an email)
         return accounts.get(email)
 
     def get_account_getter(
@@ -28,7 +28,7 @@ class MyAuthenticator(Authenticator):
 
     # change this to account.password if there are errors
     def get_account_data_for_cookie(self, account: AccountOutWithPassword):
-        # Return the email and the data for the cookie.
+        # Return the username and the data for the cookie.
         # You must return TWO values from this method.
         return account.email, AccountOut(**account.dict())
 

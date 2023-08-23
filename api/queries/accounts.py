@@ -3,21 +3,20 @@ from queries.pool import pool
 
 
 class DuplicateAccountError(ValueError):
-    message: str
+    pass
 
 
-# class Account(BaseModel):
-#     first_name: str
-#     last_name: str
-#     email: str
-#     password: str
+class Account(BaseModel):
+    first_name: str
+    last_name: str
+    email: str
+    password: str
 
 
 class AccountIn(BaseModel):
     first_name: str
     last_name: str
     email: str
-    username: str
     password: str
 
 
@@ -26,11 +25,11 @@ class AccountOut(BaseModel):
     first_name: str
     last_name: str
     email: str
+    password: str
 
 
 class AccountOutWithPassword(AccountIn):
     id: int
-    password: str
 
 
 class AccountQueries:
@@ -57,10 +56,9 @@ class AccountQueries:
                     )
                     id = result.fetchone()[0]
                     old_data = info.dict()
-                    old_data["id"] = id
-                    return AccountOutWithPassword(**old_data)
-        except Exception as e:
-            raise ValueError("Could not create account.") from e
+                    return AccountOut(id=id, **old_data)
+        except Exception:
+            return {"message": "error!"}
 
     # pass in hashed_password not just password
 
@@ -83,9 +81,8 @@ class AccountQueries:
                         data = dict(zip(columns, record))
                         return AccountOutWithPassword(**data)
                     else:
-                        raise ValueError(
-                            f"This email {email} is not registered to an account."
-                        )
-
-        except Exception as e:
-            raise ValueError("Could not access account.") from e
+                        return {
+                            "message": f"This email{email} is not registered to an account."
+                        }
+        except Exception:
+            return AccountOutWithPassword(message="Could not access account.")
