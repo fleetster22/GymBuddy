@@ -86,3 +86,30 @@ class AccountQueries:
                         }
         except Exception:
             return AccountOutWithPassword(message="Could not access account.")
+
+    def update(self, email: str, info: AccountIn) -> AccountOut:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        UPDATE account
+                        SET
+                        first_name = %s, last_name = %s, email = %s, password = %s
+                        WHERE email= %s
+                        RETURNING id;
+                        """,
+                        [
+                            info.first_name,
+                            info.last_name,
+                            info.email,
+                            info.password,
+                            email,
+                        ]
+                    )
+                    conn.commit()
+                    id = result.fetchone()[0]
+                    old_data = info.dict()
+                    return AccountOut(id=id, **old_data)
+        except Exception:
+            return {"message": "Account cannot be updated."}
