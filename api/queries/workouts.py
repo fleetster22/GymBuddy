@@ -3,6 +3,7 @@ from typing import List, Optional, Union
 from datetime import date
 from queries.pool import pool
 
+
 class Error(BaseModel):
     message: str
 
@@ -11,11 +12,15 @@ class WorkoutIn(BaseModel):
     name: str
     description: str
     date: date
+    exercises: List[str] = []
+
 
 class WorkoutOut(BaseModel):
+    id: int
     name: str
     description: str
     date: date
+    exercises: List[str] = []
 
 
 class WorkoutRepository:
@@ -35,12 +40,12 @@ class WorkoutRepository:
                         FROM workouts
                         WHERE id = %s
                         """,
-                        [workout_id]
+                        [workout_id],
                     )
                     record = result.fetchone()
                     if record is None:
                         return None
-                    return self.record_to_workoutout(record)
+                    return self.record_to_workout_out(record)
         except Exception as e:
             print(e)
             return {"message": "Could not get that workout"}
@@ -56,14 +61,16 @@ class WorkoutRepository:
                         DELETE FROM workouts
                         WHERE id = %s
                         """,
-                        [workout_id]
+                        [workout_id],
                     )
                     return True
         except Exception as e:
             print(e)
             return False
 
-    def update(self, workout_id: int, workout: WorkoutIn) -> Union[WorkoutOut, Error]:
+    def update(
+        self, workout_id: int, workout: WorkoutIn
+    ) -> Union[WorkoutOut, Error]:
         try:
             # connect the database
             with pool.connection() as conn:
@@ -81,8 +88,8 @@ class WorkoutRepository:
                             workout.name,
                             workout.description,
                             workout.date,
-                            workout_id
-                        ]
+                            workout_id,
+                        ],
                     )
                     # old_data = workout.dict()
                     # return workoutOut(id=workout_id, **old_data)
@@ -100,25 +107,11 @@ class WorkoutRepository:
                     # Run our SELECT statement
                     result = db.execute(
                         """
-                        SELECT id, name, from_date, to_date, thoughts
-                        FROM workouts
-                        ORDER BY from_date;
+                        SELECT *FROM workouts;
                         """
                     )
-                    # result = []
-                    # for record in db:
-                    #     workout = WorkoutOut(
-                    #         id=record[0],
-                    #         name=record[1],
-                    #         description=record[2],
-                    #         date=record[3],
-                    #     )
-                    #     result.append(workout)
-                    # return result
-
                     return [
-                        self.record_to_workout_out(record)
-                        for record in result
+                        self.record_to_workout_out(record) for record in result
                     ]
         except Exception as e:
             print(e)
@@ -143,7 +136,7 @@ class WorkoutRepository:
                             workout.name,
                             workout.description,
                             workout.date,
-                        ]
+                        ],
                     )
                     id = result.fetchone()[0]
                     # Return new data
@@ -164,3 +157,27 @@ class WorkoutRepository:
             description=record[2],
             date=record[3],
         )
+
+    def link_exercise_to_workout(self, workout_id: int, exercise_name: str):
+        try:
+            # connect the database
+            with pool.connection() as conn:
+                # get a cursor (something to run SQL with)
+                with conn.cursor() as db:
+                    # Run our INSERT statement
+                    db.execute(
+                        """
+                        INSERT INTO workout_exercises
+                            (workout_id, exercise_name)
+                        VALUES
+                            (%s, %s);
+                        """,
+                        [
+                            workout_id,
+                            exercise_name,
+                        ],
+                    )
+                    # Return new data
+                    return True
+        except Exception:
+            return {"message": "Create did not work"}

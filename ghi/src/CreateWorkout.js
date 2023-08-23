@@ -10,8 +10,6 @@ export default function CreateWorkout() {
 
   const [exercises, setExercises] = useState([]);
 
-  const [textarea, setTextarea] = useState("");
-
   useEffect(() => {
     fetch("http://localhost:3000/api/exercises")
       .then((res) => res.json())

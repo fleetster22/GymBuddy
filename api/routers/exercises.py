@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException, Depends
 import httpx
 from queries.exercises import Exercises
 from dotenv import load_dotenv
-import os
+
 
 load_dotenv()
 
