@@ -96,3 +96,24 @@ async def update_account(
             detail="Cannot update account with those credentials",
         )
     return update_account
+
+
+
+@router.delete("/delete")
+async def delete_account(
+    current_account: AccountToken = Depends(authenticator.get_current_account_data),
+    repo: AccountQueries = Depends(),
+) -> AccountOut:
+    if not current_account:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Log in to delete your account.",
+        )
+    try:
+        deleted_account = repo.delete(current_account["id"])
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Cannot delete account with those credentials",
+        )
+    return deleted_account

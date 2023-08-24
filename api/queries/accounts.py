@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from queries.pool import pool
+from typing import Dict
 
 
 class DuplicateAccountError(ValueError):
@@ -113,3 +114,23 @@ class AccountQueries:
                     return AccountOut(id=id, **old_data)
         except Exception:
             return {"message": "Account cannot be updated."}
+
+    def delete(self, id: int) -> Dict[str, str]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        DELETE FROM account
+                        WHERE id= %s
+                        RETURNING id;
+                        """,
+                        [id],
+
+                    )
+                    conn.commit()
+                    return {
+                        "message": f"The account with this id {id} has been deleted."
+                    }
+        except Exception:
+            return {"message": "Account cannot be deleted."}
