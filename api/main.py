@@ -1,8 +1,9 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI
+
 from authenticator import authenticator
 from fastapi.middleware.cors import CORSMiddleware
 import os
-from routers import exercises, accounts, workouts
+from routers import exercises, workouts, accounts
 
 app = FastAPI()
 app.include_router(exercises.router, prefix="/api/exercises")
