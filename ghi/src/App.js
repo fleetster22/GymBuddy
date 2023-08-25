@@ -1,19 +1,15 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CreateWorkout from "./CreateWorkout.js";
-import WorkoutPage from "./WorkoutPage.jsx";
+import WorkoutPage from "./components/WorkoutPage.jsx";
 
 function App() {
   return (
     <BrowserRouter>
-      <div>
-        <Routes>
-          <Route path="exercises">
-            <Route index element={<CreateWorkout />} />
-            <Route path="history" element={<WorkoutPage />} />
-          </Route>
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="workouts" element={<WorkoutPage />} />
+        <Route path="workouts/new" element={<CreateWorkout />} />
+      </Routes>
     </BrowserRouter>
   );
 }

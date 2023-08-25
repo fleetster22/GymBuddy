@@ -19,3 +19,9 @@
 **8/20/23** I second guessed the exercise api functionality so I burned it to the ground and built it again. I also created the accounts queries and routers files using the FastAPI videos from Learn. I am going to catch up on homework now.
 
 ---
+
+**8/23/23** The backend is working nicely. The frontend is giving me headaches. I built a page and when I went to view it in the browser, 4 errors. grrrrr.
+
+---
+
+**8/24/23** Well all of my accomplishments today can be summed up with, I barely managed to undo all the damage I did from yesterday.
