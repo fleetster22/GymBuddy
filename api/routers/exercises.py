@@ -2,6 +2,8 @@ from authenticator import authenticator
 from fastapi import APIRouter, HTTPException, Depends
 import httpx
 from queries.exercises import Exercises
+import os
+
 from dotenv import load_dotenv
 
 
@@ -9,7 +11,6 @@ load_dotenv()
 
 router = APIRouter()
 
-# API_BASE_URL = os.getenv("API_BASE_URL")
 API_BASE_URL = "https://api.api-ninjas.com/v1/exercises"
 API_KEY = "g5KMn4OGpap61pP8YMZiww==WQh3U1iN7LE3M6ua"
 

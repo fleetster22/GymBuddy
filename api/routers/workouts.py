@@ -13,7 +13,7 @@ from .exercises import list_exercises
 router = APIRouter()
 
 
-@router.post("/", response_model=Union[WorkoutOut, Error])
+@router.post("/create", response_model=Union[WorkoutOut, Error])
 async def create_workout(
     workout: WorkoutIn,
     response: Response,

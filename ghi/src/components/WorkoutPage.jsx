@@ -1,18 +1,17 @@
 import React from "react";
-import Card from "Card";
-import { account } from "../data";
+import ExerciseCard from "./card";
 
 export default function WorkoutPage() {
   return (
     <div className="container">
-      <h1>{account.first_name}'s Workout Page</h1>
+      <h1>Your Workout Page</h1>
 
       <div className="row">
         <div className="col-md-4">
-          <Card />
+          <ExerciseCard />
         </div>
         <div className="col-md-4">
-          <Card />
+          <ExerciseCard />
         </div>
         <div className="col-md-4">
           <p>Inspirational Quote 1</p>
@@ -21,20 +20,20 @@ export default function WorkoutPage() {
 
       <div className="row">
         <div className="col-md-4">
-          <Card />
+          <ExerciseCard />
         </div>
         <div className="col-md-4">
-          <Card />
+          <ExerciseCard />
         </div>
         <div className="col-md-4"></div>
       </div>
 
       <div className="row">
         <div className="col-md-4">
-          <Card />
+          <ExerciseCard />
         </div>
         <div className="col-md-4">
-          <Card />
+          <ExerciseCard />
         </div>
         <div className="col-md-4"></div>
       </div>
