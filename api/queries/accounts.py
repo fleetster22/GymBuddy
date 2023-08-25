@@ -1,105 +1,88 @@
 from pydantic import BaseModel
-from typing import List, Optional, Union
 from queries.pool import pool
 
 
-class Error(BaseModel):
-    message: str
+class DuplicateAccountError(ValueError):
+    pass
+
+
+class Account(BaseModel):
+    first_name: str
+    last_name: str
+    email: str
+    password: str
 
 
 class AccountIn(BaseModel):
-    email: str
-    password: str
     first_name: str
     last_name: str
+    email: str
+    password: str
 
 
 class AccountOut(BaseModel):
-    id: str
-    email: str
+    id: int
     first_name: str
     last_name: str
-
-
-class AccountOutWithPassword(AccountOut):
+    email: str
     password: str
 
 
-class AccountRepository:
-    def create_account(self, account: AccountIn) -> AccountOut:
-        with pool.connection() as conn:
-            with conn.cursor() as db:
-                result = db.execute(
-                    "INSERT INTO accounts (first_name, last_name, email) VALUES (%s, %s, %s) RETURNING id",
-                    (
-                        account.first_name,
-                        account.last_name,
-                        account.email,
-                    ),
-                )
-                id = result.fetchone()[0]
-                return self.account_in_to_out(id, account)
+class AccountOutWithPassword(AccountIn):
+    id: int
 
-    def get_all_accounts(self) -> Union[Error, List[AccountOut]]:
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as db:
-                    db.execute("SELECT * FROM accounts")
-                    result = db.fetchall()
-                    return [AccountOut(id=id, **data) for id, *data in result]
-        except Exception as e:
-            return Error(message=str(e))
 
-    def get_account_by_id(self, account_id: str) -> Optional[AccountOut]:
+class AccountQueries:
+    def create(
+        self, info: AccountIn, hashed_password: str
+    ) -> AccountOutWithPassword:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
-                        "SELECT * FROM accounts WHERE id=%s", (account_id,)
+                        """
+                        INSERT INTO account
+                        (first_name, last_name, email, password)
+                        VALUES
+                        (%s,%s,%s,%s)
+                        RETURNING id;
+                        """,
+                        [
+                            info.first_name,
+                            info.last_name,
+                            info.email,
+                            hashed_password,
+                        ],
                     )
-                    record = result.fetchone()
-                    return self.record_to_account_out(record)
-        except Exception as e:
-            return Error(message=str(e))
+                    id = result.fetchone()[0]
+                    old_data = info.dict()
+                    return AccountOut(id=id, **old_data)
+        except Exception:
+            return {"message": "error!"}
 
-    def update_account(
-        self, account_id: str, account: AccountIn
-    ) -> Union[AccountOut, Error]:
+    # pass in hashed_password not just password
+
+    def get(self, email: str) -> AccountOutWithPassword:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     db.execute(
-                        "UPDATE accounts SET first_name=%s, last_name=%s, email=%s WHERE id=%s RETURNING *",
-                        (
-                            account.first_name,
-                            account.last_name,
-                            account.email,
-                            account_id,
-                        ),
+                        """
+                        SELECT id, first_name, last_name, email, password
+                        FROM account
+                        WHERE email = %s;
+                        """,
+                        [email],
                     )
-                    return self.account_in_to_out(account_id, account)
-        except Exception as e:
-            return Error(message=str(e))
+                    record = db.fetchone()
 
-    def delete_account(self, account_id: str) -> bool:
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as db:
-                    db.execute(
-                        "DELETE FROM accounts WHERE id=%s", [account_id]
-                    )
-                    return True
-        except Exception as e:
-            return Error(message=str(e))
-
-    def account_in_to_out(self, id: str, account: AccountIn) -> AccountOut:
-        old_data = account.dict()
-        return AccountOut(id=id, **old_data)
-
-    def record_to_account_out(self, record):
-        return AccountOut(
-            id=record[0],
-            first_name=record[1],
-            last_name=record[2],
-            email=record[3],
-        )
+                    if record:
+                        columns = [desc[0] for desc in db.description]
+                        data = dict(zip(columns, record))
+                        return AccountOutWithPassword(**data)
+                    else:
+                        return {
+                            "message": f"This email{email} is not registered to an account."
+                        }
+        except Exception:
+            return AccountOutWithPassword(message="Could not access account.")

@@ -1,8 +1,9 @@
-from fastapi import APIRouter, HTTPException
+from authenticator import authenticator
+from fastapi import APIRouter, HTTPException, Depends
 import httpx
 from queries.exercises import Exercises
 from dotenv import load_dotenv
-import os
+
 
 load_dotenv()
 
@@ -18,7 +19,9 @@ TIMEOUT = 10
 
 # get all exercises from 3rd party API
 @router.get("/", response_model=list[Exercises], tags=["exercises"])
-async def list_exercises():
+async def list_exercises(
+    # _account_data: dict = Depends(authenticator.get_current_account_data),
+):
     async with httpx.AsyncClient() as client:
         response = await client.get(
             API_BASE_URL,
@@ -38,7 +41,10 @@ async def list_exercises():
     response_model=list[Exercises],
     tags=["exercises"],
 )
-async def get_exercise_by_name(name: str):
+async def get_exercise_by_name(
+    name: str,
+    # _account_data: dict = Depends(authenticator.get_current_account_data),
+):
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{API_BASE_URL}?name={name}",
@@ -58,7 +64,10 @@ async def get_exercise_by_name(name: str):
     response_model=list[Exercises],
     tags=["exercises"],
 )
-async def get_exercises_by_difficulty(difficulty: str):
+async def get_exercises_by_difficulty(
+    difficulty: str,
+    # _account_data: dict = Depends(authenticator.get_current_account_data),
+):
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{API_BASE_URL}?difficulty={difficulty}",
@@ -76,7 +85,10 @@ async def get_exercises_by_difficulty(difficulty: str):
 @router.get(
     "/muscle/{muscle}", response_model=list[Exercises], tags=["exercises"]
 )
-async def get_exercises_by_muscle_group(muscle: str):
+async def get_exercises_by_muscle_group(
+    muscle: str,
+    # _account_data: dict = Depends(authenticator.get_current_account_data),
+):
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{API_BASE_URL}?muscle={muscle}",
@@ -92,7 +104,10 @@ async def get_exercises_by_muscle_group(muscle: str):
 
 # get exercises by type
 @router.get("/type/{type}", response_model=list[Exercises], tags=["exercises"])
-async def get_exercise_by_type(type: str):
+async def get_exercise_by_type(
+    type: str,
+    # _account_data: dict = Depends(authenticator.get_current_account_data),
+):
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{API_BASE_URL}?type={type}",
@@ -104,30 +119,3 @@ async def get_exercise_by_type(type: str):
             status_code=response.status_code, detail=response.text
         )
     return response.json()
-
-
-# create exercise
-# @router.post("/", response_model=Union[ExerciseOut, Error])
-# def create_exercise(
-#     exercise: ExerciseIn,
-#     response: Response,
-#     repo: ExerciseRepository = Depends(),
-# ):
-#     response.status_code = 400
-#     return repo.create_exercise(exercise)
-
-
-# update exercise
-# @router.put("/{exercise_id}")
-# def update_exercise(exercise_id: str, exercise: ExerciseIn):
-#     response = requests.put(
-#         f"{API_BASE_URL}/{exercise_id}",
-#         headers={"X-Api-Key": API_KEY},
-#         json=exercise.dict(),
-#         timeout=TIMEOUT,
-#     )
-#     if response.status_code != 200:
-#         raise HTTPException(
-#             status_code=response.status_code, detail=response.text
-#         )
-#     return response.json()

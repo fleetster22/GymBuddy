@@ -7,18 +7,29 @@ from queries.workouts import (
     WorkoutOut,
 )
 
+from .exercises import list_exercises
+
 
 router = APIRouter()
 
 
 @router.post("/", response_model=Union[WorkoutOut, Error])
-def create_workout(
+async def create_workout(
     workout: WorkoutIn,
     response: Response,
     repo: WorkoutRepository = Depends(),
 ):
-    response.status_code = 400
-    return repo.create(workout)
+    fetched_exercises = await list_exercises()
+
+    matching_exercises = [
+        ex for ex in fetched_exercises if ex["name"] in workout.exercises
+    ]
+
+    new_workout = repo.create(workout)
+    for exercise in matching_exercises:
+        repo.link_exercise_to_workout(new_workout.id, exercise["name"])
+    response.status_code = 201
+    return new_workout
 
 
 @router.get("/", response_model=Union[List[WorkoutOut], Error])
