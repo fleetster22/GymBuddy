@@ -20,6 +20,7 @@ async def create_workout(
     response: Response,
     repo: WorkoutRepository = Depends(),
 ):
+    return repo.create(workout)
     # # Fetch all exercises from the database
     # exercise_list = repo.list_exercises()
 

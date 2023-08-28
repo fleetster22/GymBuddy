@@ -3,7 +3,7 @@ steps = [
         # "Up" SQL statement
         """
         CREATE TABLE exercises (
-            id INTEGER SERIAL PRIMARY KEY NOT NULL,
+            id serial PRIMARY KEY,
             name VARCHAR(100) NOT NULL,
             type VARCHAR(30) NOT NULL,
             muscle VARCHAR(30) NOT NULL,
