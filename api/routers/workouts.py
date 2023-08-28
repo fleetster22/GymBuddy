@@ -19,17 +19,26 @@ async def create_workout(
     response: Response,
     repo: WorkoutRepository = Depends(),
 ):
-    fetched_exercises = await list_exercises()
+    # fetched_exercises = await list_exercises()
 
-    matching_exercises = [
-        ex for ex in fetched_exercises if ex["name"] in workout.exercises
-    ]
+    # matching_exercises = [
+    #     ex for ex in fetched_exercises if ex["name"] in workout.exercises
+    # ]
+
+    ExerciseList = workout["exercises"]
+    ExerciseNames = []
+    for exercise in ExerciseList:
+        ExerciseNames.append(exercise["name"])
+
+    workout["exercises"] = ExerciseNames
 
     new_workout = repo.create(workout)
-    for exercise in matching_exercises:
-        repo.link_exercise_to_workout(new_workout.id, exercise["name"])
+    for exercise in ExerciseList:
+        repo.link_exercise_to_workout(new_workout.id, exercise["id"])
     response.status_code = 201
     return new_workout
+
+
 
 
 @router.get("/", response_model=Union[List[WorkoutOut], Error])

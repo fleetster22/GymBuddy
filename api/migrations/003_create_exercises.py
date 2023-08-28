@@ -3,10 +3,13 @@ steps = [
         # "Up" SQL statement
         """
         CREATE TABLE exercises (
-            name VARCHAR(100) PRIMARY KEY NOT NULL,
+            id int SERIAL PRIMARY KEY NOT NULL,
+            name VARCHAR(100) NOT NULL,
             type VARCHAR(30) NOT NULL,
             muscle VARCHAR(30) NOT NULL,
-            difficulty VARCHAR(22)
+            equipment VARCHAR(100) NOT NULL,
+            difficulty VARCHAR(22),
+            instructions VARCHAR(1000) NOT NULL
         );
         """,
         # "Down" SQL statement
