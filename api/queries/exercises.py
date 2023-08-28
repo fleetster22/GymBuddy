@@ -27,7 +27,7 @@ class ExerciseOut(BaseModel):
 
 
 class ExerciseRepository:
-    def create(self, exercise: ExerciseIn) -> Union[ExerciseIn, Error]:
+    def create(self, exercise: ExerciseIn) -> Union[ExerciseOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:

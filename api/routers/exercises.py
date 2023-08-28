@@ -1,14 +1,11 @@
-from fastapi import APIRouter, HTTPException, Depends
-from typing import List, Union
-import httpx
+from typing import Union
+from fastapi import APIRouter, Depends
 from queries.exercises import (
     ExerciseIn,
     Error,
     ExerciseRepository,
 )
 import requests
-
-from authenticator import authenticator
 
 router = APIRouter()
 
@@ -53,9 +50,11 @@ async def list_exercises():
     response_model=Union[list, Error],
     tags=["exercises"],
 )
-async def get_exercise_by_name(name=str):
+async def get_exercise_by_name(name: str):
     response = requests.get(
-        API_BASE_URL, headers={"X-Api-Key": API_KEY}, timeout=TIMEOUT
+        f"{API_BASE_URL}?name={name}",
+        headers={"X-Api-Key": API_KEY},
+        timeout=TIMEOUT,
     )
     if response.status_code != 200:
         return Error(response.text)
@@ -68,10 +67,10 @@ async def get_exercise_by_name(name=str):
     tags=["exercises"],
 )
 async def get_exercises_by_difficulty(difficulty: str):
-    response = (
-        requests.get(
-            API_BASE_URL, headers={"X-Api-Key": API_KEY}, timeout=TIMEOUT
-        ),
+    response = requests.get(
+        f"{API_BASE_URL}?difficulty={difficulty}",
+        headers={"X-Api-Key": API_KEY},
+        timeout=TIMEOUT,
     )
     if response.status_code != 200:
         return Error(response.text)
@@ -87,7 +86,9 @@ async def get_exercises_by_muscle_group(
     muscle: str,
 ):
     response = requests.get(
-        API_BASE_URL, headers={"X-Api-Key": API_KEY}, timeout=TIMEOUT
+        f"{API_BASE_URL}?muscle={muscle}",
+        headers={"X-Api-Key": API_KEY},
+        timeout=TIMEOUT,
     )
     if response.status_code != 200:
         return Error(response.text)
@@ -99,17 +100,36 @@ async def get_exercises_by_muscle_group(
     response_model=Union[list, Error],
     tags=["exercises"],
 )
-async def get_exercise_by_type(type: str):
+async def get_exercise_by_type(exercise_type: str):
     response = requests.get(
-        API_BASE_URL, headers={"X-Api-Key": API_KEY}, timeout=TIMEOUT
+        f"{API_BASE_URL}?type={exercise_type}",
+        headers={"X-Api-Key": API_KEY},
+        timeout=TIMEOUT,
     )
     if response.status_code != 200:
         return Error(response.text)
     return response.json()
 
 
-@router.post("/")
-async def create_exercise(
-    exercise: ExerciseIn, repo: ExerciseRepository = Depends()
-):
-    return repo.create(exercise)
+@router.post(
+    "/fetch_and_create_exercises",
+    response_model=Union[list, Error],
+    tags=["exercises"],
+)
+async def fetch_and_create_exercise(repo: ExerciseRepository = Depends()):
+    response = requests.get(
+        API_BASE_URL,
+        headers={"X-Api-Key": API_KEY},
+        timeout=TIMEOUT,
+    )
+    if response.status_code != 200:
+        return Error(response.text)
+
+    exercises = response.json()
+
+    for exercise in exercises:
+        db_exercise = ExerciseIn(
+            name=exercise["name"],
+        )
+        repo.create(db_exercise)
+    return exercises
