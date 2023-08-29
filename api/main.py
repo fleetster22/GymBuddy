@@ -11,6 +11,7 @@ app.include_router(workouts.router, prefix="/api/workouts", tags=["Workouts"])
 app.include_router(accounts.router, prefix="/api/accounts", tags=["Accounts"])
 app.include_router(authenticator.router, prefix="/api/auth", tags=["Login/Logout"])
 
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
