@@ -1,7 +1,15 @@
-function MainPage() {
+import "./main.css";
+
+import Card from "./Card";
+import Header from "./Header";
+import Questions from "./Questions";
+
+export default function MainPage() {
   return (
     <div>
-      <h1>Home Page</h1>
+      <Header />
+      <Card />
+      <Questions />
     </div>
   );
 }
