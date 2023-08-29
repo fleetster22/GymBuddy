@@ -257,3 +257,22 @@ class ExerciseQueries:
                     """,
                     [exercise_name],
                 )
+
+    def create_exercise_table(self, exercise):
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    INSERT INTO exercises (name, type, muscle, equipment,
+                    difficulty, instructions)
+                    VALUES (%s, %s, %s, %s, %s, %s);
+                    """,
+                    [
+                        exercise.name,
+                        exercise.type,
+                        exercise.muscle,
+                        exercise.equipment,
+                        exercise.difficulty,
+                        exercise.instructions,
+                    ],
+                )

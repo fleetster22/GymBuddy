@@ -45,7 +45,7 @@ async def get_protected(
 @router.get("/token", response_model=AccountToken | None)
 async def get_token(
     request: Request,
-    account: AccountOut = Depends(authenticator.try_get_current_account_data)
+    account: AccountOut = Depends(authenticator.try_get_current_account_data),
 ) -> AccountToken | None:
     if account and authenticator.cookie_name in request.cookies:
         return {
@@ -82,7 +82,7 @@ async def update_account(
         authenticator.get_current_account_data
     ),
     repo: AccountQueries = Depends(),
-    ) -> AccountOut:
+) -> AccountOut:
     if not current_account:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -98,10 +98,11 @@ async def update_account(
     return update_account
 
 
-
 @router.delete("/delete")
 async def delete_account(
-    current_account: AccountToken = Depends(authenticator.get_current_account_data),
+    current_account: AccountToken = Depends(
+        authenticator.get_current_account_data
+    ),
     repo: AccountQueries = Depends(),
 ) -> AccountOut:
     if not current_account:
