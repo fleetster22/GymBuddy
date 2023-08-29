@@ -100,12 +100,16 @@ async def get_exercise_by_type(exercise_type: str):
     response_model=Union[list, Error],
     tags=["exercises"],
 )
-async def fetch_and_create_exercise(repo: ExerciseRepository = Depends()):
+async def fetch_and_create_exercise(
+    difficulty: str = "beginner", repo: ExerciseRepository = Depends()
+):
     response = requests.get(
         API_BASE_URL,
         headers={"X-Api-Key": API_KEY},
         timeout=TIMEOUT,
+        params={"difficulty": difficulty},
     )
+
     if response.status_code != 200:
         return Error(response.text)
 
@@ -114,6 +118,13 @@ async def fetch_and_create_exercise(repo: ExerciseRepository = Depends()):
     for exercise in exercises:
         db_exercise = ExerciseIn(
             name=exercise["name"],
+            type=exercise.get("type", ""),
+            muscle=exercise.get("muscle", ""),
+            equipment=exercise.get("equipment", ""),
+            difficulty=exercise.get("difficulty", ""),
+            instructions=exercise.get("instructions", ""),
         )
+
         repo.create(db_exercise)
+
     return exercises
