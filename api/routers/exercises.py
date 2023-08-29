@@ -1,121 +1,119 @@
-from authenticator import authenticator
-from fastapi import APIRouter, HTTPException, Depends
-import httpx
-from queries.exercises import Exercises
-from dotenv import load_dotenv
-
-
-load_dotenv()
+from typing import Union
+from fastapi import APIRouter, Depends
+from queries.exercises import (
+    ExerciseIn,
+    Error,
+    ExerciseRepository,
+)
+import os
+import requests
 
 router = APIRouter()
 
-# API_BASE_URL = os.getenv("API_BASE_URL")
-API_BASE_URL = "https://api.api-ninjas.com/v1/exercises"
-API_KEY = "g5KMn4OGpap61pP8YMZiww==WQh3U1iN7LE3M6ua"
-
-
+API_BASE_URL = os.environ.get("API_BASE_URL")
+API_KEY = os.environ.get("API_KEY")
 TIMEOUT = 10
 
 
-# get all exercises from 3rd party API
-@router.get("/", response_model=list[Exercises], tags=["exercises"])
-async def list_exercises(
-    _account_data: dict = Depends(authenticator.get_current_account_data),
-):
-    async with httpx.AsyncClient() as client:
-        response = await client.get(
-            API_BASE_URL,
-            headers={"X-Api-Key": API_KEY},
-            timeout=TIMEOUT,
-        )
+@router.get(
+    "/",
+    response_model=Union[list, Error],
+    tags=["exercises"],
+)
+async def list_exercises():
+    response = requests.get(
+        API_BASE_URL, headers={"X-Api-Key": API_KEY}, timeout=TIMEOUT
+    )
     if response.status_code != 200:
-        raise HTTPException(
-            status_code=response.status_code, detail=response.text
-        )
+        return Error(response.text)
     return response.json()
 
 
-# get exercise by name
 @router.get(
     "/name/{name}",
-    response_model=list[Exercises],
+    response_model=Union[list, Error],
     tags=["exercises"],
 )
-async def get_exercise_by_name(
-    name: str,
-    _account_data: dict = Depends(authenticator.get_current_account_data),
-):
-    async with httpx.AsyncClient() as client:
-        response = await client.get(
-            f"{API_BASE_URL}?name={name}",
-            headers={"X-Api-Key": API_KEY},
-            timeout=TIMEOUT,
-        )
+async def get_exercise_by_name(name: str):
+    response = requests.get(
+        f"{API_BASE_URL}?name={name}",
+        headers={"X-Api-Key": API_KEY},
+        timeout=TIMEOUT,
+    )
     if response.status_code != 200:
-        raise HTTPException(
-            status_code=response.status_code, detail=response.text
-        )
+        return Error(response.text)
     return response.json()
 
 
-# get exercises by difficulty
 @router.get(
     "/difficulty/{difficulty}",
-    response_model=list[Exercises],
+    response_model=Union[list, Error],
     tags=["exercises"],
 )
-async def get_exercises_by_difficulty(
-    difficulty: str,
-    _account_data: dict = Depends(authenticator.get_current_account_data),
-):
-    async with httpx.AsyncClient() as client:
-        response = await client.get(
-            f"{API_BASE_URL}?difficulty={difficulty}",
-            headers={"X-Api-Key": API_KEY},
-            timeout=TIMEOUT,
-        )
+async def get_exercises_by_difficulty(difficulty: str):
+    response = requests.get(
+        f"{API_BASE_URL}?difficulty={difficulty}",
+        headers={"X-Api-Key": API_KEY},
+        timeout=TIMEOUT,
+    )
     if response.status_code != 200:
-        raise HTTPException(
-            status_code=response.status_code, detail=response.text
-        )
+        return Error(response.text)
     return response.json()
 
 
-# get exercises by muscle group
 @router.get(
-    "/muscle/{muscle}", response_model=list[Exercises], tags=["exercises"]
+    "/muscle/{muscle}",
+    response_model=Union[list, Error],
+    tags=["exercises"],
 )
 async def get_exercises_by_muscle_group(
     muscle: str,
-    _account_data: dict = Depends(authenticator.get_current_account_data),
 ):
-    async with httpx.AsyncClient() as client:
-        response = await client.get(
-            f"{API_BASE_URL}?muscle={muscle}",
-            headers={"X-Api-Key": API_KEY},
-            timeout=TIMEOUT,
-        )
+    response = requests.get(
+        f"{API_BASE_URL}?muscle={muscle}",
+        headers={"X-Api-Key": API_KEY},
+        timeout=TIMEOUT,
+    )
     if response.status_code != 200:
-        raise HTTPException(
-            status_code=response.status_code, detail=response.text
-        )
+        return Error(response.text)
     return response.json()
 
 
-# get exercises by type
-@router.get("/type/{type}", response_model=list[Exercises], tags=["exercises"])
-async def get_exercise_by_type(
-    type: str,
-    _account_data: dict = Depends(authenticator.get_current_account_data),
-):
-    async with httpx.AsyncClient() as client:
-        response = await client.get(
-            f"{API_BASE_URL}?type={type}",
-            headers={"X-Api-Key": API_KEY},
-            timeout=TIMEOUT,
-        )
+@router.get(
+    "/type/{type}",
+    response_model=Union[list, Error],
+    tags=["exercises"],
+)
+async def get_exercise_by_type(exercise_type: str):
+    response = requests.get(
+        f"{API_BASE_URL}?type={exercise_type}",
+        headers={"X-Api-Key": API_KEY},
+        timeout=TIMEOUT,
+    )
     if response.status_code != 200:
-        raise HTTPException(
-            status_code=response.status_code, detail=response.text
-        )
+        return Error(response.text)
     return response.json()
+
+
+@router.post(
+    "/fetch_and_create_exercises",
+    response_model=Union[list, Error],
+    tags=["exercises"],
+)
+async def fetch_and_create_exercise(repo: ExerciseRepository = Depends()):
+    response = requests.get(
+        API_BASE_URL,
+        headers={"X-Api-Key": API_KEY},
+        timeout=TIMEOUT,
+    )
+    if response.status_code != 200:
+        return Error(response.text)
+
+    exercises = response.json()
+
+    for exercise in exercises:
+        db_exercise = ExerciseIn(
+            name=exercise["name"],
+        )
+        repo.create(db_exercise)
+    return exercises
