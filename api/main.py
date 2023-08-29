@@ -11,12 +11,15 @@ app.include_router(exercises.router, prefix="/api/exercises")
 app.include_router(workouts.router, prefix="/api/workouts")
 app.include_router(accounts.router, prefix="/api/accounts")
 
+origins = [
+    "http://localhost:3000",
+    "http://localhost:8000",
+    os.environ.get("CORS_HOST"),
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        os.environ.get("http://localhost:3000", "http://localhost:8000")
-    ],
+    allow_origins=[origins],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

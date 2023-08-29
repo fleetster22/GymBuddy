@@ -5,30 +5,14 @@ from queries.exercises import (
     Error,
     ExerciseRepository,
 )
+import os
 import requests
 
 router = APIRouter()
 
-API_BASE_URL = "https://api.api-ninjas.com/v1/exercises"
-API_KEY = "g5KMn4OGpap61pP8YMZiww==WQh3U1iN7LE3M6ua"
+API_BASE_URL = os.environ.get("API_BASE_URL")
+API_KEY = os.environ.get("API_KEY")
 TIMEOUT = 10
-
-
-@router.post(
-    "/fetch_and_create_exercises",
-    response_model=Union[list, Error],
-    tags=["exercises"],
-)
-async def fetch_and_create_exercises():
-    response = requests.get(
-        API_BASE_URL,
-        headers={"X-Api-Key": API_KEY},
-        timeout=TIMEOUT,
-    )
-    if response.status_code != 200:
-        return Error(response.text)
-
-    return response.json()
 
 
 @router.get(
