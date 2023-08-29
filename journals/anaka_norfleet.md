@@ -25,3 +25,7 @@
 ---
 
 **8/24/23** Well all of my accomplishments today can be summed up with, I barely managed to undo all the damage I did from yesterday.
+
+---
+
+**8/28/23** Today, Violet helped me understand the post request for exercises to crate a table. I worked on that mostly. Hopefully, I can finish soon so I can pair program with Priya.
