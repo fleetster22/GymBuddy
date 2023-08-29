@@ -5,6 +5,7 @@ export default function CreateWorkout() {
     name: "",
     description: "",
     date: "",
+    type: "",
     exercises: [],
   });
 
@@ -81,8 +82,8 @@ export default function CreateWorkout() {
           <select onChange={handleExerciseChange}>
             <option value="">Exercise Types</option>
             {exercises.map((ex) => (
-              <option key={ex.name} value={ex.name}>
-                {ex.name}
+              <option key={ex.type} value={ex.type}>
+                {ex.type}
               </option>
             ))}
           </select>

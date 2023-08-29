@@ -12,6 +12,7 @@ class WorkoutIn(BaseModel):
     name: str
     description: str
     date: date
+    difficulty: str
     exercises: List[str] = []
 
 
@@ -37,6 +38,7 @@ class WorkoutRepository:
                              , name
                              , description
                              , date
+                             , difficulty
                         FROM workouts
                         WHERE id = %s
                         """,
@@ -72,9 +74,7 @@ class WorkoutRepository:
         self, workout_id: int, workout: WorkoutIn
     ) -> Union[WorkoutOut, Error]:
         try:
-            # connect the database
             with pool.connection() as conn:
-                # get a cursor (something to run SQL with)
                 with conn.cursor() as db:
                     db.execute(
                         """
@@ -82,17 +82,17 @@ class WorkoutRepository:
                         SET name = %s
                           , date = %s
                           , description = %s
+                          , difficulty = %s
                         WHERE id = %s
                         """,
                         [
                             workout.name,
                             workout.description,
                             workout.date,
+                            workout.difficulty,
                             workout_id,
                         ],
                     )
-                    # old_data = workout.dict()
-                    # return workoutOut(id=workout_id, **old_data)
                     return self.workout_in_to_out(workout_id, workout)
         except Exception as e:
             print(e)
@@ -100,11 +100,8 @@ class WorkoutRepository:
 
     def get_all(self) -> Union[Error, List[WorkoutOut]]:
         try:
-            # connect the database
             with pool.connection() as conn:
-                # get a cursor (something to run SQL with)
                 with conn.cursor() as db:
-                    # Run our SELECT statement
                     result = db.execute(
                         """
                         SELECT *FROM workouts;
@@ -117,31 +114,48 @@ class WorkoutRepository:
             print(e)
             return {"message": "Could not get all workouts"}
 
+    def get_all_by_difficulty(self, difficulty: str) -> List[WorkoutOut]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT id, name, description, date, difficulty
+                        FROM workouts
+                        WHERE difficulty = %s
+                        """,
+                        [difficulty],
+                    )
+                    records = result.fetchall()
+                    return [
+                        self.record_to_workout_out(record)
+                        for record in records
+                    ]
+        except Exception as e:
+            print(e)
+            return {"message": "Could not get the workouts by difficulty"}
+
     def create(self, workout: WorkoutIn) -> Union[WorkoutOut, Error]:
         try:
-            # connect the database
             with pool.connection() as conn:
-                # get a cursor (something to run SQL with)
                 with conn.cursor() as db:
-                    # Run our INSERT statement
                     result = db.execute(
                         """
                         INSERT INTO workouts
-                            (name, description, date)
+                            (name, description, date, difficulty)
                         VALUES
-                            (%s, %s, %s)
+                            (%s, %s, %s, %s)
                         RETURNING id;
                         """,
                         [
                             workout.name,
                             workout.description,
                             workout.date,
+                            workout.difficulty,
                         ],
                     )
                     id = result.fetchone()[0]
-                    # Return new data
-                    # old_data = workout.dict()
-                    # return WorkoutOut(id=id, **old_data)
+
                     return self.workout_in_to_out(id, workout)
         except Exception:
             return {"message": "Create did not work"}
@@ -150,12 +164,13 @@ class WorkoutRepository:
         old_data = workout.dict()
         return WorkoutOut(id=id, **old_data)
 
-    def record_to_workout_out(self, record):
+    def record_to_workout_out(self, record) -> WorkoutOut:
         return WorkoutOut(
             id=record[0],
             name=record[1],
             description=record[2],
             date=record[3],
+            difficulty=record[4],
         )
 
     def link_exercise_to_workout(self, workout_id: int, exercise_name: str):

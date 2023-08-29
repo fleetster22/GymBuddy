@@ -5,6 +5,7 @@ steps = [
         CREATE TABLE workouts (
             id SERIAL PRIMARY KEY NOT NULL,
             name VARCHAR(100) NOT NULL,
+            difficulty VARCHAR(20),
             description VARCHAR(1000) NOT NULL,
             date DATE
         );
