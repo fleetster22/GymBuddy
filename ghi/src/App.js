@@ -12,7 +12,7 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Nav />
+          <Route path="/" element={<Nav />} />
           <Route path="/MainPage" element={<MainPage />} />
           <Route path="/AboutUs" element={<AboutUs />} />
           <Route path="workouts">
