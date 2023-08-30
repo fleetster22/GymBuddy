@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends, Response, HTTPException
 from typing import List, Optional, Union
 from queries.workouts import (
     Error,
@@ -7,8 +7,8 @@ from queries.workouts import (
     WorkoutOut,
 )
 
-# from .exercises import list_exercises
-# from random import sample
+from routers.exercises import list_exercises
+from random import sample
 
 
 router = APIRouter()
@@ -20,48 +20,35 @@ async def create_workout(
     response: Response,
     repo: WorkoutRepository = Depends(),
 ):
-    return repo.create(workout)
-    # # Fetch all exercises from the database
-    # exercise_list = repo.list_exercises()
+    try:
+        workout.date = workout.date.isoformat()
+        exercise_list = await list_exercises()
 
-    # # Filter exercises by the desired difficulty
-    # difficulty_filtered_exercises = [
-    #     ex for ex in exercise_list if ex["difficulty"] == workout.difficulty
-    # ]
+        if len(exercise_list) < 1:
+            response.status_code = 400
+            return {"message": "No exercises found"}
 
-    # #  Group the exercises by type
-    # type_grouped_exercises = {}
-    # for exercise in difficulty_filtered_exercises:
-    #     if exercise["type"] not in type_grouped_exercises:
-    #         type_grouped_exercises[exercise["type"]] = []
-    #     type_grouped_exercises[exercise["type"]].append(exercise)
-
-    # # Randomly select one exercise from each type
-    # selected_exercises = []
-    # for exercise_type, exercises in type_grouped_exercises.items():
-    #     selected_exercises.append(sample(exercises, 1)[0])
-
-    # new_workout = repo.create(workout)
-    # for exercise in selected_exercises:
-    #     repo.link_exercise_to_workout(new_workout.id, exercise["name"])
-
-    # response.status_code = 201
-    # return new_workout
+        new_workout = repo.create(workout)
+        if new_workout is None:
+            response.status_code = 400
+            return {"message": "Could not create that workout"}
+        new_workout.exercises = sample(exercise_list, 3)
+        response.status_code = 201
+        return new_workout
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
 
 
-@router.get("/", response_model=Union[List[WorkoutOut], Error])
+@router.get(
+    "/accounts/{account_id}/", response_model=Union[List[WorkoutOut], Error]
+)
 def get_all(
     repo: WorkoutRepository = Depends(),
 ):
-    return repo.get_all()
-
-
-@router.get("/difficulty/{difficulty}", response_model=List[WorkoutOut])
-def get_workouts_by_difficulty(
-    difficulty: str,
-    repo: WorkoutRepository = Depends(),
-):
-    return repo.get_all_by_difficulty(difficulty)
+    try:
+        return repo.get_all()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
 
 
 @router.put("/{workout_id}", response_model=Union[WorkoutOut, Error])
@@ -70,7 +57,10 @@ def update_workout(
     workout: WorkoutIn,
     repo: WorkoutRepository = Depends(),
 ) -> Union[Error, WorkoutOut]:
-    return repo.update(workout_id, workout)
+    try:
+        return repo.update(workout_id, workout)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
 
 
 @router.delete("/{workout_id}", response_model=bool)
@@ -78,16 +68,18 @@ def delete_workout(
     workout_id: int,
     repo: WorkoutRepository = Depends(),
 ) -> bool:
-    return repo.delete(workout_id)
+    try:
+        return repo.delete(workout_id)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
 
 
 @router.get("/{workout_id}", response_model=Optional[WorkoutOut])
 def get_one_workout(
     workout_id: int,
-    response: Response,
     repo: WorkoutRepository = Depends(),
 ) -> WorkoutOut:
     workout = repo.get_one(workout_id)
     if workout is None:
-        response.status_code = 404
+        raise HTTPException(status_code=404, detail="Workout not found")
     return workout

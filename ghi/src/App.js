@@ -9,8 +9,8 @@ import MainPage from "./MainPage.js";
 function App() {
   return (
     <BrowserRouter>
+      <Nav />
       <Routes>
-        <Nav />
         <Route path="/MainPage" element={<MainPage />} />
         <Route path="/AboutUs" element={<AboutUs />} />
         <Route path="workouts">

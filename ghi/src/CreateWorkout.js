@@ -5,15 +5,25 @@ export default function CreateWorkout() {
     name: "",
     description: "",
     date: "",
+    difficulty: "",
     type: "",
     exercises: [],
   });
+
+  const [submission, setSubmission] = useState(false);
 
   const [exercises, setExercises] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:3000/api/exercises")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(
+            `Server responded with ${res.status}: ${res.statusText}`
+          );
+        }
+        return res.json();
+      })
       .then((data) => setExercises(data));
   }, []);
 
@@ -21,25 +31,48 @@ export default function CreateWorkout() {
     setWorkout({ ...workout, [e.target.name]: e.target.value });
   }
 
-  function handleExerciseChange(e) {
-    const exercise = exercises.find((ex) => ex.id === parseInt(e.target.value));
-    setWorkout({
-      ...workout,
-      exercises: [...workout.exercises, exercise],
-    });
-  }
-
   function handleSubmit(e) {
     e.preventDefault();
-    fetch("http://localhost:3000/api/workouts", {
+    fetch("http://localhost:3000/workouts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(workout),
     })
-      .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setSubmission(true);
+        setWorkout({
+          name: "",
+          description: "",
+          date: "",
+          difficulty: "",
+          type: "",
+          exercises: [],
+        });
+      })
+      .catch((error) => {
+        console.log(
+          "There was a problem with the fetch operation:",
+          error.message
+        );
+      });
+  }
+
+  if (submission) {
+    return (
+      <div>
+        <h1>Workout Created!</h1>
+        <p>Your workout has been created successfully!</p>
+      </div>
+    );
   }
 
   return (
@@ -78,14 +111,33 @@ export default function CreateWorkout() {
           />
         </label>
         <label>
-          Exercises:
-          <select onChange={handleExerciseChange}>
-            <option value="">Exercise Types</option>
-            {exercises.map((ex) => (
-              <option key={ex.type} value={ex.type}>
-                {ex.type}
-              </option>
-            ))}
+          Difficulty:
+          <select
+            name="difficulty"
+            value={workout.difficulty}
+            onChange={handleWorkoutChange}
+          >
+            <option value="">Difficulty</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </label>
+        <label>
+          Exercise Type:
+          <select
+            name="type"
+            value={workout.type}
+            onChange={handleWorkoutChange}
+          >
+            <option value="">Exercise Type</option>
+            <option value="cardio">Cardio</option>
+            <option value="olympic weightlifting">Olympic Weightlifting</option>
+            <option value="plyometrics">Plyometrics</option>
+            <option value="powerlifting">Powerlifting</option>
+            <option value="strength">Strength</option>
+            <option value="stretching">Stretching</option>
+            <option value="strongman">Strongman</option>
           </select>
         </label>
         <input type="submit" value="Create Workout" />

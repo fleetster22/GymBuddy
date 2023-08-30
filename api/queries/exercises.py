@@ -67,7 +67,7 @@ class ExerciseRepository:
                     )
                     return [
                         self.record_to_exercise_out(record)
-                        for record in result
+                        for record in result.fetchall()
                     ]
         except Exception as e:
             print(e)

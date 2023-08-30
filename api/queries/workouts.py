@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import List, Optional, Union
 from datetime import date
 from queries.pool import pool
+from queries.exercises import ExerciseRepository
 
 
 class Error(BaseModel):
@@ -25,21 +26,29 @@ class WorkoutOut(BaseModel):
 
 
 class WorkoutRepository:
-    def get_one(self, workout_id: int) -> Optional[WorkoutOut]:
+    def get_all(self) -> Union[Error, List[WorkoutOut]]:
         try:
-            # connect the database
             with pool.connection() as conn:
-                # get a cursor (something to run SQL with)
                 with conn.cursor() as db:
-                    # Run our SELECT statement
                     result = db.execute(
                         """
-                        SELECT id
-                             , name
-                             , description
-                             , date
-                             , difficulty
-                        FROM workouts
+                        SELECT * FROM workouts;
+                        """
+                    )
+                    return [
+                        self.record_to_workout_out(record) for record in result
+                    ]
+        except Exception as e:
+            print(e)
+            return {"message": "Could not get all workouts"}
+
+    def get_one(self, workout_id: int) -> Optional[WorkoutOut]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT * FROM workouts
                         WHERE id = %s
                         """,
                         [workout_id],
@@ -54,9 +63,7 @@ class WorkoutRepository:
 
     def delete(self, workout_id: int) -> bool:
         try:
-            # connect the database
             with pool.connection() as conn:
-                # get a cursor (something to run SQL with)
                 with conn.cursor() as db:
                     db.execute(
                         """
@@ -98,45 +105,11 @@ class WorkoutRepository:
             print(e)
             return {"message": "Could not update that workout"}
 
-    def get_all(self) -> Union[Error, List[WorkoutOut]]:
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as db:
-                    result = db.execute(
-                        """
-                        SELECT *FROM workouts;
-                        """
-                    )
-                    return [
-                        self.record_to_workout_out(record) for record in result
-                    ]
-        except Exception as e:
-            print(e)
-            return {"message": "Could not get all workouts"}
-
-    def get_all_by_difficulty(self, difficulty: str) -> List[WorkoutOut]:
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as db:
-                    result = db.execute(
-                        """
-                        SELECT id, name, description, date, difficulty
-                        FROM workouts
-                        WHERE difficulty = %s
-                        """,
-                        [difficulty],
-                    )
-                    records = result.fetchall()
-                    return [
-                        self.record_to_workout_out(record)
-                        for record in records
-                    ]
-        except Exception as e:
-            print(e)
-            return {"message": "Could not get the workouts by difficulty"}
-
     def create(self, workout: WorkoutIn) -> Union[WorkoutOut, Error]:
         try:
+            exercise_repo = ExerciseRepository()
+            exercises = exercise_repo.get_all()
+
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
@@ -156,7 +129,11 @@ class WorkoutRepository:
                     )
                     id = result.fetchone()[0]
 
+                    for exercise in exercises:
+                        self.link_exercise_to_workout(id, exercise.id)
+
                     return self.workout_in_to_out(id, workout)
+
         except Exception:
             return {"message": "Create did not work"}
 
@@ -173,26 +150,22 @@ class WorkoutRepository:
             difficulty=record[4],
         )
 
-    def link_exercise_to_workout(self, workout_id: int, exercise_name: str):
+    def link_exercise_to_workout(self, workout_id: int, exercise_id: int):
         try:
-            # connect the database
             with pool.connection() as conn:
-                # get a cursor (something to run SQL with)
                 with conn.cursor() as db:
-                    # Run our INSERT statement
                     db.execute(
                         """
                         INSERT INTO workout_exercises
-                            (workout_id, exercise_name)
+                            (workout_id, exercise_id)
                         VALUES
                             (%s, %s);
                         """,
                         [
                             workout_id,
-                            exercise_name,
+                            exercise_id,
                         ],
                     )
-                    # Return new data
                     return True
         except Exception:
             return {"message": "Create did not work"}
