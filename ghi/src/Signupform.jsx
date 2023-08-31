@@ -2,12 +2,11 @@ import { useState } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import { useNavigate } from "react-router-dom";
 
-const SignupForm = () => {
+const Signupform = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [first, setFirst] = useState("");
   const [last, setLast] = useState("");
-  const [age, setAge] = useState("");
   const [email, setEmail] = useState("");
   const { register } = useToken();
   const navigate = useNavigate();
@@ -19,7 +18,6 @@ const SignupForm = () => {
       password: password,
       first: first,
       last: last,
-      age: age,
       email: email,
     };
     register(
@@ -29,7 +27,7 @@ const SignupForm = () => {
     e.target.reset();
     navigate("/");
   };
-
+  console.log(Signupform);
   return (
     <div className="card text-bg-light mb-3">
       <h5 className="card-header">Signup</h5>
@@ -90,17 +88,6 @@ const SignupForm = () => {
               }}
             />
           </div>
-          <div className="mb-3">
-            <label className="form-label">age</label>
-            <input
-              name="age"
-              type="text"
-              className="form-control"
-              onChange={(e) => {
-                setAge(e.target.value);
-              }}
-            />
-          </div>
           <div>
             <input className="btn btn-primary" type="submit" value="Register" />
           </div>
@@ -110,4 +97,4 @@ const SignupForm = () => {
   );
 };
 
-export default SignupForm;
+export default Signupform;

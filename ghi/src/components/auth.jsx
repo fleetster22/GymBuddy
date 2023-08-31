@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
 
 function Welcome(props) {
-  return <h1>Hello, {props.name}</h1>;
+  return <h1>Welcome, {props.name}</h1>;
 }
