@@ -45,7 +45,7 @@ async def get_protected(
 @router.get("/token", response_model=AccountToken | None)
 async def get_token(
     request: Request,
-    account: AccountOut = Depends(authenticator.try_get_current_account_data)
+    account: AccountOut = Depends(authenticator.try_get_current_account_data),
 ) -> AccountToken | None:
     if account and authenticator.cookie_name in request.cookies:
         return {
@@ -83,10 +83,14 @@ async def update_account(
     ),
     repo: AccountQueries = Depends(),
 <<<<<<< HEAD
+<<<<<<< HEAD
     ) -> AccountOut:
 =======
 ) -> AccountOut:
 >>>>>>> 1b3ef1dd5112ebe16c95fb87aa0329a9b3e46de9
+=======
+) -> AccountOut:
+>>>>>>> ca27da871de74be01d6e4ecbaf70f8d4e53f32f9
     if not current_account:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -103,17 +107,23 @@ async def update_account(
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 @router.delete("/delete")
 async def delete_account(
     current_account: AccountToken = Depends(authenticator.get_current_account_data),
 =======
+=======
+>>>>>>> ca27da871de74be01d6e4ecbaf70f8d4e53f32f9
 @router.delete("/delete")
 async def delete_account(
     current_account: AccountToken = Depends(
         authenticator.get_current_account_data
     ),
+<<<<<<< HEAD
 >>>>>>> 1b3ef1dd5112ebe16c95fb87aa0329a9b3e46de9
+=======
+>>>>>>> ca27da871de74be01d6e4ecbaf70f8d4e53f32f9
     repo: AccountQueries = Depends(),
 ) -> AccountOut:
     if not current_account:
@@ -129,3 +139,15 @@ async def delete_account(
             detail="Cannot delete account with those credentials",
         )
     return deleted_account
+
+
+@router.get("/detail")
+async def get_account_detail(
+    account_id: str, repo: AccountQueries = Depends(),
+) -> AccountIn:
+    account = repo.get_by_id(account_id)
+    if isinstance(account, dict):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=account["message"]
+        )
+    return account
