@@ -1,7 +1,7 @@
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import { useState } from "react";
 
-const LoginForm = () => {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useToken();
@@ -44,4 +44,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default Login;
