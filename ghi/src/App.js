@@ -5,6 +5,7 @@ import WorkoutPage from "./WorkoutPage.jsx";
 import Nav from "./Nav.js";
 import AboutUs from "./About.js";
 import MainPage from "./MainPage.js";
+// import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 
 function App() {
   return (

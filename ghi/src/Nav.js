@@ -32,6 +32,11 @@ export default function Nav() {
               <span>Create a workout</span>
             </a>
           </li>
+          <li className="navigation__item">
+            <a href="./Signupform" className="navigation__link">
+              <span>Sign Up</span>
+            </a>
+          </li>
         </ul>
       </nav>
     </div>
