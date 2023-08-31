@@ -1,10 +1,10 @@
-<<<<<<< HEAD
-import "./Header";
+import "./main.css";
 
-function MainPage() {
-=======
+import Header from "./Header";
+import Card from "./Card";
+import Questions from "./Questions";
+
 export default function MainPage() {
->>>>>>> ca27da871de74be01d6e4ecbaf70f8d4e53f32f9
   return (
     <div>
       <Header />
