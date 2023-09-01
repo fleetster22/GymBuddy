@@ -1,8 +1,9 @@
+from random import sample
 from pydantic import BaseModel
 from typing import List, Optional, Union
-from datetime import date
+from datetime import datetime, date
 from queries.pool import pool
-from queries.exercises import ExerciseRepository
+from queries.exercises import ExerciseIn
 
 
 class Error(BaseModel):
@@ -11,18 +12,21 @@ class Error(BaseModel):
 
 class WorkoutIn(BaseModel):
     name: str
-    description: str
-    date: date
     difficulty: str
-    exercises: List[str] = []
-
-
-class WorkoutOut(BaseModel):
-    id: int
-    name: str
     description: str
     date: date
-    exercises: List[str] = []
+    exercises: list[ExerciseIn]
+
+
+class WorkoutOut(WorkoutIn):
+    id: int
+
+
+class WorkoutToDB(BaseModel):
+    name: str
+    difficulty: str
+    description: str
+    date: date
 
 
 class WorkoutRepository:
@@ -30,19 +34,22 @@ class WorkoutRepository:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result = db.execute(
+                    db.execute(
                         """
                         SELECT * FROM workouts;
                         """
                     )
+                    records = db.fetchall()
                     return [
-                        self.record_to_workout_out(record) for record in result
+                        self.record_to_workout_out(record)
+                        for record in records
                     ]
+
         except Exception as e:
             print(e)
             return {"message": "Could not get all workouts"}
 
-    def get_one(self, workout_id: int) -> Optional[WorkoutOut]:
+    def get_one(self, workout_id: int) -> WorkoutOut:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -86,17 +93,18 @@ class WorkoutRepository:
                     db.execute(
                         """
                         UPDATE workouts
-                        SET name = %s
-                          , date = %s
-                          , description = %s
-                          , difficulty = %s
+                        SET name = %s,
+                          difficulty = %s,
+                          description = %s,
+                          date = %s
+
                         WHERE id = %s
                         """,
                         [
                             workout.name,
+                            workout.difficulty,
                             workout.description,
                             workout.date,
-                            workout.difficulty,
                             workout_id,
                         ],
                     )
@@ -106,33 +114,29 @@ class WorkoutRepository:
             return {"message": "Could not update that workout"}
 
     def create(self, workout: WorkoutIn) -> Union[WorkoutOut, Error]:
+        # print("Hello World")
+        # print(workout)
         try:
-            exercise_repo = ExerciseRepository()
-            exercises = exercise_repo.get_all()
-
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
                         INSERT INTO workouts
-                            (name, description, date, difficulty)
+                            (name, difficulty, description, date)
                         VALUES
                             (%s, %s, %s, %s)
                         RETURNING id;
                         """,
                         [
                             workout.name,
+                            workout.difficulty,
                             workout.description,
                             workout.date,
-                            workout.difficulty,
                         ],
                     )
-                    id = result.fetchone()[0]
-
-                    for exercise in exercises:
-                        self.link_exercise_to_workout(id, exercise.id)
-
-                    return self.workout_in_to_out(id, workout)
+                    workout_id = result.fetchone()[0]
+                    # print("Workout ID:", workout_id)
+                    return workout_id
 
         except Exception:
             return {"message": "Create did not work"}
@@ -146,8 +150,8 @@ class WorkoutRepository:
             id=record[0],
             name=record[1],
             description=record[2],
-            date=record[3],
-            difficulty=record[4],
+            date=datetime.strptime(record[3], "%Y-%m-%d").date(),
+            difficulty=str(record[4]),
         )
 
     def link_exercise_to_workout(self, workout_id: int, exercise_id: int):

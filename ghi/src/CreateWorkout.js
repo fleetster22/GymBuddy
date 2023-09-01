@@ -14,8 +14,8 @@ export default function CreateWorkout() {
 
   const [exercises, setExercises] = useState([]);
 
-  useEffect(() => {
-    fetch("http://localhost:3000/api/exercises")
+  const get_exercises = () => {
+    fetch("http://localhost:8000/api/exercises")
       .then((res) => {
         if (!res.ok) {
           throw new Error(
@@ -25,7 +25,9 @@ export default function CreateWorkout() {
         return res.json();
       })
       .then((data) => setExercises(data));
-  }, []);
+  };
+
+  useEffect(() => get_exercises(), []);
 
   function handleWorkoutChange(e) {
     setWorkout({ ...workout, [e.target.name]: e.target.value });
@@ -33,7 +35,7 @@ export default function CreateWorkout() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    fetch("http://localhost:3000/workouts", {
+    fetch("http://localhost:8000/api/workouts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

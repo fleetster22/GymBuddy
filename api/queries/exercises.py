@@ -21,17 +21,25 @@ class ExerciseOut(BaseModel):
     name: str
     type: str
     muscle: str
+
     equipment: str
     difficulty: str
     instructions: str
 
 
+class ExercisesOut(BaseModel):
+    exercises: list[ExerciseOut]
+
+
 class ExerciseRepository:
     def create(self, exercise: ExerciseIn) -> Union[ExerciseOut, Error]:
+        # print("Hello World")
+        # print(exercise)
+
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result = db.execute(
+                    db.execute(
                         """
                             INSERT INTO exercises
                                 (name, type, muscle, equipment, difficulty, instructions)
@@ -48,7 +56,7 @@ class ExerciseRepository:
                             exercise.instructions,
                         ],
                     )
-                    id = result.fetchone()[0]
+                    id = db.fetchone()[0]
 
                     return self.exercise_in_to_out(id, exercise)
 
@@ -60,15 +68,32 @@ class ExerciseRepository:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result = db.execute(
+                    db.execute(
                         """
                         SELECT * FROM exercises;
                         """
                     )
-                    return [
-                        self.record_to_exercise_out(record)
-                        for record in result.fetchall()
-                    ]
+                    # print("*******Result in Query", result)
+                    results = []
+                    for row in db.fetchall():
+                        exercise = {}
+                        fields = [
+                            "id",
+                            "name",
+                            "type",
+                            "muscle",
+                            "equipment",
+                            "difficulty",
+                            "instructions",
+                        ]
+                        for i, col in enumerate(db.description):
+                            if col.name in fields:
+                                exercise[col.name] = row[i]
+
+                        results.append(exercise)
+                        # print("^^^^^^^^AFTER FOR LOOP", results)
+                    return {"exercises": results}
+
         except Exception as e:
             print(e)
             return {"message": "Could not get all exercises"}
@@ -157,9 +182,43 @@ class ExerciseRepository:
             print(e)
             return {"message": "Could not get the exercise by name"}
 
+    def get_one_exercise(self, name: str) -> Union[ExerciseOut, Error]:
+        # print("Exercise name:", name)
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT * FROM exercises
+                        WHERE name = %s
+                        """,
+                        [name],
+                    )
+                    record = result.fetchone()
+                    return record
+        except Exception as e:
+            print(e)
+            return {"message": "Could not get the exercise by id"}
+
+    def delete(self, exercise_id: int) -> bool:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        DELETE FROM exercises
+                        WHERE id = %s
+                        """,
+                        [exercise_id],
+                    )
+                    return True
+        except Exception as e:
+            print(e)
+            return False
+
     def exercise_in_to_out(self, id: int, exercise: ExerciseIn):
         old_data = exercise.dict()
-        return ExerciseIn(id=id, **old_data)
+        return ExerciseOut(id=id, **old_data)
 
     def record_to_exercise_out(self, record):
         return ExerciseOut(
