@@ -12,7 +12,7 @@ steps = [
         """,
         # "Down" SQL statement
         """
-        DROP TABLE dummy;
-        """
+        DROP TABLE account;
+        """,
     ]
 ]
