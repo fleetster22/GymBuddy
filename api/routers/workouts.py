@@ -10,9 +10,6 @@ from queries.workouts import (
 
 from queries.exercises import ExerciseRepository
 
-# from random import sample
-
-
 router = APIRouter()
 
 
@@ -25,17 +22,13 @@ async def create_workout(
     try:
         exercise_id_list = []
         exercises = workout.exercises
-        # print("Exercises:", exercises)
         for exercise in exercises:
-            # print(exercise)
             entry = exercise_repo.get_one_exercise(exercise.name)
-            # print("At the endpoint:", entry)
             if entry:
                 exercise_id_list.append(entry[0])
             else:
                 entry = exercise_repo.create(exercise)
                 exercise_id_list.append(entry.id)
-        # print("Exercise ID List:", exercise_id_list)
 
         new_workout = WorkoutToDB(
             name=workout.name,
@@ -43,16 +36,12 @@ async def create_workout(
             description=workout.description,
             date=workout.date,
         )
-        # print("+++++++++++ NEW WORKOUT++++++:", new_workout)
         workout_id = workout_repo.create(new_workout)
-        # print("^^^^^WORKOUT ID:", workout_id)
 
         for exercise_id in exercise_id_list:
             workout_repo.link_exercise_to_workout(workout_id, exercise_id)
 
-        # query the join table to get the exercises with the workout_id
         for exercise in workout_repo.get_all():
-            # build a WorkoutOut object
             workout_out = WorkoutOut(
                 id=workout_id,
                 name=workout.name,
@@ -67,7 +56,11 @@ async def create_workout(
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
 
 
-@router.get("/", response_model=Union[list, Error])
+@router.get(
+    "/",
+    response_model=Union[list, Error],
+    tags=["workouts"],
+)
 async def get_all(
     workout_repo: WorkoutRepository = Depends(),
 ):
