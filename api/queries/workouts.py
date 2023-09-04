@@ -1,3 +1,4 @@
+from random import sample
 from pydantic import BaseModel
 from typing import List, Union, Optional
 from datetime import date
@@ -158,6 +159,8 @@ class WorkoutRepository:
             return {"message": "Could not update that workout"}
 
     def create(self, workout: WorkoutIn) -> Union[WorkoutOut, Error]:
+        # print("Hello World")
+        # print(workout)
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:

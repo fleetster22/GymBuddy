@@ -118,3 +118,15 @@ async def delete_account(
             detail="Cannot delete account with those credentials",
         )
     return deleted_account
+
+
+@router.get("/detail")
+async def get_account_detail(
+    account_id: str, repo: AccountQueries = Depends(),
+) -> AccountIn:
+    account = repo.get_by_id(account_id)
+    if isinstance(account, dict):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=account["message"]
+        )
+    return account

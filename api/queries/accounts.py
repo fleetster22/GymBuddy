@@ -88,6 +88,33 @@ class AccountQueries:
         except Exception:
             return AccountOutWithPassword(message="Could not access account.")
 
+    def get_by_id(self, account_id: int) -> AccountOutWithPassword:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        SELECT id, first_name, last_name, email, password
+                        FROM account
+                        WHERE id = %s;
+                        """,
+                        [account_id],
+                    )
+                    record = db.fetchone()
+
+                    if record:
+                        columns = [desc[0] for desc in db.description]
+                        data = dict(zip(columns, record))
+                        return AccountOutWithPassword(**data)
+                    else:
+                        return {
+                            "message":
+                            f"No account is registered to this id {account_id}."
+                        }
+        except Exception:
+            return AccountOutWithPassword(message="Could not access account.")
+
+
     def update(self, email: str, info: AccountIn) -> AccountOut:
         try:
             with pool.connection() as conn:
