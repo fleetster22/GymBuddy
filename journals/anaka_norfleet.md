@@ -29,3 +29,7 @@
 ---
 
 **8/28/23** Today, Violet helped me understand the post request for exercises to crate a table. I worked on that mostly. Hopefully, I can finish soon so I can pair program with Priya.
+
+**9/5/23** Worked with Phil last Thursday to help me debug the back end. He pointed me in right direction and I worked on it over the 4 day weekend to get it running. Today I tackled the Create Workout page. It is working and redirecting after form submission. Tomorrow, I will conquer the Workouts page.
+
+---

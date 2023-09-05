@@ -1,84 +1,83 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateWorkout() {
+  const navigate = useNavigate();
+
   const [workout, setWorkout] = useState({
     name: "",
     description: "",
     date: "",
     difficulty: "",
     type: "",
-    exercises: [],
   });
-
-  const [submission, setSubmission] = useState(false);
-
   const [exercises, setExercises] = useState([]);
 
-  const get_exercises = () => {
-    fetch("http://localhost:8000/api/exercises")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(
-            `Server responded with ${res.status}: ${res.statusText}`
-          );
+  const getExercises = async () => {
+    try {
+      let url = "http://localhost:8000/api/exercises/filter";
+
+      if (workout.difficulty || workout.type) {
+        const params = new URLSearchParams();
+        if (workout.difficulty) {
+          params.append("difficulty", workout.difficulty);
         }
-        return res.json();
-      })
-      .then((data) => setExercises(data));
+        if (workout.type) {
+          params.append("exercise_type", workout.type);
+        }
+        url += `?${params.toString()}`;
+      }
+
+      const exercisesResponse = await fetch(url);
+      if (exercisesResponse.ok) {
+        const exercisesData = await exercisesResponse.json();
+        setExercises(exercisesData);
+      } else {
+        console.log("There was a problem with the fetch operation.");
+      }
+    } catch (error) {
+      console.error("Failed fetching exercises:", error);
+    }
   };
 
-  useEffect(() => get_exercises(), []);
+  useEffect(() => {
+    getExercises();
+  }, [workout]);
 
   function handleWorkoutChange(e) {
     setWorkout({ ...workout, [e.target.name]: e.target.value });
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    fetch("http://localhost:8000/api/workouts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(workout),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-        setSubmission(true);
-        setWorkout({
-          name: "",
-          description: "",
-          date: "",
-          difficulty: "",
-          type: "",
-          exercises: [],
-        });
-      })
-      .catch((error) => {
-        console.log(
-          "There was a problem with the fetch operation:",
-          error.message
-        );
-      });
-  }
+    const workout_data = {
+      ...workout,
+      exercises: exercises,
+    };
 
-  if (submission) {
-    return (
-      <div>
-        <h1>Workout Created!</h1>
-        <p>Your workout has been created successfully!</p>
-      </div>
-    );
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/workouts/create",
+        {
+          method: "POST",
+          body: JSON.stringify(workout_data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        navigate("/workouts");
+      } else {
+        console.error("Failed to submit workout.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   }
 
   return (
-    <div className="container">
+    <div>
       <h1>Create Workout</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -126,15 +125,15 @@ export default function CreateWorkout() {
           </select>
         </label>
         <label>
-          Exercise Type:
+          Type:
           <select
             name="type"
             value={workout.type}
             onChange={handleWorkoutChange}
           >
-            <option value="">Exercise Type</option>
+            <option value="">Workout Type</option>
             <option value="cardio">Cardio</option>
-            <option value="olympic weightlifting">Olympic Weightlifting</option>
+            <option value="olympic_weightlifting">Olympic Weightlifting</option>
             <option value="plyometrics">Plyometrics</option>
             <option value="powerlifting">Powerlifting</option>
             <option value="strength">Strength</option>
