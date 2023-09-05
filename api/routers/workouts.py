@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from typing import Union
+from typing import Union, Optional
 from queries.workouts import (
     Error,
     WorkoutIn,
@@ -7,7 +7,7 @@ from queries.workouts import (
     WorkoutOut,
     WorkoutToDB,
 )
-
+from authenticator import authenticator
 from queries.exercises import ExerciseRepository
 
 router = APIRouter()
@@ -16,6 +16,7 @@ router = APIRouter()
 @router.post("/create", response_model=Union[WorkoutOut, Error])
 async def create_workout(
     workout: WorkoutIn,
+    # account_data: dict = Depends(authenticator.get_current_account_data),
     workout_repo: WorkoutRepository = Depends(),
     exercise_repo: ExerciseRepository = Depends(),
 ):
@@ -62,6 +63,9 @@ async def create_workout(
     tags=["workouts"],
 )
 async def get_all(
+    account_data: Optional[dict] = Depends(
+        authenticator.try_get_current_account_data
+    ),
     workout_repo: WorkoutRepository = Depends(),
 ):
     try:
@@ -74,6 +78,7 @@ async def get_all(
 def update_workout(
     workout_id: int,
     workout: WorkoutIn,
+    account_data: dict = Depends(authenticator.get_current_account_data),
     workout_repo: WorkoutRepository = Depends(),
 ) -> Union[Error, WorkoutOut]:
     try:
@@ -85,6 +90,7 @@ def update_workout(
 @router.delete("/{workout_id}", response_model=bool)
 def delete_workout(
     workout_id: int,
+    account_data: dict = Depends(authenticator.get_current_account_data),
     workout_repo: WorkoutRepository = Depends(),
 ) -> bool:
     try:
@@ -96,6 +102,9 @@ def delete_workout(
 @router.get("/{workout_id}", response_model=WorkoutOut)
 def get_one_workout(
     workout_id: int,
+    account_data: Optional[dict] = Depends(
+        authenticator.try_get_current_account_data
+    ),
     workout_repo: WorkoutRepository = Depends(),
 ) -> WorkoutOut:
     workout = workout_repo.get_one(workout_id)
@@ -107,6 +116,7 @@ def get_one_workout(
 @router.get("/get_join_table", response_model=WorkoutToDB)
 def get_join_table(
     workout_id: int,
+    account_data: dict = Depends(authenticator.get_current_account_data),
     workout_repo: WorkoutRepository = Depends(),
 ) -> WorkoutToDB:
     workout = workout_repo.link_exercise_to_workout(workout_id)
