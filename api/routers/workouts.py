@@ -1,15 +1,14 @@
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends, HTTPException
 from typing import List, Optional, Union
 from queries.workouts import (
     Error,
     WorkoutIn,
     WorkoutRepository,
     WorkoutOut,
+    WorkoutToDB,
 )
 
-# from .exercises import list_exercises
-# from random import sample
-
+from queries.exercises import ExerciseRepository
 
 router = APIRouter()
 
@@ -17,77 +16,100 @@ router = APIRouter()
 @router.post("/create", response_model=Union[WorkoutOut, Error])
 async def create_workout(
     workout: WorkoutIn,
-    response: Response,
-    repo: WorkoutRepository = Depends(),
+    workout_repo: WorkoutRepository = Depends(),
+    exercise_repo: ExerciseRepository = Depends(),
 ):
-    return repo.create(workout)
-    # # Fetch all exercises from the database
-    # exercise_list = repo.list_exercises()
+    try:
+        exercise_id_list = []
+        exercises = workout.exercises
+        for exercise in exercises:
+            entry = exercise_repo.get_one_exercise(exercise.name)
+            if entry:
+                exercise_id_list.append(entry[0])
+            else:
+                entry = exercise_repo.create(exercise)
+                exercise_id_list.append(entry.id)
 
-    # # Filter exercises by the desired difficulty
-    # difficulty_filtered_exercises = [
-    #     ex for ex in exercise_list if ex["difficulty"] == workout.difficulty
-    # ]
+        new_workout = WorkoutToDB(
+            name=workout.name,
+            difficulty=workout.difficulty,
+            description=workout.description,
+            date=workout.date,
+        )
+        workout_id = workout_repo.create(new_workout)
 
-    # #  Group the exercises by type
-    # type_grouped_exercises = {}
-    # for exercise in difficulty_filtered_exercises:
-    #     if exercise["type"] not in type_grouped_exercises:
-    #         type_grouped_exercises[exercise["type"]] = []
-    #     type_grouped_exercises[exercise["type"]].append(exercise)
+        for exercise_id in exercise_id_list:
+            workout_repo.link_exercise_to_workout(workout_id, exercise_id)
 
-    # # Randomly select one exercise from each type
-    # selected_exercises = []
-    # for exercise_type, exercises in type_grouped_exercises.items():
-    #     selected_exercises.append(sample(exercises, 1)[0])
+        for exercise in workout_repo.get_all():
+            workout_out = WorkoutOut(
+                id=workout_id,
+                name=workout.name,
+                difficulty=workout.difficulty,
+                description=workout.description,
+                date=workout.date,
+                exercises=exercises,
+            )
+        return workout_out
 
-    # new_workout = repo.create(workout)
-    # for exercise in selected_exercises:
-    #     repo.link_exercise_to_workout(new_workout.id, exercise["name"])
-
-    # response.status_code = 201
-    # return new_workout
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
 
 
-@router.get("/", response_model=Union[List[WorkoutOut], Error])
-def get_all(
-    repo: WorkoutRepository = Depends(),
+@router.get(
+    "/",
+    response_model=Union[list, Error],
+    tags=["workouts"],
+)
+async def get_all(
+    workout_repo: WorkoutRepository = Depends(),
 ):
-    return repo.get_all()
-
-
-@router.get("/difficulty/{difficulty}", response_model=List[WorkoutOut])
-def get_workouts_by_difficulty(
-    difficulty: str,
-    repo: WorkoutRepository = Depends(),
-):
-    return repo.get_all_by_difficulty(difficulty)
+    try:
+        return workout_repo.get_all()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
 
 
 @router.put("/{workout_id}", response_model=Union[WorkoutOut, Error])
 def update_workout(
     workout_id: int,
     workout: WorkoutIn,
-    repo: WorkoutRepository = Depends(),
+    workout_repo: WorkoutRepository = Depends(),
 ) -> Union[Error, WorkoutOut]:
-    return repo.update(workout_id, workout)
+    try:
+        return workout_repo.update(workout_id, workout)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
 
 
 @router.delete("/{workout_id}", response_model=bool)
 def delete_workout(
     workout_id: int,
-    repo: WorkoutRepository = Depends(),
+    workout_repo: WorkoutRepository = Depends(),
 ) -> bool:
-    return repo.delete(workout_id)
+    try:
+        return workout_repo.delete(workout_id)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
 
 
-@router.get("/{workout_id}", response_model=Optional[WorkoutOut])
+@router.get("/{workout_id}", response_model=WorkoutOut)
 def get_one_workout(
     workout_id: int,
-    response: Response,
-    repo: WorkoutRepository = Depends(),
+    workout_repo: WorkoutRepository = Depends(),
 ) -> WorkoutOut:
-    workout = repo.get_one(workout_id)
+    workout = workout_repo.get_one(workout_id)
     if workout is None:
-        response.status_code = 404
+        raise HTTPException(status_code=404, detail="Workout not found")
+    return workout
+
+
+@router.get("/get_join_table", response_model=WorkoutToDB)
+def get_join_table(
+    workout_id: int,
+    workout_repo: WorkoutRepository = Depends(),
+) -> WorkoutToDB:
+    workout = workout_repo.link_exercise_to_workout(workout_id)
+    if workout is None:
+        raise HTTPException(status_code=404, detail="Workout not found")
     return workout

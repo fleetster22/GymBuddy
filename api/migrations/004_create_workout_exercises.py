@@ -3,8 +3,8 @@ steps = [
         # "Up" SQL statement
         """
         CREATE TABLE workout_exercises (
-            workout_id INTEGER REFERENCES workouts(id),
-            exercise_id INTEGER REFERENCES exercises(id),
+            workout_id INTEGER REFERENCES workouts(id) ON DELETE CASCADE,
+            exercise_id INTEGER REFERENCES exercises(id) ON DELETE RESTRICT,
             PRIMARY KEY (workout_id, exercise_id)
         );
         """,
