@@ -3,7 +3,6 @@ import useToken from "@galvanize-inc/jwtdown-for-react";
 import { useNavigate } from "react-router-dom";
 
 const Signupform = () => {
-  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [first, setFirst] = useState("");
   const [last, setLast] = useState("");
@@ -14,36 +13,25 @@ const Signupform = () => {
   const handleRegistration = (e) => {
     e.preventDefault();
     const accountData = {
-      username: username,
-      password: password,
-      first: first,
-      last: last,
+      first_name: first,
+      last_name: last,
       email: email,
+      password: password,
+      username: email,
     };
+    console.log(accountData);
     register(
       accountData,
-      `${process.env.REACT_APP_USER_SERVICE_API_HOST}/api/user`
+      `${process.env.REACT_APP_API_HOST}/api/accounts/create`
     );
     e.target.reset();
     navigate("/");
   };
-  console.log(Signupform);
   return (
     <div className="card text-bg-light mb-3">
       <h5 className="card-header">Signup</h5>
       <div className="card-body">
         <form onSubmit={(e) => handleRegistration(e)}>
-          <div className="mb-3">
-            <label className="form-label">username</label>
-            <input
-              name="username"
-              type="text"
-              className="form-control"
-              onChange={(e) => {
-                setUsername(e.target.value);
-              }}
-            />
-          </div>
           <div className="mb-3">
             <label className="form-label">password</label>
             <input
