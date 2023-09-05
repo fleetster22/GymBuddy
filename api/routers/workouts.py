@@ -16,7 +16,7 @@ router = APIRouter()
 @router.post("/create", response_model=Union[WorkoutOut, Error])
 async def create_workout(
     workout: WorkoutIn,
-    account_data: dict = Depends(authenticator.get_current_account_data),
+    # account_data: dict = Depends(authenticator.get_current_account_data),
     workout_repo: WorkoutRepository = Depends(),
     exercise_repo: ExerciseRepository = Depends(),
 ):

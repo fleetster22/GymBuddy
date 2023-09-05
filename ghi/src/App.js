@@ -13,10 +13,8 @@ function App() {
       <Routes>
         <Route path="/MainPage" element={<MainPage />} />
         <Route path="/AboutUs" element={<AboutUs />} />
-        <Route path="workouts">
-          <Route index element={<WorkoutPage />} />
-          <Route path="create" element={<CreateWorkout />} />
-        </Route>
+        <Route path="/workouts" element={<WorkoutPage />} />
+        <Route path="/workouts/create" element={<CreateWorkout />} />
       </Routes>
     </BrowserRouter>
   );
