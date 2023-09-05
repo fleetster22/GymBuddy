@@ -25,3 +25,7 @@ Update: Get token assigns a token per session
 ## 8/30/23
 
 Working on Frontend Auth on my own for now and then pair programming tomorrow. Backend auth is complete and added get_by_id yesterday.
+
+## 9/5/23
+
+Working on frontend auth with group. Going to be creating landing page with React.
