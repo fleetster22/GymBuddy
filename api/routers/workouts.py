@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from typing import List, Optional, Union
+from typing import Union
 from queries.workouts import (
     Error,
     WorkoutIn,

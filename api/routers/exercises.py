@@ -6,6 +6,8 @@ from queries.exercises import (
     Error,
     ExerciseRepository,
 )
+
+# from authenticator import authenticator
 import os
 import requests
 
@@ -100,7 +102,9 @@ async def get_exercise_by_type(exercise_type: str):
     "/db_exercises",
     response_model=ExercisesOut,
 )
-async def get_exercises_from_db(repo: ExerciseRepository = Depends()):
+async def get_exercises_from_db(
+    repo: ExerciseRepository = Depends(),
+):
     return ExercisesOut(**repo.get_all())
 
 
@@ -121,7 +125,8 @@ def delete_exercise(
     tags=["exercises"],
 )
 async def fetch_and_create_exercise(
-    difficulty: str = "beginner", repo: ExerciseRepository = Depends()
+    difficulty: str = "beginner",
+    repo: ExerciseRepository = Depends(),
 ):
     response = requests.get(
         API_BASE_URL,
