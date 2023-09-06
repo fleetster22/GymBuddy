@@ -8,7 +8,7 @@ export default function Nav() {
         className="navigation__checkbox"
         id="navi-toggle"
       />
-      <label for="navi-toggle" className="navigation__button">
+      <label htmlFor="navi-toggle" className="navigation__button">
         <span className="navigation_icon">&nbsp;</span>
         <p className="navigation__button--text">MENU</p>
       </label>

@@ -1,49 +1,83 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateWorkout() {
+  const navigate = useNavigate();
+
   const [workout, setWorkout] = useState({
     name: "",
     description: "",
     date: "",
+    difficulty: "",
     type: "",
-    exercises: [],
   });
-
   const [exercises, setExercises] = useState([]);
 
+  const getExercises = async () => {
+    try {
+      let url = "http://localhost:8000/api/exercises/filter";
+
+      if (workout.difficulty || workout.type) {
+        const params = new URLSearchParams();
+        if (workout.difficulty) {
+          params.append("difficulty", workout.difficulty);
+        }
+        if (workout.type) {
+          params.append("exercise_type", workout.type);
+        }
+        url += `?${params.toString()}`;
+      }
+
+      const exercisesResponse = await fetch(url);
+      if (exercisesResponse.ok) {
+        const exercisesData = await exercisesResponse.json();
+        setExercises(exercisesData);
+      } else {
+        console.log("There was a problem with the fetch operation.");
+      }
+    } catch (error) {
+      console.error("Failed fetching exercises:", error);
+    }
+  };
+
   useEffect(() => {
-    fetch("http://localhost:3000/api/exercises")
-      .then((res) => res.json())
-      .then((data) => setExercises(data));
-  }, []);
+    getExercises();
+  }, [workout]);
 
   function handleWorkoutChange(e) {
     setWorkout({ ...workout, [e.target.name]: e.target.value });
   }
 
-  function handleExerciseChange(e) {
-    const exercise = exercises.find((ex) => ex.id === parseInt(e.target.value));
-    setWorkout({
-      ...workout,
-      exercises: [...workout.exercises, exercise],
-    });
-  }
-
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    fetch("http://localhost:3000/api/workouts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(workout),
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data));
+    const workout_data = {
+      ...workout,
+      exercises: exercises,
+    };
+
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/workouts/create",
+        {
+          method: "POST",
+          body: JSON.stringify(workout_data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        navigate("/workouts");
+      } else {
+        console.error("Failed to submit workout.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   }
 
   return (
-    <div className="container">
+    <div>
       <h1>Create Workout</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -78,14 +112,33 @@ export default function CreateWorkout() {
           />
         </label>
         <label>
-          Exercises:
-          <select onChange={handleExerciseChange}>
-            <option value="">Exercise Types</option>
-            {exercises.map((ex) => (
-              <option key={ex.type} value={ex.type}>
-                {ex.type}
-              </option>
-            ))}
+          Difficulty:
+          <select
+            name="difficulty"
+            value={workout.difficulty}
+            onChange={handleWorkoutChange}
+          >
+            <option value="">Difficulty</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </label>
+        <label>
+          Type:
+          <select
+            name="type"
+            value={workout.type}
+            onChange={handleWorkoutChange}
+          >
+            <option value="">Workout Type</option>
+            <option value="cardio">Cardio</option>
+            <option value="olympic_weightlifting">Olympic Weightlifting</option>
+            <option value="plyometrics">Plyometrics</option>
+            <option value="powerlifting">Powerlifting</option>
+            <option value="strength">Strength</option>
+            <option value="stretching">Stretching</option>
+            <option value="strongman">Strongman</option>
           </select>
         </label>
         <input type="submit" value="Create Workout" />

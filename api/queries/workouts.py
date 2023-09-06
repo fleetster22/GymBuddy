@@ -1,7 +1,9 @@
+from random import sample
 from pydantic import BaseModel
-from typing import List, Optional, Union
+from typing import List, Union, Optional
 from datetime import date
 from queries.pool import pool
+from queries.exercises import ExerciseIn, ExerciseOut
 
 
 class Error(BaseModel):
@@ -10,53 +12,110 @@ class Error(BaseModel):
 
 class WorkoutIn(BaseModel):
     name: str
-    description: str
-    date: date
     difficulty: str
-    exercises: List[str] = []
-
-
-class WorkoutOut(BaseModel):
-    id: int
-    name: str
     description: str
     date: date
-    exercises: List[str] = []
+    exercises: list[ExerciseIn]
+
+
+class WorkoutOut(WorkoutIn):
+    id: int
+
+
+class WorkoutToDB(BaseModel):
+    name: str
+    difficulty: str
+    description: str
+    date: date
 
 
 class WorkoutRepository:
+    def get_all(self) -> Union[Error, List[WorkoutOut]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute("SELECT * FROM workouts;")
+                    workouts = []
+                    for record in db.fetchall():
+                        workout_id = record[0]
+
+                        db.execute(
+                            "SELECT exercises.* FROM exercises "
+                            "JOIN workout_exercises ON exercises.id = workout_exercises.exercise_id "
+                            "WHERE workout_exercises.workout_id = %s;",
+                            [workout_id],
+                        )
+                        exercise_records = db.fetchall()
+                        exercises = []
+                        for exercise in exercise_records:
+                            exercise_data = ExerciseOut(
+                                id=exercise[0],
+                                name=exercise[1],
+                                type=exercise[2],
+                                muscle=exercise[3],
+                                equipment=exercise[4],
+                                difficulty=exercise[5],
+                                instructions=exercise[6],
+                            )
+                            exercises.append(exercise_data)
+
+                        workout = WorkoutOut(
+                            id=workout_id,
+                            name=record[1],
+                            difficulty=record[2],
+                            description=record[3],
+                            date=record[4],
+                            exercises=exercises,
+                        )
+                        workouts.append(workout)
+                    return workouts
+
+        except Exception as e:
+            return {"message": str(e)}
+
     def get_one(self, workout_id: int) -> Optional[WorkoutOut]:
         try:
-            # connect the database
             with pool.connection() as conn:
-                # get a cursor (something to run SQL with)
                 with conn.cursor() as db:
-                    # Run our SELECT statement
-                    result = db.execute(
+                    db.execute(
                         """
-                        SELECT id
-                             , name
-                             , description
-                             , date
-                             , difficulty
-                        FROM workouts
+                        SELECT * FROM workouts
                         WHERE id = %s
                         """,
                         [workout_id],
                     )
-                    record = result.fetchone()
+                    record = db.fetchone()
                     if record is None:
                         return None
-                    return self.record_to_workout_out(record)
+
+                    db.execute(
+                        "SELECT exercises.* FROM exercises "
+                        "JOIN workout_exercises ON exercises.id = workout_exercises.exercise_id "
+                        "WHERE workout_exercises.workout_id = %s;",
+                        [workout_id],
+                    )
+                    exercise_records = db.fetchall()
+                    exercises = []
+                    for exercise in exercise_records:
+                        exercise_data = {
+                            "id": exercise[0],
+                            "name": exercise[1],
+                            "type": exercise[2],
+                            "muscle": exercise[3],
+                            "equipment": exercise[4],
+                            "difficulty": exercise[5],
+                            "instructions": exercise[6],
+                        }
+                        exercises.append(exercise_data)
+
+                    return self.record_to_workout_out(record, exercises)
         except Exception as e:
             print(e)
             return {"message": "Could not get that workout"}
 
     def delete(self, workout_id: int) -> bool:
         try:
-            # connect the database
             with pool.connection() as conn:
-                # get a cursor (something to run SQL with)
                 with conn.cursor() as db:
                     db.execute(
                         """
@@ -79,17 +138,18 @@ class WorkoutRepository:
                     db.execute(
                         """
                         UPDATE workouts
-                        SET name = %s
-                          , date = %s
-                          , description = %s
-                          , difficulty = %s
+                        SET name = %s,
+                          difficulty = %s,
+                          description = %s,
+                          date = %s
+
                         WHERE id = %s
                         """,
                         [
                             workout.name,
+                            workout.difficulty,
                             workout.description,
                             workout.date,
-                            workout.difficulty,
                             workout_id,
                         ],
                     )
@@ -98,65 +158,30 @@ class WorkoutRepository:
             print(e)
             return {"message": "Could not update that workout"}
 
-    def get_all(self) -> Union[Error, List[WorkoutOut]]:
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as db:
-                    result = db.execute(
-                        """
-                        SELECT *FROM workouts;
-                        """
-                    )
-                    return [
-                        self.record_to_workout_out(record) for record in result
-                    ]
-        except Exception as e:
-            print(e)
-            return {"message": "Could not get all workouts"}
-
-    def get_all_by_difficulty(self, difficulty: str) -> List[WorkoutOut]:
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as db:
-                    result = db.execute(
-                        """
-                        SELECT id, name, description, date, difficulty
-                        FROM workouts
-                        WHERE difficulty = %s
-                        """,
-                        [difficulty],
-                    )
-                    records = result.fetchall()
-                    return [
-                        self.record_to_workout_out(record)
-                        for record in records
-                    ]
-        except Exception as e:
-            print(e)
-            return {"message": "Could not get the workouts by difficulty"}
-
     def create(self, workout: WorkoutIn) -> Union[WorkoutOut, Error]:
+        # print("Hello World")
+        # print(workout)
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
                         INSERT INTO workouts
-                            (name, description, date, difficulty)
+                            (name, difficulty, description, date)
                         VALUES
                             (%s, %s, %s, %s)
                         RETURNING id;
                         """,
                         [
                             workout.name,
+                            workout.difficulty,
                             workout.description,
                             workout.date,
-                            workout.difficulty,
                         ],
                     )
-                    id = result.fetchone()[0]
+                    workout_id = result.fetchone()[0]
+                    return workout_id
 
-                    return self.workout_in_to_out(id, workout)
         except Exception:
             return {"message": "Create did not work"}
 
@@ -164,35 +189,32 @@ class WorkoutRepository:
         old_data = workout.dict()
         return WorkoutOut(id=id, **old_data)
 
-    def record_to_workout_out(self, record) -> WorkoutOut:
+    def record_to_workout_out(self, record, exercises=None):
         return WorkoutOut(
             id=record[0],
             name=record[1],
-            description=record[2],
-            date=record[3],
-            difficulty=record[4],
+            difficulty=record[2],
+            description=record[3],
+            date=record[4],
+            exercises=exercises or [],
         )
 
-    def link_exercise_to_workout(self, workout_id: int, exercise_name: str):
+    def link_exercise_to_workout(self, workout_id: int, exercise_id: int):
         try:
-            # connect the database
             with pool.connection() as conn:
-                # get a cursor (something to run SQL with)
                 with conn.cursor() as db:
-                    # Run our INSERT statement
                     db.execute(
                         """
                         INSERT INTO workout_exercises
-                            (workout_id, exercise_name)
+                            (workout_id, exercise_id)
                         VALUES
                             (%s, %s);
                         """,
                         [
                             workout_id,
-                            exercise_name,
+                            exercise_id,
                         ],
                     )
-                    # Return new data
                     return True
-        except Exception:
-            return {"message": "Create did not work"}
+        except Exception as e:
+            return {"message": str(e)}

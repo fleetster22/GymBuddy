@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
 
 from authenticator import authenticator
 from fastapi.middleware.cors import CORSMiddleware
@@ -6,10 +6,6 @@ import os
 from routers import exercises, workouts, accounts
 
 app = FastAPI()
-app.include_router(exercises.router, prefix="/api/exercises")
-app.include_router(workouts.router, prefix="/api/workouts", tags=["Workouts"])
-app.include_router(accounts.router, prefix="/api/accounts", tags=["Accounts"])
-app.include_router(authenticator.router, prefix="/api/auth", tags=["Login/Logout"])
 
 origins = [
     "http://localhost:3000",
@@ -19,8 +15,15 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[origins],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(
+    exercises.router, prefix="/api/exercises", tags=["exercises"]
+)
+app.include_router(workouts.router, prefix="/api/workouts", tags=["workouts"])
+app.include_router(accounts.router, prefix="/api/accounts", tags=["Accounts"])
+app.include_router(authenticator.router, tags=["Login/Logout"])
