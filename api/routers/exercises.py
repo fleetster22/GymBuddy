@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from queries.exercises import (
     ExerciseIn,
@@ -6,6 +6,8 @@ from queries.exercises import (
     Error,
     ExerciseRepository,
 )
+
+# from authenticator import authenticator
 import os
 import requests
 
@@ -27,6 +29,34 @@ async def list_exercises():
     )
     if response.status_code != 200:
         return Error(response.text)
+    return response.json()
+
+
+@router.get(
+    "/filter",
+    response_model=Union[list, Error],
+    tags=["exercises"],
+)
+async def get_exercises_by_filter(
+    difficulty: Optional[str] = None, exercise_type: Optional[str] = None
+):
+    params = {}
+
+    if difficulty:
+        params["difficulty"] = difficulty
+    if exercise_type:
+        params["type"] = exercise_type
+
+    response = requests.get(
+        API_BASE_URL,
+        headers={"X-Api-Key": API_KEY},
+        timeout=TIMEOUT,
+        params=params,
+    )
+
+    if response.status_code != 200:
+        return Error(response.text)
+
     return response.json()
 
 
@@ -100,7 +130,9 @@ async def get_exercise_by_type(exercise_type: str):
     "/db_exercises",
     response_model=ExercisesOut,
 )
-async def get_exercises_from_db(repo: ExerciseRepository = Depends()):
+async def get_exercises_from_db(
+    repo: ExerciseRepository = Depends(),
+):
     return ExercisesOut(**repo.get_all())
 
 
@@ -121,14 +153,18 @@ def delete_exercise(
     tags=["exercises"],
 )
 async def fetch_and_create_exercise(
-    difficulty: str = "beginner", repo: ExerciseRepository = Depends()
+    difficulty: str = "beginner",
+    exercise_type: str = "cardio",
+    repo: ExerciseRepository = Depends(),
 ):
+    params = {"difficulty": difficulty}
+    params["type"] = exercise_type
+
     response = requests.get(
         API_BASE_URL,
         headers={"X-Api-Key": API_KEY},
         timeout=TIMEOUT,
-        params={"difficulty": difficulty},
-        # add more params
+        params=params,
     )
 
     if response.status_code != 200:

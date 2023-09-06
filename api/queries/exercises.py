@@ -73,7 +73,6 @@ class ExerciseRepository:
                         SELECT * FROM exercises;
                         """
                     )
-                    # print("*******Result in Query", result)
                     results = []
                     for row in db.fetchall():
                         exercise = {}
@@ -183,7 +182,6 @@ class ExerciseRepository:
             return {"message": "Could not get the exercise by name"}
 
     def get_one_exercise(self, name: str) -> Union[ExerciseOut, Error]:
-        # print("Exercise name:", name)
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
