@@ -1,4 +1,4 @@
-import "./styles.css";
+import "./main.css";
 
 import Card from "./Card";
 import Header from "./Header";
