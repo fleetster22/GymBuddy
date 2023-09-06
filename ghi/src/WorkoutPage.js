@@ -2,27 +2,8 @@ import React, { useState, useEffect } from "react";
 
 export default function WorkoutPage() {
   const [workouts, setWorkouts] = useState([]);
-  const [userName, setUserName] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const userResponse = await fetch("http://localhost:8000/api/accounts");
-        if (userResponse.ok) {
-          const data = await userResponse.json();
-          setUserName(data.first_name);
-        } else {
-          throw new Error("Failed to fetch user data.");
-        }
-      } catch (err) {
-        setError(err);
-      }
-    };
-
-    fetchUserData();
-  }, []);
 
   useEffect(() => {
     const fetchWorkouts = async () => {
@@ -49,7 +30,7 @@ export default function WorkoutPage() {
 
   return (
     <div>
-      <h1>{userName}'s Workout Page</h1>
+      <h1>Your Workouts</h1>
       <div className="row">
         {workouts.map((workout) => (
           <div className="col-md-4" key={workout.id}>
@@ -57,8 +38,18 @@ export default function WorkoutPage() {
             <p>{workout.difficulty}</p>
             <p>{workout.description}</p>
             <p>{workout.date}</p>
-            <p>{workout.exercises}</p>
-            <button>Complete Workout</button>
+            <div>
+              {workout.exercises.map((exercise, index) => (
+                <div key={index}>
+                  <p>Exercise Name: {exercise.name}</p>
+                  <p>Exercise Type: {exercise.type}</p>
+                  <p>Targeted Muscle Group:{exercise.muscle}</p>
+                  <p>Equipment: {exercise.equipment}</p>
+                  <p>Difficulty: {exercise.difficulty}</p>
+                  <p>Instructions: {exercise.instructions}</p>
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
