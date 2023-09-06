@@ -13,10 +13,10 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <Nav />
         <Routes>
-          <Route path="/" element={<Nav />} />
           <Route path="/MainPage" element={<MainPage />} />
-          <Route path="/AboutUs" element={<AboutUs />} />
+          <Route path="/AboutUs" element={<About />} />
           <Route path="/Signupform" element={<Signupform />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/Logout" element={<Logout />} />

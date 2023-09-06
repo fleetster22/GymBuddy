@@ -1,5 +1,5 @@
 import "./main.css";
-import LoginForm from "./components/Login.jsx";
+import LoginForm from "./Login.jsx";
 
 export default function Header() {
   return (
