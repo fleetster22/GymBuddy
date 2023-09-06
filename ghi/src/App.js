@@ -9,13 +9,11 @@ import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import Signupform from "./Signupform.js";
 import Login from "./Login.js";
 import Logout from "./Logout.js";
-
 function App() {
   const baseURL = process.env.REACT_APP_API_HOST;
   return (
-    <AuthProvider>
+    <AuthProvider baseUrl={baseURL}>
       <BrowserRouter>
-        <Nav />
         <Routes>
           <Route path="/" element={<Nav />} />
           <Route path="/MainPage" element={<MainPage />} />

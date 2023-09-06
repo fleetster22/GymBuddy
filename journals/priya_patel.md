@@ -1,7 +1,6 @@
 ## 8/21/23
 
 Having some code errors with the password and the hashed password.
-<<<<<<< HEAD
 Wrote the create function for creating an account. Trying to clear the Internal server error today and write and test update and delete functions as well. Hoping to test them tomorrow and Wednesday.
 
 Update: Get token assigns a token per session
@@ -18,9 +17,15 @@ Tangled up some end points - fixed those. Lastly, trying to get my DELETE fx to 
 ## 8/24/23
 
 Working on figuring out the 401 error on create account again.
-=======
 Wrote the create function for creating an account. Trying to clear the Internal server error today and write and test update and delete
 functions as well. Hoping to test them tomorrow and Wednesday.
 
 Update: Get token assigns a token per session
->>>>>>> 3129f0dc5ca7565df5baa687e088af20849e7979
+
+## 8/30/23
+
+Working on Frontend Auth on my own for now and then pair programming tomorrow. Backend auth is complete and added get_by_id yesterday.
+
+## 9/5/23
+
+Working on frontend auth with group. Going to be creating landing page with React.

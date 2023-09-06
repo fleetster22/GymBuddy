@@ -3,7 +3,7 @@ from fastapi import FastAPI, APIRouter
 from authenticator import authenticator
 from fastapi.middleware.cors import CORSMiddleware
 import os
-from routers import exercises, workouts, accounts
+from routers import exercises, workouts, accounts, auth
 
 app = FastAPI()
 
