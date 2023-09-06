@@ -13,34 +13,34 @@ export default function CreateWorkout() {
   });
   const [exercises, setExercises] = useState([]);
 
-  const getExercises = async () => {
-    try {
-      let url = "http://localhost:8000/api/exercises/filter";
-
-      if (workout.difficulty || workout.type) {
-        const params = new URLSearchParams();
-        if (workout.difficulty) {
-          params.append("difficulty", workout.difficulty);
-        }
-        if (workout.type) {
-          params.append("exercise_type", workout.type);
-        }
-        url += `?${params.toString()}`;
-      }
-
-      const exercisesResponse = await fetch(url);
-      if (exercisesResponse.ok) {
-        const exercisesData = await exercisesResponse.json();
-        setExercises(exercisesData);
-      } else {
-        console.log("There was a problem with the fetch operation.");
-      }
-    } catch (error) {
-      console.error("Failed fetching exercises:", error);
-    }
-  };
-
   useEffect(() => {
+    const getExercises = async () => {
+      try {
+        let url = "http://localhost:8000/api/exercises/filter";
+
+        if (workout.difficulty || workout.type) {
+          const params = new URLSearchParams();
+          if (workout.difficulty) {
+            params.append("difficulty", workout.difficulty);
+          }
+          if (workout.type) {
+            params.append("exercise_type", workout.type);
+          }
+          url += `?${params.toString()}`;
+        }
+
+        const exercisesResponse = await fetch(url);
+        if (exercisesResponse.ok) {
+          const exercisesData = await exercisesResponse.json();
+          setExercises(exercisesData);
+        } else {
+          console.log("There was a problem with the fetch operation.");
+        }
+      } catch (error) {
+        console.error("Failed fetching exercises:", error);
+      }
+    };
+
     getExercises();
   }, [workout]);
 

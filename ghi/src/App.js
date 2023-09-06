@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CreateWorkout from "./CreateWorkout.js";
-import WorkoutPage from "./WorkoutPage.jsx";
+import WorkoutPage from "./WorkoutPage.js";
 import Nav from "./Nav.js";
 import AboutUs from "./About.js";
 import MainPage from "./MainPage.js";
@@ -9,7 +9,6 @@ import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import Signupform from "./Signupform.js";
 import Login from "./Login.js";
 import Logout from "./Logout.js";
-
 function App() {
   const baseURL = process.env.REACT_APP_API_HOST;
   return (
