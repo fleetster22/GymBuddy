@@ -9,6 +9,7 @@ const SignupForm = () => {
   const [first, setFirst] = useState("");
   const [last, setLast] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { register } = useToken();
   const navigate = useNavigate();
 
@@ -28,7 +29,6 @@ const SignupForm = () => {
     e.target.reset();
     navigate("/");
   };
-  console.log(SignupForm);
   return (
     <div className="form">
       <h3 className="form__header">
@@ -36,57 +36,56 @@ const SignupForm = () => {
       </h3>
       <div className="form__content">
         <form onSubmit={(e) => handleRegistration(e)}>
-          <label className="form__label">first name</label>
-          <input
-            name="first"
-            type="text"
-            className="form__input"
-            onChange={(e) => {
-              setFirst(e.target.value);
-            }}
-          />
-
-          <label className="form__label">last name</label>
-          <input
-            name="last"
-            type="text"
-            className="form__input"
-            onChange={(e) => {
-              setLast(e.target.value);
-            }}
-          />
-
-          <label className="form__label">your email address</label>
-          <input
-            name="email"
-            type="text"
-            className="form__input"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-
-          <label className="form__label">enter a password</label>
-          <input
-            name="password"
-            type="password"
-            className="form__input"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
-
-          <div className="form__button">
+          <div className="mb-3">
+            <label className="form-label">First Name </label>
             <input
-              className="btn btn--register"
-              type="submit"
-              value="👉 Register 👈"
+              name="first"
+              type="text"
+              className="form-control"
+              onChange={(e) => {
+                setFirst(e.target.value);
+              }}
             />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Last Name </label>
+            <input
+              name="last"
+              type="text"
+              className="form-control"
+              onChange={(e) => {
+                setLast(e.target.value);
+              }}
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Email </label>
+            <input
+              name="email"
+              type="text"
+              className="form-control"
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Password </label>
+            <input
+              name="password"
+              type="password"
+              className="form-control"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+            />
+          </div>
+          <div>
+            <input className="btn btn-primary" type="submit" value="Register" />
           </div>
         </form>
       </div>
     </div>
   );
 };
-
 export default SignupForm;
