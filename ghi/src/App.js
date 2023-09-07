@@ -8,7 +8,7 @@ import MainPage from "./MainPage.js";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import Signupform from "./Signupform.js";
 import Login from "./Login.js";
-import Logout from "./Logout.js";
+import Landing from "./landing.js";
 function App() {
   const baseURL = process.env.REACT_APP_API_HOST;
   return (
@@ -20,11 +20,11 @@ function App() {
           <Route path="/AboutUs" element={<AboutUs />} />
           <Route path="/Signupform" element={<Signupform />} />
           <Route path="/Login" element={<Login />} />
-          <Route path="/Logout" element={<Logout />} />
           <Route path="workouts">
             <Route index element={<WorkoutPage />} />
             <Route path="create" element={<CreateWorkout />} />
           </Route>
+          <Route path="/landing" element={<Landing />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
