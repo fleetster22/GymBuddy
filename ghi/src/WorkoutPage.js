@@ -5,6 +5,27 @@ export default function WorkoutPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  async function handleCompleteWorkout(workoutId) {
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/workouts/${workoutId}/complete",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (response.ok) {
+        setWorkouts((prevWorkouts) =>
+          prevWorkouts.filter((workout) => workout.id !== workoutId)
+        );
+      } else {
+        console.error("Failed to complete workout.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
@@ -49,6 +70,11 @@ export default function WorkoutPage() {
                   <p>Instructions: {exercise.instructions}</p>
                 </div>
               ))}
+              <div>
+                <button onClick={() => handleCompleteWorkout(workout.id)}>
+                  Complete Workout
+                </button>
+              </div>
             </div>
           </div>
         ))}
