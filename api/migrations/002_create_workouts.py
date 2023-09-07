@@ -8,6 +8,7 @@ steps = [
             difficulty VARCHAR(20),
             description VARCHAR(1000) NOT NULL,
             date DATE
+            completed BOOLEAN NOT NULL DEFAULT FALSE
         );
         """,
         # "Down" SQL statement

@@ -1,4 +1,3 @@
-from random import sample
 from pydantic import BaseModel
 from typing import List, Union, Optional
 from datetime import date
@@ -129,6 +128,24 @@ class WorkoutRepository:
             print(e)
             return False
 
+    def complete(self, workout_id: int) -> bool:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        UPDATE workouts
+                        SET completed = TRUE
+                        WHERE id = %s
+                        """,
+                        [workout_id],
+                    )
+                    return True
+        except Exception as e:
+            print(e)
+            return {"message": "Could not complete that workout"}
+            return False
+
     def update(
         self, workout_id: int, workout: WorkoutIn
     ) -> Union[WorkoutOut, Error]:
@@ -159,8 +176,6 @@ class WorkoutRepository:
             return {"message": "Could not update that workout"}
 
     def create(self, workout: WorkoutIn) -> Union[WorkoutOut, Error]:
-        # print("Hello World")
-        # print(workout)
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
