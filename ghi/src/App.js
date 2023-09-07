@@ -3,14 +3,14 @@ import { AuthProvider, useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import Nav from "./Nav.js";
 import CreateWorkout from "./CreateWorkout.js";
 import WorkoutPage from "./WorkoutPage.js";
-import About from "./About.js";
+import AboutUs from "./About.js";
 import MainPage from "./MainPage.js";
 import SignupForm from "./SignupForm.js";
 import Login from "./Login.js";
+import Landing from "./landing.js";
 
 const ProtectedRoute = ({ element }) => {
   const { token } = useAuthContext();
-
   if (!token) {
     return <Navigate to="/Login" replace />;
   }
@@ -32,16 +32,19 @@ function App() {
             path="/workouts/create"
             element={<ProtectedRoute element={<CreateWorkout />} />}
           />
+          <Route
+            path="/landing"
+            element={<ProtectedRoute element={<Landing />} />}
+          />
         </Routes>
         <Routes>
           <Route path="/MainPage" element={<MainPage />} />
-          <Route path="/AboutUs" element={<About />} />
-          <Route path="/Signupform" element={<SignupForm />} />
+          <Route path="/AboutUs" element={<AboutUs />} />
+          <Route path="/SignupForm" element={<SignupForm />} />
           <Route path="/Login" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
   );
 }
-
 export default App;

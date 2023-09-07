@@ -81,6 +81,27 @@ export default function WorkoutPage() {
     fetchUserData();
   }, [navigate, token]);
 
+  async function handleCompleteWorkout(workoutId) {
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/workouts/${workoutId}/complete",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (response.ok) {
+        setWorkouts((prevWorkouts) =>
+          prevWorkouts.filter((workout) => workout.id !== workoutId)
+        );
+      } else {
+        console.error("Failed to complete workout.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
