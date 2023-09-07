@@ -1,49 +1,35 @@
-import React, { useState, useEffect } from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  Navigate,
+  useLocation,
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+import { AuthProvider, useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import Nav from "./Nav.js";
 import CreateWorkout from "./CreateWorkout.js";
 import WorkoutPage from "./WorkoutPage.js";
 import AboutUs from "./About.js";
 import MainPage from "./MainPage.js";
-import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import Signupform from "./Signupform.js";
 import Login from "./Login.js";
 import Landing from "./landing.js";
 
-const ProtectedRoute = ({ children }) => {
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchToken = async () => {
-      setToken(localStorage.getItem("token"));
-
-      setLoading(false);
-    };
-    fetchToken();
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
+const ProtectedRoute = ({ element }) => {
+  const { token } = useAuthContext();
   if (!token) {
     return <Navigate to="/Login" replace />;
   }
-
-  return children;
+  return element;
 };
-
-const UnprotectedRoute = async ({ children }) => {
-  const token = localStorage.getItem("token");
+const UnprotectedRoute = ({ element }) => {
   const location = useLocation();
+  const { token } = useAuthContext();
   if (token) {
-    return <Navigate to="/MainPage" replace state={{ from: location }} />;
+    return <Navigate to="/" replace state={{ from: location }} />;
   }
-  return children;
+  return element;
 };
-
 function App() {
   const baseURL = process.env.REACT_APP_API_HOST;
   return (
@@ -51,21 +37,39 @@ function App() {
       <BrowserRouter>
         <Nav />
         <Routes>
-          <Route element={<UnprotectedRoute />}>
-            <Route path="/MainPage" element={<MainPage />} />
-            <Route path="/AboutUs" element={<AboutUs />} />
-            <Route path="/Signupform" element={<Signupform />} />
-            <Route path="/Login" element={<Login />} />
-          </Route>
-          <Route element={<ProtectedRoute />}>
-            <Route path="/workouts" element={<WorkoutPage />} />
-            <Route path="/workouts/create" element={<CreateWorkout />} />
-          </Route>
-          <Route path="/landing" element={<Landing />} />
+          <Route
+            path="/workouts"
+            element={<ProtectedRoute element={<WorkoutPage />} />}
+          />
+          <Route
+            path="/workouts/create"
+            element={<ProtectedRoute element={<CreateWorkout />} />}
+          />
+          <Route
+            path="/landing"
+            element={<ProtectedRoute element={<Landing />} />}
+          />
+        </Routes>
+        <Routes>
+          <Route
+            path="/MainPage"
+            element={<UnprotectedRoute element={<MainPage />} />}
+          />
+          <Route
+            path="/AboutUs"
+            element={<UnprotectedRoute element={<AboutUs />} />}
+          />
+          <Route
+            path="/Signupform"
+            element={<UnprotectedRoute element={<Signupform />} />}
+          />
+          <Route
+            path="/Login"
+            element={<UnprotectedRoute element={<Login />} />}
+          />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
   );
 }
-
 export default App;
