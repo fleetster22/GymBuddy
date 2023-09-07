@@ -26,5 +26,6 @@ app.include_router(
 )
 app.include_router(workouts.router, prefix="/api/workouts", tags=["workouts"])
 app.include_router(accounts.router, prefix="/api/accounts", tags=["Accounts"])
+app.include_router(auth.router, tags=["Auth"])
 
 app.include_router(authenticator.router, tags=["Login/Logout"])

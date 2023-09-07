@@ -1,4 +1,4 @@
-import { LogoutHandler, Welcome } from "./Auth";
+import { LogoutHandler, Welcome } from "./Auth.js";
 
 export default function Landing() {
   return (

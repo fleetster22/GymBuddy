@@ -22,14 +22,7 @@ const ProtectedRoute = ({ element }) => {
   }
   return element;
 };
-const UnprotectedRoute = ({ element }) => {
-  const location = useLocation();
-  const { token } = useAuthContext();
-  if (token) {
-    return <Navigate to="/" replace state={{ from: location }} />;
-  }
-  return element;
-};
+
 function App() {
   const baseURL = process.env.REACT_APP_API_HOST;
   return (
@@ -51,22 +44,10 @@ function App() {
           />
         </Routes>
         <Routes>
-          <Route
-            path="/MainPage"
-            element={<UnprotectedRoute element={<MainPage />} />}
-          />
-          <Route
-            path="/AboutUs"
-            element={<UnprotectedRoute element={<AboutUs />} />}
-          />
-          <Route
-            path="/SignupForm"
-            element={<UnprotectedRoute element={<SignupForm />} />}
-          />
-          <Route
-            path="/Login"
-            element={<UnprotectedRoute element={<Login />} />}
-          />
+          <Route path="/MainPage" element={<MainPage />} />
+          <Route path="/AboutUs" element={<AboutUs />} />
+          <Route path="/SignupForm" element={<SignupForm />} />
+          <Route path="/Login" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
