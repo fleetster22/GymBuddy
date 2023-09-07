@@ -2,7 +2,7 @@ import { useState } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import { useNavigate } from "react-router-dom";
 
-const Signupform = () => {
+const SignupForm = () => {
   const [password, setPassword] = useState("");
   const [first, setFirst] = useState("");
   const [last, setLast] = useState("");
@@ -85,4 +85,4 @@ const Signupform = () => {
   );
 };
 
-export default Signupform;
+export default SignupForm;

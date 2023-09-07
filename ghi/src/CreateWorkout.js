@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
 export default function CreateWorkout() {
   const navigate = useNavigate();
+  const { token } = useAuthContext();
 
   const [workout, setWorkout] = useState({
     name: "",
@@ -13,36 +15,39 @@ export default function CreateWorkout() {
   });
   const [exercises, setExercises] = useState([]);
 
-  useEffect(() => {
-    const getExercises = async () => {
-      try {
-        let url = "http://localhost:8000/api/exercises/filter";
+  const getExercises = async () => {
+    try {
+      let url = "http://localhost:8000/api/exercises/filter";
 
-        if (workout.difficulty || workout.type) {
-          const params = new URLSearchParams();
-          if (workout.difficulty) {
-            params.append("difficulty", workout.difficulty);
-          }
-          if (workout.type) {
-            params.append("exercise_type", workout.type);
-          }
-          url += `?${params.toString()}`;
+      if (workout.difficulty || workout.type) {
+        const params = new URLSearchParams();
+        if (workout.difficulty) {
+          params.append("difficulty", workout.difficulty);
         }
-
-        const exercisesResponse = await fetch(url);
-        if (exercisesResponse.ok) {
-          const exercisesData = await exercisesResponse.json();
-          setExercises(exercisesData);
-        } else {
-          console.log("There was a problem with the fetch operation.");
+        if (workout.type) {
+          params.append("exercise_type", workout.type);
         }
-      } catch (error) {
-        console.error("Failed fetching exercises:", error);
+        url += `?${params.toString()}`;
       }
-    };
 
+      const exercisesResponse = await fetch(url);
+      if (exercisesResponse.ok) {
+        const exercisesData = await exercisesResponse.json();
+        setExercises(exercisesData);
+      } else {
+        console.log("There was a problem with the fetch operation.");
+      }
+    } catch (error) {
+      console.error("Failed fetching exercises:", error);
+    }
     getExercises();
-  }, [workout]);
+  };
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/Login");
+    }
+  }, []);
 
   function handleWorkoutChange(e) {
     setWorkout({ ...workout, [e.target.name]: e.target.value });
@@ -50,6 +55,11 @@ export default function CreateWorkout() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    if (!token) {
+      console.error("Not authorized to submit workout.");
+      navigate("/Login");
+      return;
+    }
     const workout_data = {
       ...workout,
       exercises: exercises,
@@ -63,6 +73,7 @@ export default function CreateWorkout() {
           body: JSON.stringify(workout_data),
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );

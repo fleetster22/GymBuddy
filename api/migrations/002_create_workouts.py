@@ -7,7 +7,7 @@ steps = [
             name VARCHAR(100) NOT NULL,
             difficulty VARCHAR(20),
             description VARCHAR(1000) NOT NULL,
-            date DATE
+            date DATE,
             completed BOOLEAN NOT NULL DEFAULT FALSE
         );
         """,
