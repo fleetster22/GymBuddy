@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Nav from "Nav.js";
+import Nav from "./Nav.js";
 import CreateWorkout from "./CreateWorkout.js";
 import WorkoutPage from "./WorkoutPage.js";
 import AboutUs from "./About.js";
@@ -9,7 +9,7 @@ import MainPage from "./MainPage.js";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import Signupform from "./Signupform.js";
 import Login from "./Login.js";
-import Logout from "./Logout.js";
+import Landing from "./landing.js";
 
 const ProtectedRoute = ({ children }) => {
   const [token, setToken] = useState(null);

@@ -1,4 +1,4 @@
-import { LogoutHandler, Welcome } from "./components/Auth";
+import { LogoutHandler, Welcome } from "./Auth";
 
 export default function Landing() {
   return (
