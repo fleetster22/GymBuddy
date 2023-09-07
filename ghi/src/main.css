@@ -136,7 +136,7 @@ body {
   margin-right: 1.5rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 
 .btn:link, .btn:visited {

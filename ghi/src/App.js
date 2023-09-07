@@ -10,6 +10,7 @@ import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import Signupform from "./Signupform.js";
 import Login from "./Login.js";
 import Logout from "./Logout.js";
+import "./main.css";
 
 const ProtectedRoute = ({ children }) => {
   const [token, setToken] = useState(null);

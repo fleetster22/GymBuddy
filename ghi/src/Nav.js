@@ -18,7 +18,7 @@ export default function Nav() {
       <nav className="navigation__nav">
         <ul className="navigation__list">
           <li className="navigation__item">
-            <a href="/MainPage" className="navigation__link">
+            <a href="./MainPage" className="navigation__link">
               <span>Home</span>
             </a>
           </li>
