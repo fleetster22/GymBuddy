@@ -11,7 +11,7 @@ import CreateWorkout from "./CreateWorkout.js";
 import WorkoutPage from "./WorkoutPage.js";
 import AboutUs from "./About.js";
 import MainPage from "./MainPage.js";
-import Signupform from "./Signupform.js";
+import SignupForm from "./SignupForm.js";
 import Login from "./Login.js";
 import Landing from "./landing.js";
 
@@ -60,8 +60,8 @@ function App() {
             element={<UnprotectedRoute element={<AboutUs />} />}
           />
           <Route
-            path="/Signupform"
-            element={<UnprotectedRoute element={<Signupform />} />}
+            path="/SignupForm"
+            element={<UnprotectedRoute element={<SignupForm />} />}
           />
           <Route
             path="/Login"
