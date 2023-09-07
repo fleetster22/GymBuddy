@@ -3,7 +3,7 @@ import useToken from "@galvanize-inc/jwtdown-for-react";
 import { useNavigate } from "react-router-dom";
 import "./main.css";
 
-const Signupform = () => {
+const SignupForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [first, setFirst] = useState("");
@@ -28,7 +28,7 @@ const Signupform = () => {
     e.target.reset();
     navigate("/");
   };
-  console.log(Signupform);
+  console.log(SignupForm);
   return (
     <div className="form">
       <h3 className="form__header">
@@ -89,4 +89,4 @@ const Signupform = () => {
   );
 };
 
-export default Signupform;
+export default SignupForm;

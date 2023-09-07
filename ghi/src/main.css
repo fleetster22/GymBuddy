@@ -121,7 +121,8 @@ body {
   animation-duration: 3s;
 }
 .about__heading--sub {
-  display: block;
+  display: flex;
+  justify-content: center;
   font-size: 3rem;
   font-weight: 700;
   letter-spacing: 1.75rem;
@@ -137,6 +138,75 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.detail {
+  font-size: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 4.5rem;
+}
+
+.description {
+  background-image: linear-gradient(to right bottom, #f4f1de, #f2cc8f);
+  box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.3);
+  padding: 2rem 10rem 2rem 8rem;
+  flex: 0 0 60%;
+  display: flex;
+  justify-content: center;
+  border-radius: 100px;
+  text-align: center;
+  margin-bottom: 4.5rem;
+}
+.description__secondary {
+  background-image: linear-gradient(to right bottom, #f2cc8f, #e07a5f);
+  box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.3);
+  padding: 2rem 10rem 2rem 10rem;
+  flex: 0 0 60%;
+  margin: 4.5rem;
+  border-radius: 100px;
+  text-align: center;
+}
+.description__tertiary {
+  background-image: linear-gradient(to right bottom, #f4f1de, #f2cc8f);
+  box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.3);
+  padding: 1rem;
+  flex: 0 0 60%;
+  display: flex;
+  justify-content: center;
+  border-radius: 100px;
+  text-align: center;
+  margin-left: 20rem;
+  margin-right: 20rem;
+  margin-bottom: 4.5rem;
+  letter-spacing: 3px;
+}
+
+.button-signup:link, .button-signup:visited {
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 3rem 8rem;
+  display: inline-block;
+  border-radius: 10rem;
+  transition: all 0.2s;
+  position: relative;
+  font-size: 1.5rem;
+  border: 1px solid #000;
+  cursor: pointer;
+}
+.button-signup:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 1rem 2rem rgba(129, 178, 154, 0.2);
+}
+.button-signup:hover::after {
+  transform: scaleX(1.4) scaleY(1.6);
+  opacity: 0;
+}
+.button-signup:active, .button-signup:focus {
+  outline: none;
+  transform: translateY(-1px);
+  box-shadow: 0 0.5rem 1rem rgba(129, 178, 154, 0.2);
 }
 
 .btn:link, .btn:visited {
@@ -179,9 +249,10 @@ body {
   background-color: #f2cc8f;
 }
 .btn--register {
-  background-color: #3d405b;
+  background-color: green;
   color: #fff;
   font-size: 1.5rem;
+  padding: 1rem;
 }
 .btn::after {
   content: "";
