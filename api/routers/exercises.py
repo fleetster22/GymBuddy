@@ -7,7 +7,6 @@ from queries.exercises import (
     ExerciseRepository,
 )
 
-# from authenticator import authenticator
 import os
 import requests
 

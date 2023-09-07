@@ -16,7 +16,7 @@ router = APIRouter()
 @router.post("/create", response_model=Union[WorkoutOut, Error])
 async def create_workout(
     workout: WorkoutIn,
-    # account_data: dict = Depends(authenticator.get_current_account_data),
+    account_data: dict = Depends(authenticator.get_current_account_data),
     workout_repo: WorkoutRepository = Depends(),
     exercise_repo: ExerciseRepository = Depends(),
 ):
@@ -123,3 +123,15 @@ def get_join_table(
     if workout is None:
         raise HTTPException(status_code=404, detail="Workout not found")
     return workout
+
+
+@router.post("/{workout_id}/complete", response_model=bool)
+def complete_workout(
+    workout_id: int,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+    workout_repo: WorkoutRepository = Depends(),
+) -> bool:
+    try:
+        return workout_repo.complete(workout_id)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
