@@ -4,8 +4,8 @@ export default function Header() {
   return (
     <header className="header">
       <div className="header__login-button">
-        <a href="./LoginForm" className="btn btn--green">
-          Log in to SCULPTR
+        <a href="./Login" className="header__login-button--text">
+          user login
         </a>
       </div>
       <div className="header__text-box">

@@ -15,7 +15,9 @@ body {
   box-sizing: border-box;
   background-image: linear-gradient(
     to right bottom,
-    $color-grey-light-2,
-    $color-grey-dark
+    $color-eggshell,
+    $color-delft-blue
   );
+  background-size: cover;
+  background-repeat: no-repeat;
 }

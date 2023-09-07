@@ -1,24 +1,18 @@
 .header {
   height: 33vh;
-  background-image: linear-gradient(
-    to right bottom,
-    rgba($color-delft-blue, 0.8),
-    rgba($color-cambridge-blue, 0.8)
-  );
-  background-size: cover;
-  background-position: top;
-  position: relative;
 
-  clip-path: polygon(
-    20% 0%,
-    80% 0%,
-    100% 20%,
-    100% 80%,
-    80% 100%,
-    20% 100%,
-    0% 80%,
-    0% 20%
-  );
+  background-image: linear-gradient(
+      to right bottom,
+      rgba($color-eggshell, 0.8),
+      rgba($color-cambridge-blue, 0.8)
+    ),
+    url(../public/hero.jpg);
+  background-size: cover;
+  background-position: relative;
+  position: relative;
+  border: 0.5px solid $color-delft-blue;
+  border-radius: 60px;
+  margin-bottom: 8rem;
 
   &__text-box {
     position: absolute;
@@ -26,11 +20,33 @@
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
+
+    padding-top: 1rem;
   }
 
   &__login-button {
+    background-color: $color-white;
+    height: 7rem;
+    width: 7rem;
     position: absolute;
-    top: 40%;
-    left: 40%;
+    top: 10%;
+    left: 2%;
+    border-radius: 50%;
+    z-index: 2000;
+    box-shadow: 0 1rem 3rem rgba($color-delft-blue, 0.1);
+    text-align: center;
+    cursor: pointer;
+
+    &--text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.5rem;
+      text-decoration: none;
+      color: $color-delft-blue;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
   }
 }

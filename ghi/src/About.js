@@ -2,9 +2,9 @@ import React from "react";
 
 export default function About() {
   return (
-    <div>
-      <h1>About Us</h1>
-      <ol>
+    <div className="about">
+      <h1 className="about__heading--main">About Us</h1>
+      <ul>
         <li>
           Welcome to Sculptr, the ultimate fitness app that empowers you to
           craft your dream physique by selecting and exploring exercises
@@ -12,7 +12,7 @@ export default function About() {
           dedicated to revolutionizing your fitness journey, offering a unique
           platform that puts you in control of sculpting your body.
         </li>
-        <li>Our Mission</li>
+        <h2 className="about__heading--sub">Our Mission</h2>
         <li>
           Our mission at Sculptr is to provide individuals with a dynamic and
           personalized fitness experience. We understand that everyone's fitness
@@ -22,7 +22,7 @@ export default function About() {
           just starting your wellness journey, Sculptr is here to guide you
           every step of the way.
         </li>
-        <li>How It Works</li>
+        <h2 className="about__heading--sub">How It Works</h2>
         <li>
           Sculptr makes achieving your fitness aspirations a breeze. Here's how
           it works: 1. Choose Your Difficulty: Begin by selecting your preferred
@@ -45,7 +45,7 @@ export default function About() {
         <li>
           Shape Your Body. Shape Your Future. Shape Your Way with Sculptr.
         </li>
-      </ol>
+      </ul>
     </div>
   );
 }

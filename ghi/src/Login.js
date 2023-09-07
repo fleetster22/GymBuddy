@@ -17,24 +17,24 @@ const Login = () => {
       <h3 className="form__header">Login to begin your workout</h3>
       <div className="form__content">
         <form onSubmit={(e) => handleSubmit(e)}>
-          <div className="mb-3">
-            <label className="form__label">Your email address</label>
-            <input
-              name="username"
-              type="text"
-              className="form__input"
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label className="form__label">Password</label>
-            <input
-              name="password"
-              type="password"
-              className="form__input"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
+          <label className="form__label">Your email address</label>
+          <input
+            name="username"
+            type="text"
+            required
+            className="form__input"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+
+          <label className="form__label">Password</label>
+          <input
+            name="password"
+            type="password"
+            required
+            className="form__input"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
           <div className="form__button">
             <input
               className="btn btn--register"

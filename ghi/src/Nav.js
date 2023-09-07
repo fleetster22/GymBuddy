@@ -28,7 +28,7 @@ export default function Nav() {
             </a>
           </li>
           <li className="navigation__item">
-            <a href="./create" className="navigation__link">
+            <a href="./CreateWorkout" className="navigation__link">
               <span>Create a workout</span>
             </a>
           </li>

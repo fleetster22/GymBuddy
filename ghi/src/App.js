@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CreateWorkout from "./CreateWorkout.js";
 import WorkoutPage from "./WorkoutPage.js";
 import Nav from "./Nav.js";
-import AboutUs from "./About.js";
+import About from "./About.js";
 import MainPage from "./MainPage.js";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import Signupform from "./Signupform.js";
@@ -18,12 +18,12 @@ function App() {
 
         <Routes>
           <Route path="/MainPage" element={<MainPage />} />
-          <Route path="/AboutUs" element={<AboutUs />} />
+          <Route path="/About" element={<About />} />
           <Route path="/Signupform" element={<Signupform />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/Logout" element={<Logout />} />
           <Route path="/workouts" element={<WorkoutPage />} />
-          <Route path="/workouts/create" element={<CreateWorkout />} />
+          <Route path="/CreateWorkout" element={<CreateWorkout />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
