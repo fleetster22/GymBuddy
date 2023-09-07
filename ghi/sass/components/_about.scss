@@ -29,6 +29,13 @@
   }
 
   &__item {
-    border: ;
+    font-size: 1.4rem;
+    list-style: none;
+    margin-top: 1.5rem;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
   }
 }
