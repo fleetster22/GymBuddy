@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import useToken, { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
+import useToken from "@galvanize-inc/jwtdown-for-react";
 import { Link } from "react-router-dom";
 
 export function LogoutHandler() {
@@ -81,6 +81,14 @@ export function Welcome(props) {
 
   return (
     <div>
+      {error ? (
+        <p>Error: {error.message}</p>
+      ) : (
+        <>
+          <p>Welcome, {userName}!</p>
+          <CreateWorkoutLink token={token} />{" "}
+        </>
+      )}
       {error ? (
         <p>Error: {error.message}</p>
       ) : (

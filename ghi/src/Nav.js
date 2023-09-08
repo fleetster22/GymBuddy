@@ -13,7 +13,9 @@ export default function Nav() {
         <span className="navigation_icon">&nbsp;</span>
         <p className="navigation__button--text">MENU</p>
       </label>
+
       <div className="navigation__background">&nbsp;</div>
+
       <nav className="navigation__nav">
         <ul className="navigation__list">
           <li className="navigation__item">
@@ -27,7 +29,7 @@ export default function Nav() {
           </li>
           <li className="navigation__item">
             <Link
-              to="./About"
+              to="/About"
               reloadDocument={true}
               className="navigation__link"
             >
@@ -45,7 +47,7 @@ export default function Nav() {
           </li>
           <li className="navigation__item">
             <Link
-              to="./Login"
+              to="/Login"
               reloadDocument={true}
               className="navigation__link"
             >
