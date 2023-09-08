@@ -1,0 +1,44 @@
+.section-forms {
+  flex: 0 0 50%;
+  max-width: 120rem;
+  min-height: 15rem;
+  margin: 8rem auto;
+
+  background-image: linear-gradient(
+    to right bottom,
+    $color-eggshell,
+    $color-burnt-sienna
+  );
+  background-size: cover;
+  border-radius: 20px;
+  border: 1px solid $color-black;
+  box-shadow: 0 2rem 6rem rgba($color-black, 0.3);
+
+  @include respond(tab-port) {
+    padding: 10rem 0;
+  }
+}
+
+// <form onSubmit={(e) => handleSubmit(e)}>
+//           <div className="mb-3">
+//             <label className="form-label">Username:</label>
+//             <input
+//               name="username"
+//               type="text"
+//               className="form-control"
+//               onChange={(e) => setUsername(e.target.value)}
+//             />
+//           </div>
+//           <div className="mb-3">
+//             <label className="form-label">Password:</label>
+//             <input
+//               name="password"
+//               type="password"
+//               className="form-control"
+//               onChange={(e) => setPassword(e.target.value)}
+//             />
+//           </div>
+//           <div>
+//             <input className="btn btn-primary" type="submit" value="Login" />
+//           </div>
+//         </form>
