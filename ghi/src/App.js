@@ -1,10 +1,4 @@
-import {
-  Navigate,
-  useLocation,
-  BrowserRouter,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider, useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import Nav from "./Nav.js";
 import CreateWorkout from "./CreateWorkout.js";

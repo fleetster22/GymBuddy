@@ -33,3 +33,11 @@
 **9/5/23** Worked with Phil last Thursday to help me debug the back end. He pointed me in right direction and I worked on it over the 4 day weekend to get it running. Today I tackled the Create Workout page. It is working and redirecting after form submission. Tomorrow, I will conquer the Workouts page.
 
 ---
+
+**9/7/23** I spent most of today on front end auth. While waiting for Priya to push, I started learning Matplotlib in case we have time to put the progress chart in the app before it's due.
+
+---
+
+**9/8/23** Fingers crossed I get the remainder of front-end auth working and I will write some unit tests.
+
+---
