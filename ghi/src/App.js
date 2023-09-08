@@ -1,10 +1,4 @@
-import {
-  Navigate,
-  useLocation,
-  BrowserRouter,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider, useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import Nav from "./Nav.js";
 import CreateWorkout from "./CreateWorkout.js";
@@ -41,7 +35,6 @@ function App() {
             path="/landing"
             element={<ProtectedRoute element={<Landing />} />}
           />
-
           <Route path="/MainPage" element={<MainPage />} />
           <Route path="/About" element={<About />} />
           <Route path="/SignupForm" element={<SignupForm />} />

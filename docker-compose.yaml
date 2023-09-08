@@ -1,8 +1,6 @@
 volumes:
   sculptr:
     external: true
-  pg-admin:
-    external: true
 services:
   fastapi:
     environment:
@@ -43,13 +41,3 @@ services:
       HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
       REACT_APP_API_HOST: ${REACT_APP_API_HOST}
-  pg-admin:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: sculptr@sculptr.com
-      PGADMIN_DEFAULT_PASSWORD: sculptr
-      PGADMIN_DISABLE_POSTFIX: 1
-    volumes:
-      - ./pgadmin:/var/lib/pgadmin
-    ports:
-      - "8082:80"
