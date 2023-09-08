@@ -82,15 +82,8 @@ async def update_account(
         authenticator.get_current_account_data
     ),
     repo: AccountQueries = Depends(),
-<<<<<<< HEAD
-<<<<<<< HEAD
-    ) -> AccountOut:
-=======
+
 ) -> AccountOut:
->>>>>>> 1b3ef1dd5112ebe16c95fb87aa0329a9b3e46de9
-=======
-) -> AccountOut:
->>>>>>> ca27da871de74be01d6e4ecbaf70f8d4e53f32f9
     if not current_account:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -106,24 +99,12 @@ async def update_account(
     return update_account
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-@router.delete("/delete")
-async def delete_account(
-    current_account: AccountToken = Depends(authenticator.get_current_account_data),
-=======
-=======
->>>>>>> ca27da871de74be01d6e4ecbaf70f8d4e53f32f9
 @router.delete("/delete")
 async def delete_account(
     current_account: AccountToken = Depends(
         authenticator.get_current_account_data
-    ),
-<<<<<<< HEAD
->>>>>>> 1b3ef1dd5112ebe16c95fb87aa0329a9b3e46de9
-=======
->>>>>>> ca27da871de74be01d6e4ecbaf70f8d4e53f32f9
+        ),
     repo: AccountQueries = Depends(),
 ) -> AccountOut:
     if not current_account:

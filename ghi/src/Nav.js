@@ -1,4 +1,5 @@
 import "./main.css";
+import { Link } from "react-router-dom";
 
 export default function Nav() {
   return (
@@ -18,29 +19,40 @@ export default function Nav() {
       <nav className="navigation__nav">
         <ul className="navigation__list">
           <li className="navigation__item">
-            <a href="/MainPage" className="navigation__link">
+            <Link
+              to="/MainPage"
+              reloadDocument={true}
+              className="navigation__link"
+            >
               <span>Home</span>
-            </a>
+            </Link>
           </li>
           <li className="navigation__item">
-            <a href="./About" className="navigation__link">
+            <Link
+              to="./About"
+              reloadDocument={true}
+              className="navigation__link"
+            >
               <span>About Us</span>
-            </a>
+            </Link>
           </li>
           <li className="navigation__item">
-            <a href="./CreateWorkout" className="navigation__link">
-              <span>Create a workout</span>
-            </a>
-          </li>
-          <li className="navigation__item">
-            <a href="./SignupForm" className="navigation__link">
+            <Link
+              to="/SignupForm"
+              reloadDocument={true}
+              className="navigation__link"
+            >
               <span>Sign Up</span>
-            </a>
+            </Link>
           </li>
           <li className="navigation__item">
-            <a href="./Login" className="navigation__link">
+            <Link
+              to="./Login"
+              reloadDocument={true}
+              className="navigation__link"
+            >
               <span>Login</span>
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>

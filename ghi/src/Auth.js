@@ -41,7 +41,7 @@ export function Welcome(props) {
         const response = await fetch(`http://localhost:8000/token`, {
           method: "GET",
           headers: {
-            Authorization: `Bearer${token}`,
+            Authorization: `Bearer ${token}`,
           },
           credentials: "include",
         });
