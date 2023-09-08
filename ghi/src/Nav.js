@@ -28,12 +28,12 @@ export default function Nav() {
             </a>
           </li>
           <li className="navigation__item">
-            <a href="./exercises" className="navigation__link">
+            <a href="./workouts/create" className="navigation__link">
               <span>Create a workout</span>
             </a>
           </li>
           <li className="navigation__item">
-            <a href="./Signupform" className="navigation__link">
+            <a href="./SignupForm" className="navigation__link">
               <span>Sign Up</span>
             </a>
           </li>
