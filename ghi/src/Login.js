@@ -42,7 +42,7 @@ const Login = () => {
             <input
               className="btn btn--register"
               type="submit"
-              value="🏋️ Login 🏋️"
+              value="👉  Login  👈"
             />
           </div>
         </form>

@@ -46,12 +46,10 @@ export default function About() {
         <li className="description__tertiary">
           Shape Your Body. Shape Your Future. Shape Your Way with Sculptr.
         </li>
-        <div className="form__button">
-          <div className="btn btn--register">
-            <a href="./SignupForm" className="btn btn-signup">
-              Sign Up! 🎆
-            </a>
-          </div>
+        <div className="about-button">
+          <a href="./SignupForm" className="about-button__click">
+            🎆 Sign Up Today! 🎆
+          </a>
         </div>
       </ul>
     </div>

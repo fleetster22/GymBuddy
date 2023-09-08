@@ -100,35 +100,24 @@
   }
 }
 
-.button-signup {
-  &:link,
-  &:visited {
-    text-transform: uppercase;
+.about-button {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  padding-top: 6px;
+
+  &__click {
+    background-color: $color-cambridge-blue;
+    color: $color-white;
+    font-size: 3rem;
     text-decoration: none;
-    padding: 3rem 8rem;
-    display: inline-block;
-    border-radius: 10rem;
-    transition: all 0.2s;
-    position: relative;
-    font-size: 1.5rem;
-    border: 1px solid $color-black;
-    cursor: pointer;
+    padding: 1rem;
+    border: 1px solid $color-delft-blue;
+    border-radius: 25px;
   }
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 1rem 2rem rgba($color-cambridge-blue, 0.2);
-
-    &::after {
-      transform: scaleX(1.4) scaleY(1.6);
-      opacity: 0;
-    }
-  }
-
-  &:active,
-  &:focus {
-    outline: none;
-    transform: translateY(-1px);
-    box-shadow: 0 0.5rem 1rem rgba($color-cambridge-blue, 0.2);
+    box-shadow: 1 1rem 2rem rgba($color-cambridge-blue, 0.2);
   }
 }

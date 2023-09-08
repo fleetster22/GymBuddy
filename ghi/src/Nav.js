@@ -18,7 +18,7 @@ export default function Nav() {
       <nav className="navigation__nav">
         <ul className="navigation__list">
           <li className="navigation__item">
-            <a href="./MainPage" className="navigation__link">
+            <a href="/MainPage" className="navigation__link">
               <span>Home</span>
             </a>
           </li>
@@ -33,7 +33,7 @@ export default function Nav() {
             </a>
           </li>
           <li className="navigation__item">
-            <a href="./Signupform" className="navigation__link">
+            <a href="./SignupForm" className="navigation__link">
               <span>Sign Up</span>
             </a>
           </li>

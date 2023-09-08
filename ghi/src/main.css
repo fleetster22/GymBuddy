@@ -183,30 +183,24 @@ body {
   letter-spacing: 3px;
 }
 
-.button-signup:link, .button-signup:visited {
-  text-transform: uppercase;
+.about-button {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  padding-top: 6px;
+}
+.about-button__click {
+  background-color: #81b29a;
+  color: #fff;
+  font-size: 3rem;
   text-decoration: none;
-  padding: 3rem 8rem;
-  display: inline-block;
-  border-radius: 10rem;
-  transition: all 0.2s;
-  position: relative;
-  font-size: 1.5rem;
-  border: 1px solid #000;
-  cursor: pointer;
+  padding: 1rem;
+  border: 1px solid #3d405b;
+  border-radius: 25px;
 }
-.button-signup:hover {
+.about-button:hover {
   transform: translateY(-3px);
-  box-shadow: 0 1rem 2rem rgba(129, 178, 154, 0.2);
-}
-.button-signup:hover::after {
-  transform: scaleX(1.4) scaleY(1.6);
-  opacity: 0;
-}
-.button-signup:active, .button-signup:focus {
-  outline: none;
-  transform: translateY(-1px);
-  box-shadow: 0 0.5rem 1rem rgba(129, 178, 154, 0.2);
+  box-shadow: 1 1rem 2rem rgba(129, 178, 154, 0.2);
 }
 
 .btn:link, .btn:visited {
@@ -253,6 +247,7 @@ body {
   color: #fff;
   font-size: 1.5rem;
   padding: 1rem;
+  border-radius: 25px;
 }
 .btn::after {
   content: "";
