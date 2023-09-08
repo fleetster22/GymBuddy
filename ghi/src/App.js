@@ -5,7 +5,7 @@ import CreateWorkout from "./CreateWorkout.js";
 import WorkoutPage from "./WorkoutPage.js";
 import About from "./About.js";
 import MainPage from "./MainPage.js";
-import SignupForm from "./Signupform.js";
+import SignupForm from "./SignupForm.js";
 import Login from "./Login.js";
 import Landing from "./landing.js";
 import Footer from "./Footer.js";
