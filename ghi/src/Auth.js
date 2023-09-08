@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import useToken, { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
+import useToken from "@galvanize-inc/jwtdown-for-react";
 
 export function LogoutHandler() {
   const { logout } = useToken();
@@ -41,7 +41,7 @@ export function Welcome(props) {
         const response = await fetch(`http://localhost:8000/token`, {
           method: "GET",
           headers: {
-            Authorization: `Bearer${token}`,
+            Authorization: `Bearer ${token}`,
           },
           credentials: "include",
         });
@@ -75,7 +75,7 @@ export function Welcome(props) {
       }
     };
     fetchUserData();
-  }, [props.accountId]);
+  }, [props.accountId, token, userName]);
 
   return (
     <div>
