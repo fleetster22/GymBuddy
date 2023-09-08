@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
+import { Link } from "react-router-dom";
 
 export function LogoutHandler() {
   const { logout } = useToken();
@@ -32,7 +33,6 @@ export function Welcome(props) {
   const [userName, setUserName] = useState("");
   const [error, setError] = useState(null);
   const { token } = useToken();
-  console.log("TOKENA", useToken());
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -56,6 +56,7 @@ export function Welcome(props) {
       } catch (err) {
         setError(err);
       }
+
       if (id) {
         console.log("HERE", id);
         try {
@@ -67,21 +68,51 @@ export function Welcome(props) {
             setUserName(userData.first_name);
             console.log("USERNAME", userName);
           } else {
-            throw new Error("Failed to fetch user data.");
+            throw Error("Failed to fetch user data.");
           }
         } catch (err) {
           setError(err);
         }
       }
     };
+
     fetchUserData();
-  }, [props.accountId, token, userName]);
+  }, [props.accountId, token]);
 
   return (
     <div>
-      {error ? <p>Error: {error.message}</p> : <p>Welcome, {userName}!</p>}
+      {error ? (
+        <p>Error: {error.message}</p>
+      ) : (
+        <>
+          <p>Welcome, {userName}!</p>
+          <CreateWorkoutLink token={token} />{" "}
+        </>
+      )}
+      {error ? (
+        <p>Error: {error.message}</p>
+      ) : (
+        <>
+          <p>Welcome, {userName}!</p>
+          <CreateWorkoutLink token={token} />{" "}
+        </>
+      )}
     </div>
   );
+}
+
+export function CreateWorkoutLink({ token }) {
+  if (token) {
+    return (
+      <li className="navigation__item">
+        <Link to="../workouts/create" className="navigation__link">
+          <span>Create a workout</span>
+        </Link>
+      </li>
+    );
+  } else {
+    return null;
+  }
 }
 
 export default Welcome;

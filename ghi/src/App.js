@@ -5,9 +5,10 @@ import CreateWorkout from "./CreateWorkout.js";
 import WorkoutPage from "./WorkoutPage.js";
 import About from "./About.js";
 import MainPage from "./MainPage.js";
-import SignupForm from "./SignupForm.js";
+import SignupForm from "./Signupform.js";
 import Login from "./Login.js";
 import Landing from "./landing.js";
+import Footer from "./Footer.js";
 
 const ProtectedRoute = ({ element }) => {
   const { token } = useAuthContext();
@@ -40,6 +41,7 @@ function App() {
           <Route path="/SignupForm" element={<SignupForm />} />
           <Route path="/Login" element={<Login />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </AuthProvider>
   );

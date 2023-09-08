@@ -6,10 +6,30 @@ export default function WorkoutPage() {
   const navigate = useNavigate();
 
   const [workouts, setWorkouts] = useState([]);
-  const [userName, setUserName] = useState({});
+  const [userName, setUserName] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { token } = useAuthContext();
+
+  useEffect(() => {
+    const fetchWorkouts = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/workouts");
+        if (response.ok) {
+          const data = await response.json();
+          setWorkouts(data);
+        } else {
+          throw new Error("Failed to fetch workouts.");
+        }
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWorkouts();
+  }, []);
 
   async function handleCompleteWorkout(workoutId) {
     try {
@@ -87,7 +107,7 @@ export default function WorkoutPage() {
 
   return (
     <div>
-      <h1>{userName}'s' Workouts</h1>
+      <h1>{userName}'s Workouts</h1>
       <div className="row">
         {workouts.map((workout) => (
           <div className="col-md-4" key={workout.id}>

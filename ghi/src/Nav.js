@@ -29,7 +29,7 @@ export default function Nav() {
           </li>
           <li className="navigation__item">
             <Link
-              to="./About"
+              to="/About"
               reloadDocument={true}
               className="navigation__link"
             >
@@ -47,7 +47,7 @@ export default function Nav() {
           </li>
           <li className="navigation__item">
             <Link
-              to="./Login"
+              to="/Login"
               reloadDocument={true}
               className="navigation__link"
             >
