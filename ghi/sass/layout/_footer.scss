@@ -1,0 +1,20 @@
+.footer {
+  background-image: linear-gradient(
+    to right bottom,
+    $color-eggshell,
+    $color-cambridge-blue
+  );
+  padding: 10rem 0;
+  font-size: 1.4rem;
+  color: $color-delft-blue;
+
+  &__logo-box {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  &__logo {
+    width: 15rem;
+    height: auto;
+  }
+}
