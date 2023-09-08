@@ -8,19 +8,11 @@ const Login = () => {
   const { login } = useToken();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const loginStatus = await login(username, password);
-      if (loginStatus) {
-        navigate("/landing");
-      } else {
-        console.log("Login failed");
-      }
-    } catch (error) {
-      console.error("Login failed:", error);
-    }
+    login(username, password);
     e.target.reset();
+    navigate("/landing");
   };
 
   return (
