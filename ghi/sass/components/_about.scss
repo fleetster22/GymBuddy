@@ -1,0 +1,123 @@
+.about {
+  list-style: square;
+  padding: 6rem;
+
+  &__heading {
+    color: $color-delft-blue;
+    text-transform: uppercase;
+    backface-visibility: hidden;
+    margin-bottom: 5rem;
+
+    &--main {
+      display: flex;
+      justify-content: center;
+      font-size: 6rem;
+      font-weight: 400;
+      letter-spacing: 2rem;
+      animation-name: moveInLeft;
+      animation-duration: 3s;
+    }
+
+    &--sub {
+      display: flex;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: 1.75rem;
+      animation-name: moveInRight;
+      animation-duration: 3s;
+    }
+  }
+
+  &__item {
+    font-size: 1.4rem;
+    list-style: none;
+    margin-top: 1.5rem;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+.detail {
+  font-size: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 4.5rem;
+}
+
+.description {
+  background-image: linear-gradient(
+    to right bottom,
+    $color-eggshell,
+    $color-sunset
+  );
+  box-shadow: $shadow-dark;
+  padding: 2rem 10rem 2rem 8rem;
+
+  flex: 0 0 60%;
+  display: flex;
+  justify-content: center;
+  border-radius: 100px;
+  text-align: center;
+  margin-bottom: 4.5rem;
+
+  &__secondary {
+    background-image: linear-gradient(
+      to right bottom,
+      $color-sunset,
+      $color-burnt-sienna
+    );
+    box-shadow: $shadow-dark;
+    padding: 2rem 10rem 2rem 10rem;
+
+    flex: 0 0 60%;
+    margin: 4.5rem;
+    border-radius: 100px;
+    text-align: center;
+  }
+
+  &__tertiary {
+    background-image: linear-gradient(
+      to right bottom,
+      $color-eggshell,
+      $color-sunset
+    );
+    box-shadow: $shadow-dark;
+    padding: 1rem;
+
+    flex: 0 0 60%;
+    display: flex;
+    justify-content: center;
+    border-radius: 100px;
+    text-align: center;
+    margin-left: 20rem;
+    margin-right: 20rem;
+    margin-bottom: 4.5rem;
+    letter-spacing: 3px;
+  }
+}
+
+.about-button {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  padding-top: 6px;
+
+  &__click {
+    background-color: $color-cambridge-blue;
+    color: $color-white;
+    font-size: 3rem;
+    text-decoration: none;
+    padding: 1rem;
+    border: 1px solid $color-delft-blue;
+    border-radius: 25px;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 1 1rem 2rem rgba($color-cambridge-blue, 0.2);
+  }
+}

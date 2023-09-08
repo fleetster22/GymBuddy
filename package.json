@@ -5,6 +5,7 @@
   "dependencies": {
     "@galvanize-inc/jwtdown-for-react": "^0.2.2",
     "@types/react-router-dom": "^5.3.3",
+    "font": "^0.0.4",
     "install": "^0.13.0",
     "npm": "^10.0.0",
     "react-router-dom": "6.3"

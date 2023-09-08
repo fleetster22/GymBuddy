@@ -1,19 +1,19 @@
 import React from "react";
 
-export default function AboutPage() {
+export default function About() {
   return (
-    <div>
-      <h1>About Us</h1>
-      <ol>
-        <li>
+    <div className="about">
+      <h1 className="about__heading--main">About Us</h1>
+      <ul className="detail">
+        <li className="description">
           Welcome to Sculptr, the ultimate fitness app that empowers you to
           craft your dream physique by selecting and exploring exercises
           tailored to your preferred difficulty level. At Sculptr, we're
           dedicated to revolutionizing your fitness journey, offering a unique
           platform that puts you in control of sculpting your body.
         </li>
-        <li>Our Mission</li>
-        <li>
+        <h2 className="about__heading--sub">Our Mission</h2>
+        <li className="description__secondary">
           Our mission at Sculptr is to provide individuals with a dynamic and
           personalized fitness experience. We understand that everyone's fitness
           goals and starting points are different. That's why we've developed an
@@ -22,8 +22,8 @@ export default function AboutPage() {
           just starting your wellness journey, Sculptr is here to guide you
           every step of the way.
         </li>
-        <li>How It Works</li>
-        <li>
+        <h2 className="about__heading--sub">How It Works</h2>
+        <li className="description__secondary">
           Sculptr makes achieving your fitness aspirations a breeze. Here's how
           it works: 1. Choose Your Difficulty: Begin by selecting your preferred
           difficulty level. Whether you're looking for a gentle start or a more
@@ -38,14 +38,20 @@ export default function AboutPage() {
           exercises and complete workouts. Sculptr provides you with insights
           into your journey, helping you stay motivated.
         </li>
-        <li>
+        <li className="description__tertiary">
           Download Sculptr today and embark on a new era of personalized fitness
           exploration.
         </li>
-        <li>
+
+        <li className="description__tertiary">
           Shape Your Body. Shape Your Future. Shape Your Way with Sculptr.
         </li>
-      </ol>
+        <div className="about-button">
+          <a href="./SignupForm" className="about-button__click">
+            🎆 Sign Up Today! 🎆
+          </a>
+        </div>
+      </ul>
     </div>
   );
 }
