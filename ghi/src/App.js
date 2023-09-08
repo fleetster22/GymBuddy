@@ -35,13 +35,8 @@ function App() {
             path="/landing"
             element={<ProtectedRoute element={<Landing />} />}
           />
-<<<<<<< HEAD
           <Route path="/" element={<MainPage />} />
-          <Route path="/AboutUs" element={<AboutUs />} />
-=======
-          <Route path="/MainPage" element={<MainPage />} />
           <Route path="/About" element={<About />} />
->>>>>>> main
           <Route path="/SignupForm" element={<SignupForm />} />
           <Route path="/Login" element={<Login />} />
         </Routes>

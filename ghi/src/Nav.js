@@ -17,54 +17,38 @@ export default function Nav() {
       <nav className="navigation__nav">
         <ul className="navigation__list">
           <li className="navigation__item">
-<<<<<<< HEAD
-            <Link to="/MainPage" className="navigation__link">
-=======
             <Link
               to="/MainPage"
               reloadDocument={true}
               className="navigation__link"
             >
->>>>>>> main
               <span>Home</span>
             </Link>
           </li>
           <li className="navigation__item">
-<<<<<<< HEAD
-            <Link to="/AboutUs" className="navigation__link">
-=======
             <Link
               to="./About"
               reloadDocument={true}
               className="navigation__link"
             >
->>>>>>> main
               <span>About Us</span>
             </Link>
           </li>
           <li className="navigation__item">
-<<<<<<< HEAD
-            <Link to="/SignupForm" className="navigation__link">
-=======
             <Link
               to="/SignupForm"
               reloadDocument={true}
               className="navigation__link"
             >
->>>>>>> main
               <span>Sign Up</span>
             </Link>
           </li>
           <li className="navigation__item">
-<<<<<<< HEAD
-            <Link to="/Login" className="navigation__link">
-=======
             <Link
               to="./Login"
               reloadDocument={true}
               className="navigation__link"
             >
->>>>>>> main
               <span>Login</span>
             </Link>
           </li>
