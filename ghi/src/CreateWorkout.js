@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
@@ -15,7 +15,7 @@ export default function CreateWorkout() {
   });
   const [exercises, setExercises] = useState([]);
 
-  const getExercises = async () => {
+  const getExercises = useCallback(async () => {
     try {
       let url = "http://localhost:8000/api/exercises/filter";
 
@@ -40,14 +40,19 @@ export default function CreateWorkout() {
     } catch (error) {
       console.error("Failed fetching exercises:", error);
     }
-    getExercises();
-  };
+  }, [workout.difficulty, workout.type]);
 
   useEffect(() => {
     if (!token) {
       navigate("/Login");
     }
-  }, []);
+  }, [navigate, token]);
+
+  useEffect(() => {
+    if (workout.difficulty || workout.type) {
+      getExercises();
+    }
+  }, [workout.difficulty, workout.type, getExercises]);
 
   function handleWorkoutChange(e) {
     setWorkout({ ...workout, [e.target.name]: e.target.value });
