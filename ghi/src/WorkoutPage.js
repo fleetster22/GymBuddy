@@ -11,6 +11,26 @@ export default function WorkoutPage() {
   const [error, setError] = useState(null);
   const { token } = useAuthContext();
 
+  useEffect(() => {
+    const fetchWorkouts = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/workouts");
+        if (response.ok) {
+          const data = await response.json();
+          setWorkouts(data);
+        } else {
+          throw new Error("Failed to fetch workouts.");
+        }
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWorkouts();
+  }, []);
+
   async function handleCompleteWorkout(workoutId) {
     try {
       const response = await fetch(

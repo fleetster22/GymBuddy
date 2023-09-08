@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
+import { Link } from "react-router-dom";
 
 export function LogoutHandler() {
   const { logout } = useToken();
@@ -80,6 +81,8 @@ export function Welcome(props) {
     };
 
     // Call fetchUserData here, and don't include it in the dependency array
+
+    // Call fetchUserData here, and don't include it in the dependency array
     fetchUserData();
 <<<<<<< HEAD
   }, [props.accountId, token]);
@@ -97,8 +100,30 @@ export function Welcome(props) {
           <CreateWorkoutLink token={token} />{" "}
         </>
       )}
+      {error ? (
+        <p>Error: {error.message}</p>
+      ) : (
+        <>
+          <p>Welcome, {userName}!</p>
+          <CreateWorkoutLink token={token} />{" "}
+        </>
+      )}
     </div>
   );
+}
+
+export function CreateWorkoutLink({ token }) {
+  if (token) {
+    return (
+      <li className="navigation__item">
+        <Link to="../workouts/create" className="navigation__link">
+          <span>Create a workout</span>
+        </Link>
+      </li>
+    );
+  } else {
+    return null;
+  }
 }
 
 export function CreateWorkoutLink({ token }) {
