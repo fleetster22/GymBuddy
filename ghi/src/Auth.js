@@ -41,11 +41,7 @@ export function Welcome(props) {
         const response = await fetch(`http://localhost:8000/token`, {
           method: "GET",
           headers: {
-<<<<<<< HEAD
-            Authorization: `Bearer ${token}`, // Add a space after Bearer
-=======
             Authorization: `Bearer ${token}`,
->>>>>>> main
           },
           credentials: "include",
         });
@@ -84,11 +80,7 @@ export function Welcome(props) {
 
     // Call fetchUserData here, and don't include it in the dependency array
     fetchUserData();
-<<<<<<< HEAD
-  }, [props.accountId, token]);
-=======
-  }, [props.accountId, token, userName]);
->>>>>>> main
+  }, [props.accountId]);
 
   return (
     <div>
@@ -110,20 +102,6 @@ export function Welcome(props) {
       )}
     </div>
   );
-}
-
-export function CreateWorkoutLink({ token }) {
-  if (token) {
-    return (
-      <li className="navigation__item">
-        <Link to="../workouts/create" className="navigation__link">
-          <span>Create a workout</span>
-        </Link>
-      </li>
-    );
-  } else {
-    return null;
-  }
 }
 
 export function CreateWorkoutLink({ token }) {
