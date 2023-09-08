@@ -1,11 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-<<<<<<< HEAD
-import useToken, { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
-import { Link } from "react-router-dom";
-=======
 import useToken from "@galvanize-inc/jwtdown-for-react";
->>>>>>> main
 
 export function LogoutHandler() {
   const { logout } = useToken();
