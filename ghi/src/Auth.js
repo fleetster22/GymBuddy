@@ -76,11 +76,8 @@ export function Welcome(props) {
       }
     };
 
-    // Call fetchUserData here, and don't include it in the dependency array
-
-    // Call fetchUserData here, and don't include it in the dependency array
     fetchUserData();
-  }, [props.accountId]);
+  }, [props.accountId, token]);
 
   return (
     <div>
