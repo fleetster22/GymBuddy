@@ -1,7 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
+<<<<<<< HEAD
 import useToken, { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import { Link } from "react-router-dom";
+=======
+import useToken from "@galvanize-inc/jwtdown-for-react";
+>>>>>>> main
 
 export function LogoutHandler() {
   const { logout } = useToken();
@@ -41,7 +45,11 @@ export function Welcome(props) {
         const response = await fetch(`http://localhost:8000/token`, {
           method: "GET",
           headers: {
+<<<<<<< HEAD
             Authorization: `Bearer ${token}`, // Add a space after Bearer
+=======
+            Authorization: `Bearer ${token}`,
+>>>>>>> main
           },
           credentials: "include",
         });
@@ -78,7 +86,11 @@ export function Welcome(props) {
 
     // Call fetchUserData here, and don't include it in the dependency array
     fetchUserData();
+<<<<<<< HEAD
   }, [props.accountId, token]);
+=======
+  }, [props.accountId, token, userName]);
+>>>>>>> main
 
   return (
     <div>

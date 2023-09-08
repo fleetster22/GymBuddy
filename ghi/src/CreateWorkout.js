@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
@@ -15,7 +15,7 @@ export default function CreateWorkout() {
   });
   const [exercises, setExercises] = useState([]);
 
-  const getExercises = async () => {
+  const getExercises = useCallback(async () => {
     try {
       let url = "http://localhost:8000/api/exercises/filter";
 
@@ -40,14 +40,19 @@ export default function CreateWorkout() {
     } catch (error) {
       console.error("Failed fetching exercises:", error);
     }
-    getExercises();
-  };
+  }, [workout.difficulty, workout.type]);
 
   useEffect(() => {
     if (!token) {
       navigate("/Login");
     }
-  }, []);
+  }, [navigate, token]);
+
+  useEffect(() => {
+    if (workout.difficulty || workout.type) {
+      getExercises();
+    }
+  }, [workout.difficulty, workout.type, getExercises]);
 
   function handleWorkoutChange(e) {
     setWorkout({ ...workout, [e.target.name]: e.target.value });
@@ -88,23 +93,24 @@ export default function CreateWorkout() {
   }
 
   return (
-    <div>
-      <h1>Create Workout</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Enter a name for your workout
+    <div className="form">
+      <h1 className="form__header">Create a new Workout</h1>
+      <div className="form__content">
+        <form onSubmit={handleSubmit}>
+          <label className="form__label">Enter a name for your workout</label>
           <input
             type="text"
             name="name"
             required
+            className="form__input"
             value={workout.name}
             onChange={handleWorkoutChange}
             placeholder="Workout name"
           />
-        </label>
-        <label>
-          Description:
+
+          <label className="form__label">Description</label>
           <input
+            className="form__input"
             type="text"
             name="description"
             required
@@ -112,19 +118,19 @@ export default function CreateWorkout() {
             value={workout.description}
             onChange={handleWorkoutChange}
           />
-        </label>
-        <label>
-          Workout Date:
+
+          <label className="form__label">Workout Date</label>
           <input
+            className="form__input"
             type="date"
             name="date"
             value={workout.date}
             onChange={handleWorkoutChange}
           />
-        </label>
-        <label>
-          Difficulty:
+
+          <label className="form__label">Difficulty</label>
           <select
+            className="form__input"
             name="difficulty"
             value={workout.difficulty}
             onChange={handleWorkoutChange}
@@ -134,10 +140,10 @@ export default function CreateWorkout() {
             <option value="intermediate">Intermediate</option>
             <option value="expert">Expert</option>
           </select>
-        </label>
-        <label>
-          Type:
+
+          <label className="form__label">Type</label>
           <select
+            className="form__input"
             name="type"
             value={workout.type}
             onChange={handleWorkoutChange}
@@ -151,9 +157,15 @@ export default function CreateWorkout() {
             <option value="stretching">Stretching</option>
             <option value="strongman">Strongman</option>
           </select>
-        </label>
-        <input type="submit" value="Create Workout" />
-      </form>
+          <div className="form__button">
+            <input
+              className="btn btn--register"
+              type="submit"
+              value="Create Workout"
+            />
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
