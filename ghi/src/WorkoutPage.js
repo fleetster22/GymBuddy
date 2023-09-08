@@ -6,7 +6,7 @@ export default function WorkoutPage() {
   const navigate = useNavigate();
 
   const [workouts, setWorkouts] = useState([]);
-  const [userName, setUserName] = useState({});
+  const [userName, setUserName] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { token } = useAuthContext();
@@ -133,7 +133,7 @@ export default function WorkoutPage() {
 
   return (
     <div>
-      <h1>{userName}'s' Workouts</h1>
+      <h1>{userName}'s Workouts</h1>
       <div className="row">
         {workouts.map((workout) => (
           <div className="col-md-4" key={workout.id}>

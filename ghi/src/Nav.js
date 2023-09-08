@@ -1,4 +1,5 @@
 import "./main.css";
+import { Link } from "react-router-dom";
 
 export default function Nav() {
   return (
@@ -12,35 +13,28 @@ export default function Nav() {
         <span className="navigation_icon">&nbsp;</span>
         <p className="navigation__button--text">MENU</p>
       </label>
-
       <div className="navigation__background">&nbsp;</div>
-
       <nav className="navigation__nav">
         <ul className="navigation__list">
           <li className="navigation__item">
-            <a href="/MainPage" className="navigation__link">
+            <Link to="/MainPage" className="navigation__link">
               <span>Home</span>
-            </a>
+            </Link>
           </li>
           <li className="navigation__item">
-            <a href="./AboutUs" className="navigation__link">
+            <Link to="/AboutUs" className="navigation__link">
               <span>About Us</span>
-            </a>
+            </Link>
           </li>
           <li className="navigation__item">
-            <a href="./workouts/create" className="navigation__link">
-              <span>Create a workout</span>
-            </a>
-          </li>
-          <li className="navigation__item">
-            <a href="./SignupForm" className="navigation__link">
+            <Link to="/SignupForm" className="navigation__link">
               <span>Sign Up</span>
-            </a>
+            </Link>
           </li>
           <li className="navigation__item">
-            <a href="./Login" className="navigation__link">
+            <Link to="/Login" className="navigation__link">
               <span>Login</span>
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>
