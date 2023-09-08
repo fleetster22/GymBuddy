@@ -33,7 +33,7 @@ export default function Nav() {
               reloadDocument={true}
               className="navigation__link"
             >
-              <span>About Us</span>
+              <span>About</span>
             </Link>
           </li>
           <li className="navigation__item">
