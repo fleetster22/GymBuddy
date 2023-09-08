@@ -28,9 +28,11 @@ export default function Card() {
                 <p className="card__price-only"></p>
                 <p className="card__price-value">Start training today!</p>
               </div>
-              <a href="#popup" className="btn btn--white">
-                Sign Up
-              </a>
+              <div className="about-button">
+                <a href="./SignupForm" className="about-button__click">
+                  Sign me up!
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -61,9 +63,11 @@ export default function Card() {
                 <p className="card__price-only"></p>
                 <p className="card__price-value">A new you is waiting</p>
               </div>
-              <a href="#popup" className="btn btn--white">
-                Create my login
-              </a>
+              <div className="about-button">
+                <a href="./SignupForm" className="about-button__click">
+                  Create my login
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -94,9 +98,11 @@ export default function Card() {
                 <p className="card__price-only"></p>
                 <p className="card__price-value">Get sculpted today</p>
               </div>
-              <a href="#popup" className="btn btn--white">
-                I want to get fit
-              </a>
+              <div className="about-button">
+                <a href="./SignupForm" className="about-button__click">
+                  I want to get fit
+                </a>
+              </div>
             </div>
           </div>
         </div>
