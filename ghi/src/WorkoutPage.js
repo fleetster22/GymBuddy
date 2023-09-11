@@ -106,18 +106,26 @@ export default function WorkoutPage() {
   if (error) return <div>Error loading workout: {error.message}</div>;
 
   return (
-    <div>
-      <h1>{userName}'s Workouts</h1>
-      <div className="row">
+    <div className="form">
+      <h1 className="form__header">{userName}'s Workouts</h1>
+      <div className="workout">
         {workouts.map((workout) => (
-          <div className="col-md-4" key={workout.id}>
-            <h2>{workout.name}</h2>
-            <p>{workout.difficulty}</p>
-            <p>{workout.description}</p>
-            <p>{workout.date}</p>
+          <div className="row" key={workout.id}>
+            <div className="workout__header">
+              <h2 className="heading-tertiary">Workout name: {workout.name}</h2>
+              <p className="heading-tertiary">
+                Difficulty level: {workout.difficulty}
+              </p>
+            </div>
+            <div className="workout__header">
+              <p className="heading-tertiary">
+                Workout description: {workout.description}
+              </p>
+              <p className="heading-tertiary">Date: {workout.date}</p>
+            </div>
             <div>
               {workout.exercises.map((exercise, index) => (
-                <div key={index}>
+                <div className="workout__text-box" key={index}>
                   <p>Exercise Name: {exercise.name}</p>
                   <p>Exercise Type: {exercise.type}</p>
                   <p>Targeted Muscle Group:{exercise.muscle}</p>
@@ -126,11 +134,12 @@ export default function WorkoutPage() {
                   <p>Instructions: {exercise.instructions}</p>
                 </div>
               ))}
-              <div>
+              <div className="form__button">
                 <button
+                  className="btn btn--register"
                   onClick={() => handleCompleteWorkout(workout.id, token)}
                 >
-                  Complete Workout
+                  Mark Workout Completed
                 </button>
               </div>
             </div>

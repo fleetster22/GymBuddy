@@ -5,9 +5,10 @@ import CreateWorkout from "./CreateWorkout.js";
 import WorkoutPage from "./WorkoutPage.js";
 import About from "./About.js";
 import MainPage from "./MainPage.js";
-import SignupForm from "./Signupform.js";
+import SignupForm from "./SignupForm.js";
 import Login from "./Login.js";
 import Landing from "./landing.js";
+import Footer from "./Footer.js";
 import FullWorkout from "./FullWorkout.js";
 
 const ProtectedRoute = ({ element }) => {
@@ -40,11 +41,13 @@ function App() {
             path="/workouts/:workoutId"
             element={<ProtectedRoute element={<FullWorkout />} />}
           />
+
           <Route path="/" element={<MainPage />} />
           <Route path="/About" element={<About />} />
           <Route path="/Signupform" element={<SignupForm />} />
           <Route path="/Login" element={<Login />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </AuthProvider>
   );

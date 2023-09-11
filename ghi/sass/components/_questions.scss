@@ -17,8 +17,8 @@
   padding: 20px 24px;
   padding-right: 48px;
   cursor: pointer;
-  border-top: 4px solid $color-white;
-  border-bottom: 4px solid $color-white;
+  border-top: 4px solid $color-delft-blue;
+  border-bottom: 4px solid $color-delft-blue;
   background-color: $color-sunset;
 
   display: grid;
@@ -36,7 +36,7 @@
 
 .title,
 .icon {
-  font-size: 24px;
+  font-size: 3rem;
   font-weight: 500;
 }
 
@@ -44,6 +44,7 @@
   grid-column: 2 / -1;
   padding-bottom: 16px;
   line-height: 1.6;
+  font-size: 1.3rem;
 }
 
 .content-box ul {

@@ -1,4 +1,10 @@
-import { LogoutHandler, Welcome, CreateWorkoutLink } from "./Auth.js";
+import {
+  LogoutHandler,
+  Welcome,
+  CreateWorkoutLink,
+  WorkoutList,
+} from "./Auth.js";
+import FullWorkout from "./FullWorkout.js";
 
 export default function Landing() {
   return (
@@ -6,6 +12,8 @@ export default function Landing() {
       <Welcome />
       <LogoutHandler />
       <CreateWorkoutLink />
+      <WorkoutList />
+      <FullWorkout />
     </div>
   );
 }
