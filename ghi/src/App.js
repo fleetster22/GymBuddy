@@ -9,6 +9,7 @@ import SignupForm from "./Signupform.js";
 import Login from "./Login.js";
 import Landing from "./landing.js";
 import FullWorkout from "./FullWorkout.js";
+
 const ProtectedRoute = ({ element }) => {
   const { token } = useAuthContext();
   if (!token) {
