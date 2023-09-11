@@ -144,7 +144,6 @@ class WorkoutRepository:
         except Exception as e:
             print(e)
             return {"message": "Could not complete that workout"}
-            return False
 
     def update(
         self, workout_id: int, workout: WorkoutIn
