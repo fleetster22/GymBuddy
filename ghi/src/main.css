@@ -496,8 +496,8 @@ body {
   padding: 20px 24px;
   padding-right: 48px;
   cursor: pointer;
-  border-top: 4px solid #fff;
-  border-bottom: 4px solid #fff;
+  border-top: 4px solid #3d405b;
+  border-bottom: 4px solid #3d405b;
   background-color: #f2cc8f;
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -514,7 +514,7 @@ body {
 
 .title,
 .icon {
-  font-size: 24px;
+  font-size: 3rem;
   font-weight: 500;
 }
 
@@ -522,6 +522,7 @@ body {
   grid-column: 2/-1;
   padding-bottom: 16px;
   line-height: 1.6;
+  font-size: 1.3rem;
 }
 
 .content-box ul {

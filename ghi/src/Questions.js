@@ -6,12 +6,17 @@ const faqs = [
     text: "The app is here to help you find exercises to improve your workout efficiency.",
   },
   {
-    title: "Why would you add these questions?",
-    text: "Just to add more content to the website.",
+    title: "What is the purpose of this fitness app?",
+    text: "The purpose of this fitness app is to help users track and improve their overall fitness lsvels through a range of features designed to enhance their physical and mental well being.",
   },
   {
-    title: "Pick a number between one and ten.",
-    text: "Sorry, I wasn't thinking of that number",
+    title: "Can this fitness app be customized according to individual goals?",
+    text: "Yes, this fitness app offers personalized fitness plaans and customizable workouts based on individual goals such as weight loss, muscle gain, cardiovascular fitness, or improving flexibility.",
+  },
+  {
+    title:
+      "How can users track their progress and set goals using this fitness app?",
+    text: "This fitness app features an intuitive dashboard where users can monitor their progress over time with the workout history functionality. ",
   },
 ];
 

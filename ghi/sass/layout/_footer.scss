@@ -1,12 +1,8 @@
 .footer {
-  background-image: linear-gradient(
-    to right bottom,
-    $color-eggshell,
-    $color-cambridge-blue
-  );
+  background-color: $color-grey-dark-2;
   padding: 10rem 0;
   font-size: 1.4rem;
-  color: $color-delft-blue;
+  color: $color-white;
 
   &__logo-box {
     text-align: center;

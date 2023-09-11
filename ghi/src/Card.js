@@ -1,4 +1,5 @@
 import "./main.css";
+import { Link } from "react-router-dom";
 
 export default function Card() {
   return (
@@ -29,9 +30,9 @@ export default function Card() {
                 <p className="card__price-value">Start training today!</p>
               </div>
               <div className="about-button">
-                <a href="./SignupForm" className="about-button__click">
+                <Link to="/SignupForm" className="about-button__click">
                   Sign me up!
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -64,9 +65,9 @@ export default function Card() {
                 <p className="card__price-value">A new you is waiting</p>
               </div>
               <div className="about-button">
-                <a href="./SignupForm" className="about-button__click">
+                <Link to="./SignupForm" className="about-button__click">
                   Create my login
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -99,9 +100,9 @@ export default function Card() {
                 <p className="card__price-value">Get sculpted today</p>
               </div>
               <div className="about-button">
-                <a href="./SignupForm" className="about-button__click">
+                <Link to="./SignupForm" className="about-button__click">
                   I want to get fit
-                </a>
+                </Link>
               </div>
             </div>
           </div>
