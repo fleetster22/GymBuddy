@@ -43,54 +43,58 @@ export function LogoutHandler() {
     </div>
   );
 }
+
 export function Welcome(props) {
   const [userName, setUserName] = useState("");
   const [error, setError] = useState(null);
   const { token } = useToken();
   const [workouts, setWorkouts] = useState([]);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const fetchUserData = async () => {
-      let id;
-      try {
-        const response = await fetch(`http://localhost:8000/token`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          credentials: "include",
-        });
-        if (response.ok) {
-          const data = await response.json();
-          id = data.account.id;
-        } else {
-          throw new Error("Failed to get token user data.");
-        }
-      } catch (err) {
-        setError(err);
-      }
-      if (id) {
-        try {
-          const userResponse = await fetch(
-            `http://localhost:8000/api/accounts/detail?account_id=${id}`
-          );
-          if (userResponse.ok) {
-            const userData = await userResponse.json();
-            setUserName(userData.first_name);
-          } else {
-            throw Error("Failed to fetch user data.");
-          }
-        } catch (err) {
-          setError(err);
-        }
-      }
-    };
-    fetchUserData();
-  }, [props.accountId, token, userName]);
 
-  const fetchWorkouts = async () => {
+  const fetchUserData = async () => {
+    let id;
     try {
-      const response = await fetch("http://localhost:8000/api/workouts");
+      const response = await fetch(`http://localhost:8000/token`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        id = data.account.id;
+        return id;
+      } else {
+        throw new Error("Failed to get token user data.");
+      }
+    } catch (err) {
+      setError(err);
+      return null;
+    }
+  };
+
+  const fetchUserName = async (accountId) => {
+    try {
+      const userResponse = await fetch(
+        `http://localhost:8000/api/accounts/detail?account_id=${accountId}`
+      );
+      if (userResponse.ok) {
+        const userData = await userResponse.json();
+        setUserName(userData.first_name);
+      } else {
+        throw Error("Failed to fetch user data.");
+      }
+    } catch (err) {
+      setError(err);
+    }
+  };
+
+  const fetchWorkouts = async (accountId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/workouts?account_id=${accountId}`
+      );
       if (response.ok) {
         const data = await response.json();
         setWorkouts(data);
@@ -103,9 +107,17 @@ export function Welcome(props) {
       setLoading(false);
     }
   };
+
   useEffect(() => {
-    fetchWorkouts();
-  }, []);
+    const fetchData = async () => {
+      const accountId = await fetchUserData();
+      if (accountId) {
+        await fetchUserName(accountId);
+        await fetchWorkouts(accountId);
+      }
+    };
+    fetchData();
+  }, [token]);
 
   return (
     <div>
@@ -121,6 +133,7 @@ export function Welcome(props) {
     </div>
   );
 }
+
 export function CreateWorkoutLink({ token }) {
   if (token) {
     return (
