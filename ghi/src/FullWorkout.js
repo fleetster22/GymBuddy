@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-export function FullWorkout() {
+export default function FullWorkout() {
   const { workoutId } = useParams();
   const [workout, setWorkout] = useState(null);
 
@@ -55,4 +55,3 @@ export function FullWorkout() {
     </div>
   );
 }
-export default FullWorkout;
