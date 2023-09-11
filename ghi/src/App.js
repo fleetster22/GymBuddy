@@ -38,7 +38,7 @@ function App() {
           />
           <Route path="/" element={<MainPage />} />
           <Route path="/About" element={<About />} />
-          <Route path="/SignupForm" element={<SignupForm />} />
+          <Route path="/Signupform" element={<SignupForm />} />
           <Route path="/Login" element={<Login />} />
         </Routes>
         <Footer />
