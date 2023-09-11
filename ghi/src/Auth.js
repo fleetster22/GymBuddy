@@ -6,15 +6,20 @@ import { Link } from "react-router-dom";
 export function WorkoutList({ workouts }) {
   if (!workouts) return null;
   return (
-    <div className="row">
+    <div className="workout-list">
       {workouts.map((workout) => (
-        <div className="col-md-4" key={workout.id}>
-          <Link to={`/workouts/${workout.id}`} className="workout-link">
+        <div className="workout__text-box" key={workout.id}>
+          <Link
+            to={`/workouts/${workout.id}`}
+            className="workout__text-box--link"
+          >
             <h2>{workout.name}</h2>
           </Link>
-          <p>{workout.difficulty}</p>
-          <p>{workout.description}</p>
-          <p>{workout.date}</p>
+          <div className="workout-list__text">
+            <p>Level: {workout.difficulty}</p>
+            <p>Description: {workout.description}</p>
+            <p>Date:{workout.date}</p>
+          </div>
         </div>
       ))}
     </div>
@@ -36,8 +41,8 @@ export function LogoutHandler() {
     }
   }
   return (
-    <div>
-      <button onClick={HandleLogout} className="logout-button">
+    <div className="create-workout">
+      <button onClick={HandleLogout} className="create-workout__button">
         Logout
       </button>
     </div>
@@ -113,6 +118,7 @@ export function Welcome(props) {
         <p>Error: {error.message}</p>
       ) : (
         <>
+          <p className="heading-primary--sub">Welcome, {userName}!</p>
           <p>Welcome, {userName}!</p>
           <CreateWorkoutLink token={token} />
           <WorkoutList workouts={workouts} />
@@ -124,11 +130,11 @@ export function Welcome(props) {
 export function CreateWorkoutLink({ token }) {
   if (token) {
     return (
-      <li className="navigation__item">
-        <Link to="../workouts/create" className="navigation__link">
-          <span>Create a workout</span>
+      <div className="create-workout">
+        <Link to="../workouts/create">
+          <button className="create-workout__button">Create a workout</button>
         </Link>
-      </li>
+      </div>
     );
   } else {
     return null;

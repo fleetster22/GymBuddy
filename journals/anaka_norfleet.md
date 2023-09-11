@@ -41,3 +41,5 @@
 **9/8/23** Fingers crossed I get the remainder of front-end auth working and I will write some unit tests.
 
 ---
+
+**9/11/23** Last day of project and we have our MVP. We did not achieve the stretch goals, but considering we only had 3 people on our team, we did an amazing job. I am happy with this MVP.

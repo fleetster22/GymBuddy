@@ -2,6 +2,7 @@ anyio==3.7.0
 asgiref==3.7.2
 attrs==23.1.0
 backcall==0.2.0
+black==23.9.1
 bcrypt==4.0.1
 certifi==2021.10.8
 cffi==1.15.1
@@ -42,6 +43,7 @@ pickleshare==0.7.5
 pika==1.2.0
 platformdirs==3.5.1
 pluggy==1.2.0
+prettier==0.0.7
 psycopg==3.1.10
 psycopg-pool==3.1.7
 psycopg2==2.9.7
@@ -52,7 +54,6 @@ pycparser==2.21
 pydantic==1.10.9
 pyflakes==3.0.1
 Pygments==2.15.1
-pymongo==4.2.0
 pyserial==3.5
 PySocks==1.7.1
 python-dotenv==1.0.0
