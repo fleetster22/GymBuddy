@@ -139,7 +139,7 @@ export default function WorkoutPage() {
                   className="btn btn--register"
                   onClick={() => handleCompleteWorkout(workout.id, token)}
                 >
-                  Complete Workout
+                  Mark Workout Completed
                 </button>
               </div>
             </div>

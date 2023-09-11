@@ -88,6 +88,7 @@ body {
 .heading-secondary {
   font-size: 3rem;
   text-transform: uppercase;
+  padding-left: 1rem;
 }
 
 .heading-tertiary {
@@ -511,6 +512,9 @@ body {
   font-size: 4rem;
   border-color: green;
 }
+.create-workout__button:hover {
+  transform: translateY(-3px);
+}
 
 .workout {
   width: 75%;
@@ -528,13 +532,46 @@ body {
 .workout__text-box {
   background-image: linear-gradient(to right bottom, #f4f1de, #81b29a);
   padding: 1rem;
-  border: 1px solid #f4f1de;
+  border-top: 1px solid #3d405b;
   border-radius: 25px;
   margin: 1rem;
   box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.08);
   text-shadow: #fff 1px 0 5px;
   color: #000;
   font-size: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+.workout__text-box--link {
+  background-image: linear-gradient(to left top, #f4f1de, #81b29a);
+  color: #000;
+  text-decoration: none;
+  padding: 1rem;
+  border-top: 1px solid #3d405b;
+  border-left: 1px solid #3d405b;
+  border-radius: 25px;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  margin: 1rem;
+}
+.workout__text-box--link:hover {
+  transform: translateY(-3px);
+}
+
+.workout-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(to right bottom, #f2cc8f, #e07a5f);
+  padding: 2.5rem;
+  border-radius: 25px;
+  border-top: 1px solid #3d405b;
+  margin-top: 2rem;
+}
+.workout-list__text {
+  text-transform: capitalize;
 }
 
 * {

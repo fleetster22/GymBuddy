@@ -28,22 +28,29 @@ export function FullWorkout() {
   }
 
   return (
-    <div>
-      <h2>{workout.name}</h2>
-      <p>{workout.difficulty}</p>
-      <p>{workout.description}</p>
-      <p>{workout.date}</p>
-      <div>
-        {workout.exercises.map((exercise, index) => (
-          <div key={index}>
-            <p>Exercise Name: {exercise.name}</p>
-            <p>Exercise Type: {exercise.type}</p>
-            <p>Targeted Muscle Group:{exercise.muscle}</p>
-            <p>Equipment: {exercise.equipment}</p>
-            <p>Difficulty: {exercise.difficulty}</p>
-            <p>Instructions: {exercise.instructions}</p>
+    <div className="form">
+      <h1 className="heading-secondary">{workout.name}</h1>
+      <div className="workout">
+        <div className="row">
+          <div className="workout__header">
+            <p className="heading-tertiary">Level: {workout.difficulty}</p>
+            <p className="heading-tertiary">
+              Description: {workout.description}
+            </p>
+            <p className="heading-tertiary">Date: {workout.date}</p>
           </div>
-        ))}
+
+          {workout.exercises.map((exercise, index) => (
+            <div className="workout__text-box" key={index}>
+              <p>Exercise Name: {exercise.name}</p>
+              <p>Exercise Type: {exercise.type}</p>
+              <p>Targeted Muscle Group:{exercise.muscle}</p>
+              <p>Equipment: {exercise.equipment}</p>
+              <p>Difficulty: {exercise.difficulty}</p>
+              <p>Instructions: {exercise.instructions}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

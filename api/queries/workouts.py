@@ -200,38 +200,6 @@ class WorkoutRepository:
         except Exception:
             return {"message": "Create did not work"}
 
-    def fetch_not_completed_workouts(self) -> List[WorkoutOut]:
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as db:
-                    db.execute(
-                        """
-                        SELECT * FROM workouts
-                        WHERE completed = FALSE
-                        """
-                    )
-                    results = db.fetchall()
-                    return results
-        except Exception as e:
-            print(e)
-            return {"message": "Error fetching not completed workouts"}
-
-    def fetch_completed_workouts(self) -> List[WorkoutOut]:
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as db:
-                    db.execute(
-                        """
-                        SELECT * FROM workouts
-                        WHERE completed = TRUE
-                        """
-                    )
-                    results = db.fetchall()
-                    return results
-        except Exception as e:
-            print(e)
-            return {"message": "Error fetching completed workouts"}
-
     def workout_in_to_out(self, id: int, workout: WorkoutIn):
         old_data = workout.dict()
         return WorkoutOut(id=id, **old_data)

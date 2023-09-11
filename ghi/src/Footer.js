@@ -14,10 +14,10 @@ export default function Footer() {
           <div className="footer__content">
             <h4>Background</h4>
             <p>
-              This application was created by a team of developers as a learning
-              project. This took place during the Hack Reactor by Galvanize 19
-              week intensive software engineering bootcamp from May to September
-              2023.
+              The SCULPTR application was created by a team of student
+              developers as a learning project. It was completed during the Hack
+              Reactor by Galvanize 19 week intensive software engineering
+              bootcamp from May to September 2023.
             </p>
           </div>
         </div>

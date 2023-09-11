@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from typing import Union, Optional, List
+from typing import Union, Optional
 from queries.workouts import (
     Error,
     WorkoutIn,
@@ -133,25 +133,5 @@ def complete_workout(
 ) -> bool:
     try:
         return workout_repo.complete(workout_id)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
-
-
-@router.get("/not-completed", response_model=List[WorkoutOut])
-def get_not_completed_workouts(
-    account_data: dict = Depends(authenticator.get_current_account_data),
-    workout_repo: WorkoutRepository = Depends(),
-) -> List[WorkoutOut]:
-    try:
-        return workout_repo.fetch_not_completed_workouts()
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
-@router.get("/completed-workouts", response_model=List[WorkoutOut])
-def get_completed_workouts(
-    account_data: dict = Depends(authenticator.get_current_account_data),
-    workout_repo: WorkoutRepository = Depends(),
-) -> List[WorkoutOut]:
-    try:
-        return workout_repo.fetch_not_completed_workouts()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")

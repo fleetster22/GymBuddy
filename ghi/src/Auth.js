@@ -6,15 +6,20 @@ import { Link } from "react-router-dom";
 export function WorkoutList({ workouts }) {
   if (!workouts) return null;
   return (
-    <div className="row">
+    <div className="workout-list">
       {workouts.map((workout) => (
-        <div className="col-md-4" key={workout.id}>
-          <Link to={`/workouts/${workout.id}`} className="workout-link">
+        <div className="workout__text-box" key={workout.id}>
+          <Link
+            to={`/workouts/${workout.id}`}
+            className="workout__text-box--link"
+          >
             <h2>{workout.name}</h2>
           </Link>
-          <p>{workout.difficulty}</p>
-          <p>{workout.description}</p>
-          <p>{workout.date}</p>
+          <div className="workout-list__text">
+            <p>Level: {workout.difficulty}</p>
+            <p>Description: {workout.description}</p>
+            <p>Date:{workout.date}</p>
+          </div>
         </div>
       ))}
     </div>
@@ -24,9 +29,7 @@ export function WorkoutList({ workouts }) {
 export function LogoutHandler() {
   const { logout } = useToken();
   const navigate = useNavigate();
-
   const [token, setToken] = useState("");
-
   async function HandleLogout() {
     let Status = await logout();
     if (Status) {
@@ -37,7 +40,6 @@ export function LogoutHandler() {
       console.log("Logout Fail (not logged in probably)");
     }
   }
-
   return (
     <div className="create-workout">
       <button onClick={HandleLogout} className="create-workout__button">
@@ -46,14 +48,12 @@ export function LogoutHandler() {
     </div>
   );
 }
-
 export function Welcome(props) {
   const [userName, setUserName] = useState("");
   const [error, setError] = useState(null);
   const { token } = useToken();
   const [workouts, setWorkouts] = useState([]);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const fetchUserData = async () => {
       let id;
@@ -61,13 +61,12 @@ export function Welcome(props) {
         const response = await fetch(`http://localhost:8000/token`, {
           method: "GET",
           headers: {
-            Authorization: `Bearer${token}`,
+            Authorization: `Bearer ${token}`,
           },
           credentials: "include",
         });
         if (response.ok) {
           const data = await response.json();
-
           id = data.account.id;
         } else {
           throw new Error("Failed to get token user data.");
@@ -75,7 +74,6 @@ export function Welcome(props) {
       } catch (err) {
         setError(err);
       }
-
       if (id) {
         try {
           const userResponse = await fetch(
@@ -92,7 +90,6 @@ export function Welcome(props) {
         }
       }
     };
-
     fetchUserData();
   }, [props.accountId, token, userName]);
 
@@ -122,13 +119,13 @@ export function Welcome(props) {
       ) : (
         <>
           <p className="heading-primary--sub">Welcome, {userName}!</p>
-          <CreateWorkoutLink token={token} />{" "}
+          <CreateWorkoutLink token={token} />
+          <WorkoutList workouts={workouts} />
         </>
       )}
     </div>
   );
 }
-
 export function CreateWorkoutLink({ token }) {
   if (token) {
     return (
@@ -142,5 +139,4 @@ export function CreateWorkoutLink({ token }) {
     return null;
   }
 }
-
 export default Welcome;
