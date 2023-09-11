@@ -1,0 +1,201 @@
+.form {
+  max-width: 120rem;
+  margin: 8rem auto;
+  background-image: linear-gradient(
+    to right bottom,
+    $color-eggshell,
+    $color-cambridge-blue
+  );
+  box-shadow: $shadow-dark;
+  min-height: 50rem;
+  border-radius: 25px;
+
+  &__header {
+    font-size: 2.5rem;
+    letter-spacing: 0.1rem;
+    height: 7rem;
+    background-image: linear-gradient(
+      to right bottom,
+      $color-sunset,
+      $color-burnt-sienna
+    );
+    border: 1px solid $color-black;
+    border-radius: 25px;
+    box-shadow: $shadow-light;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__content {
+    font-size: 1.4rem;
+    list-style: none;
+    margin-top: 1.5rem;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
+  &__label {
+    text-transform: uppercase;
+    text-align: left;
+    font-size: 1.4rem;
+    letter-spacing: 0.1rem;
+    font-weight: 700;
+    margin-left: 5rem;
+    margin-top: 0.8rem;
+    margin-bottom: 0.3rem;
+    display: flex;
+    justify-content: left;
+    transition: all 0.3s;
+  }
+
+  &__input {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    background-color: $color-grey-light-2;
+    border: none;
+    padding: 1.3rem 8rem;
+    border-radius: 100px;
+    border-bottom: 3px solid transparent;
+    width: 100%;
+    display: flex;
+    box-shadow: $shadow-light;
+
+    transition: all 0.3s;
+
+    &:focus {
+      outline: none;
+      box-shadow: $shadow-dark;
+      border-bottom: 3px solid $color-green;
+    }
+  }
+
+  &__button {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    padding-top: 6px;
+  }
+}
+
+.create-workout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: linear-gradient(
+    to right bottom,
+    $color-sunset,
+    $color-burnt-sienna
+  );
+  padding: 2.5rem;
+  border-radius: 25px;
+  border-top: 1px solid $color-delft-blue;
+  margin-top: 2rem;
+
+  &__button {
+    background-image: linear-gradient(
+      to right bottom,
+      $color-eggshell,
+      $color-cambridge-blue
+    );
+    height: 15rem;
+    width: 25rem;
+    border-radius: 50%;
+    z-index: 1500;
+    box-shadow: $shadow-dark;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: 4rem;
+    border-color: $color-green;
+
+    &:hover {
+      transform: translateY(-3px);
+    }
+  }
+}
+
+.workout {
+  width: 75%;
+  margin: 0 auto;
+  padding: 1rem;
+  box-shadow: $shadow-dark;
+  background-image: linear-gradient(
+    to right bottom,
+    $color-eggshell,
+    $color-sunset
+  );
+
+  &__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: space-evenly;
+  }
+
+  &__text-box {
+    background-image: linear-gradient(
+      to right bottom,
+      $color-eggshell,
+      $color-cambridge-blue
+    );
+    padding: 1rem;
+    border-top: 1px solid $color-delft-blue;
+    border-radius: 25px;
+    margin: 1rem;
+    box-shadow: $shadow-light;
+    text-shadow: $color-white 1px 0 5px;
+    color: $color-black;
+    font-size: 1.5rem;
+    display: flex;
+    flex-direction: column;
+
+    &--link {
+      background-image: linear-gradient(
+        to left top,
+        $color-eggshell,
+        $color-cambridge-blue
+      );
+      color: $color-black;
+      text-decoration: none;
+      padding: 1rem;
+      border-top: 1px solid $color-delft-blue;
+      border-left: 1px solid $color-delft-blue;
+      border-radius: 25px;
+      text-transform: capitalize;
+      display: flex;
+      align-items: center;
+      margin: 1rem;
+
+      &:hover {
+        transform: translateY(-3px);
+      }
+    }
+  }
+}
+
+.workout-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(
+    to right bottom,
+    $color-sunset,
+    $color-burnt-sienna
+  );
+  padding: 2.5rem;
+  border-radius: 25px;
+  border-top: 1px solid $color-delft-blue;
+  margin-top: 2rem;
+
+  &__text {
+    text-transform: capitalize;
+  }
+}

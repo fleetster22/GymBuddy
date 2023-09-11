@@ -82,6 +82,7 @@ async def update_account(
         authenticator.get_current_account_data
     ),
     repo: AccountQueries = Depends(),
+
 ) -> AccountOut:
     if not current_account:
         raise HTTPException(
@@ -98,11 +99,12 @@ async def update_account(
     return update_account
 
 
+
 @router.delete("/delete")
 async def delete_account(
     current_account: AccountToken = Depends(
         authenticator.get_current_account_data
-    ),
+        ),
     repo: AccountQueries = Depends(),
 ) -> AccountOut:
     if not current_account:

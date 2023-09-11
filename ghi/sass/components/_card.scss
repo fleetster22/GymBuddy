@@ -4,6 +4,8 @@
   -moz-perspective: 150rem;
   position: relative;
   height: 52rem;
+  background-color: transparent;
+  border: none;
 
   &__side {
     height: 52rem;
@@ -13,7 +15,7 @@
     left: 0;
     width: 100%;
     backface-visibility: hidden;
-    border-radius: 3px;
+    border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 1.5rem 4rem rgba($color-cambridge-blue, 0.15);
 
@@ -158,7 +160,7 @@
     }
   }
 
-  // FRONT SIDE STYLING
+  // BACK SIDE STYLING
   &__cta {
     position: absolute;
     top: 50%;
@@ -174,13 +176,8 @@
     margin-bottom: 8rem;
   }
 
-  &__price-only {
-    font-size: 1.4rem;
-    text-transform: uppercase;
-  }
-
   &__price-value {
-    font-size: 6rem;
+    font-size: 4rem;
     font-weight: 100;
   }
 }
