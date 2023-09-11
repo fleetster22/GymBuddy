@@ -29,7 +29,7 @@ export function WorkoutList({ workouts }) {
 export function LogoutHandler() {
   const { logout } = useToken();
   const navigate = useNavigate();
-  const [setToken] = useState("");
+  const [token, setToken] = useState("");
   async function HandleLogout() {
     let Status = await logout();
     if (Status) {
@@ -48,58 +48,54 @@ export function LogoutHandler() {
     </div>
   );
 }
-
 export function Welcome(props) {
   const [userName, setUserName] = useState("");
   const [error, setError] = useState(null);
   const { token } = useToken();
   const [workouts, setWorkouts] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const fetchUserData = async () => {
-    let id;
-    try {
-      const response = await fetch(`http://localhost:8000/token`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        credentials: "include",
-      });
-      if (response.ok) {
-        const data = await response.json();
-        id = data.account.id;
-        return id;
-      } else {
-        throw new Error("Failed to get token user data.");
+  useEffect(() => {
+    const fetchUserData = async () => {
+      let id;
+      try {
+        const response = await fetch(`http://localhost:8000/token`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+        });
+        if (response.ok) {
+          const data = await response.json();
+          id = data.account.id;
+        } else {
+          throw new Error("Failed to get token user data.");
+        }
+      } catch (err) {
+        setError(err);
       }
-    } catch (err) {
-      setError(err);
-      return null;
-    }
-  };
-
-  const fetchUserName = async (accountId) => {
-    try {
-      const userResponse = await fetch(
-        `http://localhost:8000/api/accounts/detail?account_id=${accountId}`
-      );
-      if (userResponse.ok) {
-        const userData = await userResponse.json();
-        setUserName(userData.first_name);
-      } else {
-        throw Error("Failed to fetch user data.");
+      if (id) {
+        try {
+          const userResponse = await fetch(
+            `http://localhost:8000/api/accounts/detail?account_id=${id}`
+          );
+          if (userResponse.ok) {
+            const userData = await userResponse.json();
+            setUserName(userData.first_name);
+          } else {
+            throw Error("Failed to fetch user data.");
+          }
+        } catch (err) {
+          setError(err);
+        }
       }
-    } catch (err) {
-      setError(err);
-    }
-  };
+    };
+    fetchUserData();
+  }, [props.accountId, token, userName]);
 
-  const fetchWorkouts = async (accountId) => {
+  const fetchWorkouts = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:8000/api/workouts?account_id=${accountId}`
-      );
+      const response = await fetch("http://localhost:8000/api/workouts");
       if (response.ok) {
         const data = await response.json();
         setWorkouts(data);
@@ -112,10 +108,9 @@ export function Welcome(props) {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchWorkouts();
-  }, [loading]);
+  }, []);
 
   return (
     <div>
@@ -124,7 +119,6 @@ export function Welcome(props) {
       ) : (
         <>
           <p className="heading-primary--sub">Welcome, {userName}!</p>
-
           <CreateWorkoutLink token={token} />
           <WorkoutList workouts={workouts} />
         </>
@@ -132,7 +126,6 @@ export function Welcome(props) {
     </div>
   );
 }
-
 export function CreateWorkoutLink({ token }) {
   if (token) {
     return (

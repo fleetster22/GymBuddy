@@ -21,7 +21,7 @@ export default function FullWorkout() {
     };
     // below only run the ID if the workout exists, because it is looking for the ID when it runs the useeffect
     workoutId && fetchWorkout();
-  }, [workoutId]);
+  }, []);
 
   if (!workout) {
     return null;
