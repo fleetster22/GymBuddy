@@ -106,9 +106,9 @@ export default function WorkoutPage() {
   if (error) return <div>Error loading workout: {error.message}</div>;
 
   return (
-    <div>
-      <h1>{userName}'s Workouts</h1>
-      <div className="row">
+    <div className="form">
+      <h1 className="form__header">{userName}'s Workouts</h1>
+      <div className="form__content">
         {workouts.map((workout) => (
           <div className="col-md-4" key={workout.id}>
             <h2>{workout.name}</h2>
@@ -126,8 +126,9 @@ export default function WorkoutPage() {
                   <p>Instructions: {exercise.instructions}</p>
                 </div>
               ))}
-              <div>
+              <div className="form__button">
                 <button
+                  className="btn btn--register"
                   onClick={() => handleCompleteWorkout(workout.id, token)}
                 >
                   Complete Workout
