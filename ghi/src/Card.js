@@ -1,4 +1,5 @@
 import "./main.css";
+import { Link } from "react-router-dom";
 
 export default function Card() {
   return (
@@ -25,12 +26,13 @@ export default function Card() {
           <div className="card__side card__side--back card__side--back-1">
             <div className="card__cta">
               <div className="card__price-box">
-                <p className="card__price-only"></p>
                 <p className="card__price-value">Start training today!</p>
               </div>
-              <a href="#popup" className="btn btn--white">
-                Sign Up
-              </a>
+              <div className="about-button">
+                <Link to="/SignupForm" className="about-button__click">
+                  Sign me up!
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -58,12 +60,13 @@ export default function Card() {
           <div className="card__side card__side--back card__side--back-2">
             <div className="card__cta">
               <div className="card__price-box">
-                <p className="card__price-only"></p>
                 <p className="card__price-value">A new you is waiting</p>
               </div>
-              <a href="#popup" className="btn btn--white">
-                Create my login
-              </a>
+              <div className="about-button">
+                <Link to="./SignupForm" className="about-button__click">
+                  Create my login
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -91,12 +94,13 @@ export default function Card() {
           <div className="card__side card__side--back card__side--back-3">
             <div className="card__cta">
               <div className="card__price-box">
-                <p className="card__price-only"></p>
                 <p className="card__price-value">Get sculpted today</p>
               </div>
-              <a href="#popup" className="btn btn--white">
-                I want to get fit
-              </a>
+              <div className="about-button">
+                <Link to="./SignupForm" className="about-button__click">
+                  I want to get fit
+                </Link>
+              </div>
             </div>
           </div>
         </div>
