@@ -4,16 +4,14 @@ from fastapi import (
     Depends,
     Request,
     APIRouter,
-
-
 )
 
 from queries.accounts import (
     AccountOut,
-
 )
 
 from .accounts import AccountToken
+
 router = APIRouter()
 
 
