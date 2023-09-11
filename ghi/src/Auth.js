@@ -29,7 +29,7 @@ export function WorkoutList({ workouts }) {
 export function LogoutHandler() {
   const { logout } = useToken();
   const navigate = useNavigate();
-  const [token, setToken] = useState("");
+  const [setToken] = useState("");
   async function HandleLogout() {
     let Status = await logout();
     if (Status) {
@@ -110,7 +110,7 @@ export function Welcome(props) {
   };
   useEffect(() => {
     fetchWorkouts();
-  }, []);
+  }, [loading]);
 
   return (
     <div>
@@ -119,7 +119,7 @@ export function Welcome(props) {
       ) : (
         <>
           <p className="heading-primary--sub">Welcome, {userName}!</p>
-          <p>Welcome, {userName}!</p>
+
           <CreateWorkoutLink token={token} />
           <WorkoutList workouts={workouts} />
         </>
