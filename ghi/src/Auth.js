@@ -119,7 +119,6 @@ export function Welcome(props) {
       ) : (
         <>
           <p className="heading-primary--sub">Welcome, {userName}!</p>
-          <p>Welcome, {userName}!</p>
           <CreateWorkoutLink token={token} />
           <WorkoutList workouts={workouts} />
         </>
