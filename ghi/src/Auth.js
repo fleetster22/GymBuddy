@@ -79,7 +79,15 @@ export function Welcome(props) {
 
   return (
     <div>
-      {error ? <p>Error: {error.message}</p> : <p>Welcome, {userName}!</p>}
+      {error ? (
+        <p>Error: {error.message}</p>
+      ) : (
+        <>
+          <p className="heading-primary--sub">Welcome, {userName}!</p>
+          <CreateWorkoutLink token={token} />
+          <WorkoutList workouts={workouts} />
+        </>
+      )}
     </div>
   );
 }
