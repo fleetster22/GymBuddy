@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from typing import Union, Optional
+from typing import Union, Optional, List
 from queries.workouts import (
     Error,
     WorkoutIn,
@@ -9,6 +9,7 @@ from queries.workouts import (
 )
 from authenticator import authenticator
 from queries.exercises import ExerciseRepository
+import logging
 
 router = APIRouter()
 

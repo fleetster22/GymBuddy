@@ -8,6 +8,7 @@ import MainPage from "./MainPage.js";
 import SignupForm from "./Signupform.js";
 import Login from "./Login.js";
 import Landing from "./landing.js";
+import FullWorkout from "./FullWorkout.js";
 
 const ProtectedRoute = ({ element }) => {
   const { token } = useAuthContext();
@@ -34,6 +35,10 @@ function App() {
           <Route
             path="/landing"
             element={<ProtectedRoute element={<Landing />} />}
+          />
+          <Route
+            path="/workouts/:workoutId"
+            element={<ProtectedRoute element={<FullWorkout />} />}
           />
           <Route path="/" element={<MainPage />} />
           <Route path="/About" element={<About />} />
