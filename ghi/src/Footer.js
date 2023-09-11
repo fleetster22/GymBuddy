@@ -27,7 +27,7 @@ export default function Footer() {
           </p>
         </div>
         <div className="col-1-of-3">
-          <p className="footer__content">
+          <div className="footer__content">
             <h4>The Developers</h4>
             <p>
               <Link
@@ -53,7 +53,7 @@ export default function Footer() {
                 Michael Parnapy
               </Link>
             </p>
-          </p>
+          </div>
         </div>
       </div>
     </footer>

@@ -7,7 +7,7 @@ const faqs = [
   },
   {
     title: "What is the purpose of this fitness app?",
-    text: "The purpose of this fitness app is to help users track and improve their overall fitness lsvels through a range of features designed to enhance their physical and mental well being.",
+    text: "The purpose of this fitness app is to help users track and improve their overall fitness levels through a range of features designed to enhance their physical and mental well being.",
   },
   {
     title: "Can this fitness app be customized according to individual goals?",
