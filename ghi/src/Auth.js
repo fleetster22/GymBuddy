@@ -3,6 +3,24 @@ import React, { useState, useEffect } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import { Link } from "react-router-dom";
 
+export function WorkoutList({ workouts }) {
+  if (!workouts) return null;
+  return (
+    <div className="row">
+      {workouts.map((workout) => (
+        <div className="col-md-4" key={workout.id}>
+          <Link to={`/workouts/${workout.id}`} className="workout-link">
+            <h2>{workout.name}</h2>
+          </Link>
+          <p>{workout.difficulty}</p>
+          <p>{workout.description}</p>
+          <p>{workout.date}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function LogoutHandler() {
   const { logout } = useToken();
   const navigate = useNavigate();
@@ -21,8 +39,8 @@ export function LogoutHandler() {
   }
 
   return (
-    <div>
-      <button onClick={HandleLogout} className="logout-button">
+    <div className="create-workout">
+      <button onClick={HandleLogout} className="create-workout__button">
         Logout
       </button>
     </div>
@@ -33,6 +51,8 @@ export function Welcome(props) {
   const [userName, setUserName] = useState("");
   const [error, setError] = useState(null);
   const { token } = useToken();
+  const [workouts, setWorkouts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -41,15 +61,14 @@ export function Welcome(props) {
         const response = await fetch(`http://localhost:8000/token`, {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer${token}`,
           },
           credentials: "include",
         });
         if (response.ok) {
           const data = await response.json();
-          console.log("DAT2", data);
+
           id = data.account.id;
-          console.log("ID", id);
         } else {
           throw new Error("Failed to get token user data.");
         }
@@ -58,7 +77,6 @@ export function Welcome(props) {
       }
 
       if (id) {
-        console.log("HERE", id);
         try {
           const userResponse = await fetch(
             `http://localhost:8000/api/accounts/detail?account_id=${id}`
@@ -66,7 +84,6 @@ export function Welcome(props) {
           if (userResponse.ok) {
             const userData = await userResponse.json();
             setUserName(userData.first_name);
-            console.log("USERNAME", userName);
           } else {
             throw Error("Failed to fetch user data.");
           }
@@ -77,7 +94,26 @@ export function Welcome(props) {
     };
 
     fetchUserData();
-  }, [props.accountId, token]);
+  }, [props.accountId, token, userName]);
+
+  const fetchWorkouts = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/workouts");
+      if (response.ok) {
+        const data = await response.json();
+        setWorkouts(data);
+      } else {
+        throw new Error("Failed to fetch workouts.");
+      }
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchWorkouts();
+  }, []);
 
   return (
     <div>
@@ -85,7 +121,7 @@ export function Welcome(props) {
         <p>Error: {error.message}</p>
       ) : (
         <>
-          <p>Welcome, {userName}!</p>
+          <p className="heading-primary--sub">Welcome, {userName}!</p>
           <CreateWorkoutLink token={token} />{" "}
         </>
       )}
@@ -96,11 +132,11 @@ export function Welcome(props) {
 export function CreateWorkoutLink({ token }) {
   if (token) {
     return (
-      <li className="navigation__item">
-        <Link to="../workouts/create" className="navigation__link">
-          <span>Create a workout</span>
+      <div className="create-workout">
+        <Link to="../workouts/create">
+          <button className="create-workout__button">Create a workout</button>
         </Link>
-      </li>
+      </div>
     );
   } else {
     return null;

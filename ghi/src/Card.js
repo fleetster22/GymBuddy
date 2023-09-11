@@ -26,7 +26,6 @@ export default function Card() {
           <div className="card__side card__side--back card__side--back-1">
             <div className="card__cta">
               <div className="card__price-box">
-                <p className="card__price-only"></p>
                 <p className="card__price-value">Start training today!</p>
               </div>
               <div className="about-button">
@@ -61,7 +60,6 @@ export default function Card() {
           <div className="card__side card__side--back card__side--back-2">
             <div className="card__cta">
               <div className="card__price-box">
-                <p className="card__price-only"></p>
                 <p className="card__price-value">A new you is waiting</p>
               </div>
               <div className="about-button">
@@ -96,7 +94,6 @@ export default function Card() {
           <div className="card__side card__side--back card__side--back-3">
             <div className="card__cta">
               <div className="card__price-box">
-                <p className="card__price-only"></p>
                 <p className="card__price-value">Get sculpted today</p>
               </div>
               <div className="about-button">

@@ -17,13 +17,13 @@ const SignupForm = () => {
     const accountData = {
       username: email,
       password: password,
-      first: first,
-      last: last,
+      first_name: first,
+      last_name: last,
       email: email,
     };
     register(
       accountData,
-      `${process.env.REACT_APP_USER_SERVICE_API_HOST}/api/accounts/create`
+      `${process.env.REACT_APP_API_HOST}/api/accounts/create`
     );
     e.target.reset();
     navigate("/Login");

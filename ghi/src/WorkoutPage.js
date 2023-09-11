@@ -108,16 +108,24 @@ export default function WorkoutPage() {
   return (
     <div className="form">
       <h1 className="form__header">{userName}'s Workouts</h1>
-      <div className="form__content">
+      <div className="workout">
         {workouts.map((workout) => (
-          <div className="col-md-4" key={workout.id}>
-            <h2>{workout.name}</h2>
-            <p>{workout.difficulty}</p>
-            <p>{workout.description}</p>
-            <p>{workout.date}</p>
+          <div className="row" key={workout.id}>
+            <div className="workout__header">
+              <h2 className="heading-tertiary">Workout name: {workout.name}</h2>
+              <p className="heading-tertiary">
+                Difficulty level: {workout.difficulty}
+              </p>
+            </div>
+            <div className="workout__header">
+              <p className="heading-tertiary">
+                Workout description: {workout.description}
+              </p>
+              <p className="heading-tertiary">Date: {workout.date}</p>
+            </div>
             <div>
               {workout.exercises.map((exercise, index) => (
-                <div key={index}>
+                <div className="workout__text-box" key={index}>
                   <p>Exercise Name: {exercise.name}</p>
                   <p>Exercise Type: {exercise.type}</p>
                   <p>Targeted Muscle Group:{exercise.muscle}</p>

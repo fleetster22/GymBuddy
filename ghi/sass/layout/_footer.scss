@@ -9,6 +9,8 @@
   color: $color-white;
   text-shadow: $color-delft-blue 1px 0 10px;
   border-radius: 20px;
+  border-top: 1px solid $color-delft-blue;
+  margin-top: 2rem;
 
   &__logo-box {
     text-align: center;

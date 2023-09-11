@@ -36,6 +36,10 @@ function App() {
             path="/landing"
             element={<ProtectedRoute element={<Landing />} />}
           />
+          <Route
+            path="/workouts/:workoutId"
+            element={<ProtectedRoute element={<FullWorkout />} />}
+          />
           <Route path="/" element={<MainPage />} />
           <Route path="/About" element={<About />} />
           <Route path="/Signupform" element={<SignupForm />} />
