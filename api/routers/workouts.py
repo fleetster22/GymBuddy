@@ -1,3 +1,4 @@
+from datetime import date
 from fastapi import APIRouter, Depends, HTTPException
 from typing import Union, Optional, List
 from queries.workouts import (
@@ -9,7 +10,6 @@ from queries.workouts import (
 )
 from authenticator import authenticator
 from queries.exercises import ExerciseRepository
-import logging
 
 router = APIRouter()
 
@@ -39,6 +39,9 @@ async def create_workout(
             date=workout.date,
         )
         workout_id = workout_repo.create(new_workout)
+        workout_repo.add_to_history(
+            workout_id, account_data["id"], workout.date
+        )
 
         for exercise_id in exercise_id_list:
             workout_repo.link_exercise_to_workout(workout_id, exercise_id)
@@ -70,7 +73,9 @@ async def get_all(
     workout_repo: WorkoutRepository = Depends(),
 ):
     try:
-        return workout_repo.get_all()
+        if not account_data:
+            raise HTTPException(status_code=401, detail="Not authorized")
+        return workout_repo.get_history(account_data["id"])
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
 
@@ -133,6 +138,9 @@ def complete_workout(
     workout_repo: WorkoutRepository = Depends(),
 ) -> bool:
     try:
+        workout_repo.add_to_history(
+            workout_id, account_data["id"], date.today()
+        )
         return workout_repo.complete(workout_id)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")

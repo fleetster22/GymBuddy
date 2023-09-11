@@ -199,6 +199,43 @@ class WorkoutRepository:
         except Exception:
             return {"message": "Create did not work"}
 
+    def add_to_history(self, workout_id, account_id, date):
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        INSERT INTO workout_history
+                            (workout_id, account_id, date)
+                        VALUES
+                            (%s, %s, %s)
+                        """,
+                        [
+                            workout_id,
+                            account_id,
+                            date,
+                        ],
+                    )
+                    return True
+        except Exception as e:
+            return {"message": str(e)}
+
+    def get_history(self, account_id):
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        SELECT * FROM workout_history
+                        WHERE account_id = %s
+                        """,
+                        [account_id],
+                    )
+                    records = db.fetchall()
+                    return records
+        except Exception as e:
+            return {"message": str(e)}
+
     def workout_in_to_out(self, id: int, workout: WorkoutIn):
         old_data = workout.dict()
         return WorkoutOut(id=id, **old_data)
