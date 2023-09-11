@@ -89,14 +89,6 @@ export function Welcome(props) {
           <CreateWorkoutLink token={token} />{" "}
         </>
       )}
-      {error ? (
-        <p>Error: {error.message}</p>
-      ) : (
-        <>
-          <p>Welcome, {userName}!</p>
-          <CreateWorkoutLink token={token} />{" "}
-        </>
-      )}
     </div>
   );
 }
