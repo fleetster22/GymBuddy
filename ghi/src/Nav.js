@@ -19,11 +19,7 @@ export default function Nav() {
       <nav className="navigation__nav">
         <ul className="navigation__list">
           <li className="navigation__item">
-            <Link
-              to="/MainPage"
-              reloadDocument={true}
-              className="navigation__link"
-            >
+            <Link to="/" reloadDocument={true} className="navigation__link">
               <span>Home</span>
             </Link>
           </li>
