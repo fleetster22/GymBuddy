@@ -1,8 +1,8 @@
 <p align="center">
-    <img src="./ghi/public/Sculptr.png" alt="Sculptr Logo" width="20%" />
+    <img src="./ghi/public/GymBuddy.png" alt="GymBuddy Logo" width="20%" />
 </p>
 
-# Sculptr
+# GymBuddy
 
 ## Exercise For Humans
 
@@ -19,9 +19,9 @@
 
 ## Description
 
-🏋️‍♂️Sculptr is your ultimate fitness companion, tailored for enthusiasts ranging from beginners to pros. Whether you're on a mission to shed some pounds, bulk up with muscles, enhance your flexibility, or prep for that upcoming marathon, Sculptr has got you covered!
+🏋️‍♂️GymBuddy is your ultimate fitness companion, tailored for enthusiasts ranging from beginners to pros. Whether you're on a mission to shed some pounds, bulk up with muscles, enhance your flexibility, or prep for that upcoming marathon, GymBuddy has you covered!
 
-Join us on this transformative journey and let Sculptr carve the best version of you!
+Join us on this transformative journey and let GymBuddy carve the best version of you!
 
 Feel free to customize or tweak it further to better fit your application's essence.
 
@@ -51,10 +51,10 @@ Feel free to customize or tweak it further to better fit your application's esse
 1. Get an API Key from [API Ninjas](https://api-ninjas.com/)
 
 1. Clone the repo:
-   git clone https://gitlab.com/goldnine/sculptr-app.git
+   git clone https://github.com/fleetster22/GymBuddy.git
 
 1. Navigate to the directory:
-   cd sculptr-app
+   cd GymBuddy
 
 1. Set up Docker:
    docker-compose up --build
@@ -62,8 +62,6 @@ Feel free to customize or tweak it further to better fit your application's esse
 ## Contributors
 
 - **Anaka Norfleet** - [Profile](https://gitlab.com/fleetster22)
-- **Michael Parnapy** - [Profile](https://gitlab.com/Michael5331)
-- **Priya Patel** - [Profile](https://gitlab.com/prip886)
 
 ## License
 
