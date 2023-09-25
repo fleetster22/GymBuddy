@@ -8,12 +8,43 @@ const SignupForm = () => {
   const [first, setFirst] = useState("");
   const [last, setLast] = useState("");
   const [email, setEmail] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordMismatchError, setPasswordMismatchError] = useState("");
+
+  const isValidPassword = (password) => {
+    const minLength = 13;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(
+      password
+    );
+
+    return (
+      password.length >= minLength &&
+      hasUppercase &&
+      hasLowercase &&
+      hasNumber &&
+      hasSpecialChar
+    );
+  };
 
   const { register } = useToken();
   const navigate = useNavigate();
 
   const handleRegistration = (e) => {
     e.preventDefault();
+
+    if (password !== confirmPassword) {
+      setPasswordMismatchError("Passwords do not match.");
+    }
+
+    if (!isValidPassword(password)) {
+      setPasswordError("Password does not meet the complexity requirements.");
+      return;
+    }
+
     const accountData = {
       username: email,
       password: password,
@@ -72,8 +103,41 @@ const SignupForm = () => {
             className="form__input"
             onChange={(e) => {
               setPassword(e.target.value);
+              if (!isValidPassword(e.target.value)) {
+                setPasswordError(
+                  "Password should be at least 13 characters, have an uppercase, a lowercase, a number, and a special character."
+                );
+              } else {
+                setPasswordError("");
+              }
+
+              if (confirmPassword && e.target.value !== confirmPassword) {
+                setPasswordMismatchError("Passwords do not match.");
+              } else {
+                setPasswordMismatchError("");
+              }
             }}
           />
+
+          {passwordError && <div className="error">{passwordError}</div>}
+          <label className="form__label">Confirm Password </label>
+          <input
+            name="confirmPassword"
+            type="password"
+            className="form__input"
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              if (e.target.value !== password) {
+                setPasswordMismatchError("Passwords do not match.");
+              } else {
+                setPasswordMismatchError("");
+              }
+            }}
+          />
+
+          {passwordMismatchError && (
+            <div className="error">{passwordMismatchError}</div>
+          )}
 
           <div className="form__button">
             <input
