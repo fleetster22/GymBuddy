@@ -35,8 +35,8 @@ class AccountOutWithPassword(AccountIn):
 
 class AccountQueries:
     def create(
-            self, info: AccountIn, hashed_password: str
-            ) -> AccountOutWithPassword:
+        self, info: AccountIn, hashed_password: str
+    ) -> AccountOutWithPassword:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -53,14 +53,13 @@ class AccountQueries:
                             info.last_name,
                             info.email,
                             hashed_password,
-                        ]
+                        ],
                     )
                     id = result.fetchone()[0]
                     old_data = info.dict()
                     return AccountOut(id=id, **old_data)
         except Exception:
             return {"message": "error!"}
-# pass in hashed_password not just password
 
     def get(self, email: str) -> AccountOutWithPassword:
         try:
@@ -80,11 +79,9 @@ class AccountQueries:
                         columns = [desc[0] for desc in db.description]
                         data = dict(zip(columns, record))
                         return AccountOutWithPassword(**data)
-                    else:
-                        return {
-                            "message":
-                            f"This email{email} is not registered to an account."
-                        }
+                    return {
+                        "message": f"This email{email} is not registered to an account."
+                    }
         except Exception:
             return AccountOutWithPassword(message="Could not access account.")
 
@@ -108,12 +105,10 @@ class AccountQueries:
                         return AccountOutWithPassword(**data)
                     else:
                         return {
-                            "message":
-                            f"No account is registered to this id {account_id}."
+                            "message": f"No account is registered to this id {account_id}."
                         }
         except Exception:
             return AccountOutWithPassword(message="Could not access account.")
-
 
     def update(self, email: str, info: AccountIn) -> AccountOut:
         try:
@@ -133,7 +128,7 @@ class AccountQueries:
                             info.email,
                             info.password,
                             email,
-                        ]
+                        ],
                     )
                     conn.commit()
                     id = result.fetchone()[0]
@@ -153,7 +148,6 @@ class AccountQueries:
                         RETURNING id;
                         """,
                         [id],
-
                     )
                     conn.commit()
                     return {

@@ -22,6 +22,8 @@ class MyAuthenticator(Authenticator):
         return account.password
 
     def get_account_data_for_cookie(self, account: AccountOutWithPassword):
+        if "id" in account.dict():
+            account_id = account.id
         return account.email, AccountOut(**account.dict())
 
 
