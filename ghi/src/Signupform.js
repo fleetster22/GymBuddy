@@ -9,6 +9,8 @@ const SignupForm = () => {
   const [last, setLast] = useState("");
   const [email, setEmail] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordMismatchError, setPasswordMismatchError] = useState("");
 
   const isValidPassword = (password) => {
     const minLength = 13;
@@ -33,6 +35,10 @@ const SignupForm = () => {
 
   const handleRegistration = (e) => {
     e.preventDefault();
+
+    if (password !== confirmPassword) {
+      setPasswordMismatchError("Passwords do not match.");
+    }
 
     if (!isValidPassword(password)) {
       setPasswordError("Password does not meet the complexity requirements.");
@@ -104,9 +110,34 @@ const SignupForm = () => {
               } else {
                 setPasswordError("");
               }
+
+              if (confirmPassword && e.target.value !== confirmPassword) {
+                setPasswordMismatchError("Passwords do not match.");
+              } else {
+                setPasswordMismatchError("");
+              }
             }}
           />
+
           {passwordError && <div className="error">{passwordError}</div>}
+          <label className="form__label">Confirm Password </label>
+          <input
+            name="confirmPassword"
+            type="password"
+            className="form__input"
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              if (e.target.value !== password) {
+                setPasswordMismatchError("Passwords do not match.");
+              } else {
+                setPasswordMismatchError("");
+              }
+            }}
+          />
+
+          {passwordMismatchError && (
+            <div className="error">{passwordMismatchError}</div>
+          )}
 
           <div className="form__button">
             <input
